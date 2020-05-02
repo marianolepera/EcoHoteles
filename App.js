@@ -20,9 +20,6 @@ const HotelsStack = createStackNavigator({
   },
   Detalleshotel: {
     screen: DetallesHotelsScreen,
-    navigationOptions: {
-      headerTitle: "Detalles del Hotel"
-    }
   }
 });
 
@@ -30,7 +27,7 @@ const TopHotelsStack = createStackNavigator({
   TopHoteles: {
     screen: TopHotelsScreen,
     navigationOptions: {
-      headerTitle: "Top Hoteles"
+      headerTitle: "Favoritos"
     }
   }
 });
@@ -71,25 +68,11 @@ const TabNavigator = createBottomTabNavigator({
   TopHoteles: {
     screen: TopHotelsStack,
     navigationOptions: () => ({
-      tabBarLabel: "Top Hoteles",
+      tabBarLabel: "Favoritos",
       tabBarIcon: ({ tintColor }) => (
         <Icon
           type="material-community"
           name="heart-outline"
-          size={22}
-          color={tintColor}
-        />
-      )
-    })
-  },
-  Ofertas: {
-    screen: OfertasStack,
-    navigationOptions: () => ({
-      tabBarLabel: "Ofertas",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          type="material-community"
-          name="account-clock-outline"
           size={22}
           color={tintColor}
         />
@@ -103,7 +86,7 @@ const TabNavigator = createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => (
         <Icon
           type="material-community"
-          name="account"
+          name="account-outline"
           size={22}
           color={tintColor}
         />

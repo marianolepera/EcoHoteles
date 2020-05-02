@@ -69,15 +69,16 @@ class HotelsScreen extends Component {
   }
 
   componentDidMount() {
-    const url =
-      "http://www.json-generator.com/api/json/get/bVfuQMQule?indent=2";
+    const url = 
+    "https://ecohoteles-backend.herokuapp.com/hotel/";
+      //"http://www.json-generator.com/api/json/get/bVfuQMQule?indent=2";
     return fetch(url)
       .then(response => response.json())
       .then(responseJson => {
         this.setState({
           isLoading: false,
-          dataBanner: responseJson.banner,
-          dataHotel: responseJson.hoteles
+          //dataBanner: responseJson.banner,
+          dataHotel: responseJson
         });
       })
       .catch(error => {
@@ -100,6 +101,7 @@ class HotelsScreen extends Component {
               {this.state.dataBanner.map(itembann => {
                 return (
                   <Image
+                    key= {{itembann}}
                     style={styles.imageBanner}
                     resizeMode="contain"
                     source={{ uri: itembann }}
