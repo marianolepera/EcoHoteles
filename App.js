@@ -10,6 +10,8 @@ import OfertasScreen from "./screens/OfertasScreen";
 import AccountScreen from "./screens/AccountScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import LoginScreen from "./screens/LoginScreen";
+import SearchScreen from "./screens/SearchScreen";
+
 
 const HotelsStack = createStackNavigator({
   Hoteles: {
@@ -20,6 +22,9 @@ const HotelsStack = createStackNavigator({
   },
   Detalleshotel: {
     screen: DetallesHotelsScreen,
+  },
+  Searchhotel: {
+    screen: SearchScreen,
   }
 });
 

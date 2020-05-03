@@ -9,16 +9,17 @@ import {
   View,
   ScrollView,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 var { height, width } = Dimensions.get("window");
 
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Swiper from "react-native-swiper";
-
+import Icon from "react-native-vector-icons/Ionicons";
+import * as Animatable from "react-native-animatable";
 console.disableYellowBox = true;
 
 class HotelsScreen extends Component {
@@ -28,7 +29,7 @@ class HotelsScreen extends Component {
       dataBanner: [],
       dataCategories: [],
       dataHotel: [],
-      selectCatg: 0
+      selectCatg: 0,
     };
   }
 
@@ -40,7 +41,7 @@ class HotelsScreen extends Component {
           style={styles.divFood}
           onPress={() =>
             this.props.navigation.navigate("Detalleshotel", {
-              Detalleshotel: item
+              Detalleshotel: item,
             })
           }
         >
@@ -53,7 +54,7 @@ class HotelsScreen extends Component {
             style={{
               height: width / 2 - 20 - 90,
               backgroundColor: "transparent",
-              width: width / 2 - 20 - 10
+              width: width / 2 - 20 - 10,
             }}
           />
           <Text
@@ -69,66 +70,122 @@ class HotelsScreen extends Component {
   }
 
   componentDidMount() {
-    const url = 
-    "https://ecohoteles-backend.herokuapp.com/hotel/";
-      //"http://www.json-generator.com/api/json/get/bVfuQMQule?indent=2";
+    const url = "https://ecohoteles-backend.herokuapp.com/hotel/";
+    //"http://www.json-generator.com/api/json/get/bVfuQMQule?indent=2";
     return fetch(url)
-      .then(response => response.json())
-      .then(responseJson => {
+      .then((response) => response.json())
+      .then((responseJson) => {
         this.setState({
           isLoading: false,
           //dataBanner: responseJson.banner,
-          dataHotel: responseJson
+          dataHotel: responseJson,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
 
   render() {
     return (
-      <ScrollView>
-        <View style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
-          <View style={{ width: width, alignItems: "center" }}>
-            <Text style={{}}>OFERTAS!!</Text>
-            <Swiper
-              style={{ height: width / 2 }}
-              showsButtons={false}
-              autoplay={true}
-              autoplayTimeout={1}
-            >
-              {this.state.dataBanner.map(itembann => {
-                return (
-                  <Image
-                    key= {{itembann}}
-                    style={styles.imageBanner}
-                    resizeMode="contain"
-                    source={{ uri: itembann }}
-                  />
-                );
-              })}
-            </Swiper>
-          </View>
-
-          <View
-            style={{
-              width: width,
-              borderRadius: 40,
-              paddingVertical: 40,
-              backgroundColor: "white"
+      <View>
+        <View
+          style={{
+            height: 80,
+            justifyContent: "center",
+            paddingHorizontal: 5,
+          }}
+        >
+          <TouchableOpacity
+            style={{}}
+            onPress={() => {
+              this.props.navigation.navigate("Searchhotel", {
+                Searchhotel: this.state.dataHotel,
+              })
             }}
           >
-            <FlatList
-              //horizontal={true}
-              data={this.state.dataHotel}
-              numColumns={1}
-              renderItem={({ item }) => this.renderItemHotel(item)}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
+            <Animatable.View
+              animation="slideInRight"
+              duration={500}
+              style={{
+                height: 50,
+                backgroundColor: "white",
+                flexDirection: "row",
+                padding: 5,
+                alignItems: "center",
+              }}
+            >
+              <Animatable.View
+                animation={
+                  this.state.searchBarFocused ? "fadeInLeft" : "fadeInRight"
+                }
+                duration={400}
+              >
+                <Icon
+                  name={
+                    "ios-search"
+                  }
+                  style={{ fontSize: 24 }}
+                />
+              </Animatable.View>
+              <Text
+                style={{
+                  fontSize: 18,
+                  marginLeft: 15,
+                  flex: 1,
+                  color: 'grey',
+                  fontStyle: 'normal',
+                }}
+              >
+                ¿Sabes el nombre del hotel?
+              </Text>
+            </Animatable.View>
+          </TouchableOpacity>
+        </View>        
+        <View>
+          <ScrollView>
+            <View style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
+              <View style={{ width: width, alignItems: "center" }}>
+                <Text style={{}}>OFERTAS!!</Text>
+                <Swiper
+                  style={{ height: width / 2 }}
+                  showsButtons={false}
+                  autoplay={true}
+                  autoplayTimeout={1}
+                >
+                  {this.state.dataBanner.map((itembann) => {
+                    return (
+                      <Image
+                        key={{ itembann }}
+                        style={styles.imageBanner}
+                        resizeMode="contain"
+                        source={{ uri: itembann }}
+                      />
+                    );
+                  })}
+                </Swiper>
+              </View>
+
+              <View
+                style={{
+                  width: width,
+                  borderRadius: 40,
+                  paddingVertical: 40,
+                  backgroundColor: "white",
+                }}
+              >
+                <FlatList
+                  //horizontal={true}
+                  data={this.state.dataHotel}
+                  numColumns={1}
+                  renderItem={({ item }) => this.renderItemHotel(item)}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              </View>
+            </View>
+          </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -138,7 +195,7 @@ const styles = StyleSheet.create({
     height: width / 2,
     width: width - 40,
     borderRadius: 10,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
 
   imageFood: {
@@ -148,7 +205,7 @@ const styles = StyleSheet.create({
     //height: width / 2 - 20 - 30,
     backgroundColor: "transparent",
     position: "absolute",
-    top: -45
+    top: -45,
   },
   divFood: {
     height: hp("65%"), // 70% of height device screen
@@ -163,8 +220,8 @@ const styles = StyleSheet.create({
     elevation: 8,
     shadowOpacity: 0.3,
     shadowRadius: 20,
-    backgroundColor: "white"
-  }
+    backgroundColor: "white",
+  },
 });
 
 export default HotelsScreen;
