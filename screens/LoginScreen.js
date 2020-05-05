@@ -140,7 +140,7 @@ export default class LoginScreen3 extends Component {
           contentContainerStyle={styles.formContainer}
         >
           <Text style={styles.signUpText}>Iniciar Sesion</Text>
-          <Text style={styles.whoAreYouText}>WHO YOU ARE ?</Text>
+          {/* <Text style={styles.whoAreYouText}>WHO YOU ARE ?</Text>
           <View style={styles.userTypesContainer}>
             <UserTypeItem
               label="COOL"
@@ -163,7 +163,7 @@ export default class LoginScreen3 extends Component {
               onPress={() => this.setSelectedType("teacher")}
               selected={selectedType === "teacher"}
             />
-          </View>
+          </View> */}
           <View style={{ width: "80%", alignItems: "center" }}>
             <FormInput
               refInput={input => (this.usernameInput = input)}
@@ -180,7 +180,7 @@ export default class LoginScreen3 extends Component {
                 this.emailInput.focus();
               }}
             />
-            <FormInput
+            {/* <FormInput
               refInput={input => (this.emailInput = input)}
               icon="envelope"
               value={email}
@@ -195,7 +195,7 @@ export default class LoginScreen3 extends Component {
                 this.validateEmail();
                 this.passwordInput.focus();
               }}
-            />
+            /> */}
             <FormInput
               refInput={input => (this.passwordInput = input)}
               icon="lock"

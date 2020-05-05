@@ -10,12 +10,16 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight
 } from "react-native";
 var { height, width } = Dimensions.get("window");
+// import AsyncStorage
+import { AsyncStorage } from "react-native";
+//import { Icon } from "react-native-elements";
 
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+  heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import Swiper from "react-native-swiper";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -30,7 +34,32 @@ class HotelsScreen extends Component {
       dataCategories: [],
       dataHotel: [],
       selectCatg: 0,
+      buttonColor: "black"
     };
+  }
+
+  onClickAddFav(data) {
+    const itemFav = {
+      hoteles: data
+    };
+    AsyncStorage.getItem("fav")
+      .then(datafav => {
+        if (datafav !== null) {
+          // We have data!!
+          const fav = JSON.parse(datafav);
+          fav.push(itemFav);
+          AsyncStorage.setItem("fav", JSON.stringify(fav));
+          this.setState({ buttonColor: "black" });
+        } else {
+          const fav = [];
+          fav.push(itemFav);
+          AsyncStorage.setItem("fav", JSON.stringify(fav));
+          this.setState({ buttonColor: "red" });
+        }
+      })
+      .catch(err => {
+        alert(err);
+      });
   }
 
   renderItemHotel(item) {
@@ -41,7 +70,7 @@ class HotelsScreen extends Component {
           style={styles.divFood}
           onPress={() =>
             this.props.navigation.navigate("Detalleshotel", {
-              Detalleshotel: item,
+              Detalleshotel: item
             })
           }
         >
@@ -50,13 +79,10 @@ class HotelsScreen extends Component {
             resizeMode="contain"
             source={{ uri: item.image }}
           />
-          <View
-            style={{
-              height: width / 2 - 20 - 90,
-              backgroundColor: "transparent",
-              width: width / 2 - 20 - 10,
-            }}
-          />
+
+          <TouchableHighlight onPress={() => this.onClickAddFav(item)}>
+          <Icon name={"ios-heart"} style={{ fontSize: 50, color:this.state.buttonColor}} />
+          </TouchableHighlight>
           <Text
             style={{ fontWeight: "bold", fontSize: 22, textAlign: "center" }}
           >
@@ -77,7 +103,11 @@ class HotelsScreen extends Component {
       .then((responseJson) => {
         this.setState({
           isLoading: false,
-          //dataBanner: responseJson.banner,
+          dataBanner: [
+            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg",
+            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg",
+            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg",
+          ],
           dataHotel: responseJson,
         });
       })
@@ -85,84 +115,125 @@ class HotelsScreen extends Component {
         console.error(error);
       });
   }
+  /*<Image
+          key={{ itembann }}
+          style={styles.imageBanner}
+          resizeMode="contain"
+          source={{ uri: itembann }}
+      />
+      
+      this.state.dataBanner.map((itembann) => {
+                    return (
+                      {this.swiperItemRender()}
+                    );
+                  })*/
+  swiperItemRender = () => {
+    console.log(this.state.dataBanner.length);
+    let swiperItems = this.state.dataBanner.map((itembann) => (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#92BBD9",
+        }}
+      >
+        <Text style={styles.text}>And simple</Text>
+      </View>
+    ));
+    console.log(swiperItems.length);
+
+    return swiperItems;
+  };
 
   render() {
     return (
       <View>
-        <View
-          style={{
-            height: 80,
-            justifyContent: "center",
-            paddingHorizontal: 5,
-          }}
-        >
-          <TouchableOpacity
-            style={{}}
-            onPress={() => {
-              this.props.navigation.navigate("Searchhotel", {
-                Searchhotel: this.state.dataHotel,
-              })
-            }}
-          >
-            <Animatable.View
-              animation="slideInRight"
-              duration={500}
-              style={{
-                height: 50,
-                backgroundColor: "white",
-                flexDirection: "row",
-                padding: 5,
-                alignItems: "center",
-              }}
-            >
-              <Animatable.View
-                animation={
-                  this.state.searchBarFocused ? "fadeInLeft" : "fadeInRight"
-                }
-                duration={400}
-              >
-                <Icon
-                  name={
-                    "ios-search"
-                  }
-                  style={{ fontSize: 24 }}
-                />
-              </Animatable.View>
-              <Text
-                style={{
-                  fontSize: 18,
-                  marginLeft: 15,
-                  flex: 1,
-                  color: 'grey',
-                  fontStyle: 'normal',
-                }}
-              >
-                ¿Sabes el nombre del hotel?
-              </Text>
-            </Animatable.View>
-          </TouchableOpacity>
-        </View>        
         <View>
           <ScrollView>
             <View style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
+              <View
+                style={{
+                  height: 80,
+                  justifyContent: "center",
+                  paddingHorizontal: 5,
+                }}
+              >
+                <TouchableOpacity
+                  style={{}}
+                  onPress={() => {
+                    this.props.navigation.navigate("Searchhotel", {
+                      Searchhotel: this.state.dataHotel,
+                    });
+                  }}
+                >
+                  <Animatable.View
+                    animation="slideInRight"
+                    duration={500}
+                    style={{
+                      height: 50,
+                      backgroundColor: "white",
+                      flexDirection: "row",
+                      padding: 5,
+                      alignItems: "center",
+                    }}
+                  >
+                    <Animatable.View
+                      animation={
+                        this.state.searchBarFocused
+                          ? "fadeInLeft"
+                          : "fadeInRight"
+                      }
+                      duration={400}
+                    >
+                      <Icon name={"ios-search"} style={{ fontSize: 24 }} />
+                    </Animatable.View>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        marginLeft: 15,
+                        flex: 1,
+                        color: "grey",
+                        fontStyle: "normal",
+                      }}
+                    >
+                      ¿Sabes el nombre del hotel?
+                    </Text>
+                  </Animatable.View>
+                </TouchableOpacity>
+              </View>
               <View style={{ width: width, alignItems: "center" }}>
                 <Text style={{}}>OFERTAS!!</Text>
                 <Swiper
                   style={{ height: width / 2 }}
                   showsButtons={false}
                   autoplay={true}
-                  autoplayTimeout={1}
+                  autoplayTimeout={2}
                 >
-                  {this.state.dataBanner.map((itembann) => {
-                    return (
-                      <Image
-                        key={{ itembann }}
-                        style={styles.imageBanner}
-                        resizeMode="contain"
-                        source={{ uri: itembann }}
-                      />
-                    );
-                  })}
+                  <View>
+                    <Image
+                      key="1"
+                      style={styles.imageBanner}
+                      resizeMode="contain"
+                      source={{ uri: "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg" }}
+                    />
+                  </View>
+                  <View>
+                    <Image
+                      key="2"
+                      style={styles.imageBanner}
+                      resizeMode="contain"
+                      source={{ uri: "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg" }}
+                    />
+                  </View>
+                  <View>
+                    <Image
+                      key="3"
+                      style={styles.imageBanner}
+                      resizeMode="contain"
+                      source={{ uri: "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg" }}
+                    />
+                  </View>
                 </Swiper>
               </View>
 
@@ -195,7 +266,7 @@ const styles = StyleSheet.create({
     height: width / 2,
     width: width - 40,
     borderRadius: 10,
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
 
   imageFood: {
@@ -205,7 +276,7 @@ const styles = StyleSheet.create({
     //height: width / 2 - 20 - 30,
     backgroundColor: "transparent",
     position: "absolute",
-    top: -45,
+    top: -45
   },
   divFood: {
     height: hp("65%"), // 70% of height device screen
@@ -220,8 +291,8 @@ const styles = StyleSheet.create({
     elevation: 8,
     shadowOpacity: 0.3,
     shadowRadius: 20,
-    backgroundColor: "white",
-  },
+    backgroundColor: "white"
+  }
 });
 
 export default HotelsScreen;
