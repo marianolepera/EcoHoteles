@@ -6,12 +6,12 @@ import { createStackNavigator } from "react-navigation-stack";
 import DetallesHotelsScreen from "./screens/DetallesHotelsScreen";
 import HotelsScreen from "./screens/HotelsScreen";
 import TopHotelsScreen from "./screens/TopHotelsScreen";
-import OfertasScreen from "./screens/OfertasScreen";
+import MapasScreen from "./screens/MapasScreen";
 import AccountScreen from "./screens/AccountScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SearchScreen from "./screens/SearchScreen";
-
+import PreferenciasScreen from "./screens/PreferenciasScreen";
 
 const HotelsStack = createStackNavigator({
   Hoteles: {
@@ -21,10 +21,10 @@ const HotelsStack = createStackNavigator({
     }
   },
   Detalleshotel: {
-    screen: DetallesHotelsScreen,
+    screen: DetallesHotelsScreen
   },
   Searchhotel: {
-    screen: SearchScreen,
+    screen: SearchScreen
   }
 });
 
@@ -37,11 +37,11 @@ const TopHotelsStack = createStackNavigator({
   }
 });
 
-const OfertasStack = createStackNavigator({
+const MapasStack = createStackNavigator({
   Ofertas: {
-    screen: OfertasScreen,
+    screen: MapasScreen,
     navigationOptions: {
-      headerTitle: "Ofertas"
+      headerTitle: "Ubicacion De Hoteles"
     }
   }
 });
@@ -84,6 +84,20 @@ const TabNavigator = createBottomTabNavigator({
       )
     })
   },
+  Mapa: {
+    screen: MapasStack,
+    navigationOptions: () => ({
+      tabBarLabel: "Mapa",
+      tabBarIcon: ({ tintColor }) => (
+        <Icon
+          type="material-community"
+          name="map-marker-circle"
+          size={22}
+          color={tintColor}
+        />
+      )
+    })
+  },
   Cuenta: {
     screen: AccountStack,
     navigationOptions: () => ({
@@ -101,6 +115,7 @@ const TabNavigator = createBottomTabNavigator({
 });
 
 const SwitchNavigator = createSwitchNavigator({
+  Preferencias: { screen: PreferenciasScreen },
   Sign: { screen: SignUpScreen },
   Login: { screen: LoginScreen },
   Tab: { screen: TabNavigator }
