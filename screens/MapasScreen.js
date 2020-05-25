@@ -1,6 +1,5 @@
 import MapView, { Marker, ProviderPropType } from "react-native-maps";
 import React from "react";
-import Callout from "./Callout";
 import Modal from "react-native-modal";
 import {
   StyleSheet,
