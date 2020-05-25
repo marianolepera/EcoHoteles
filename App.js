@@ -6,42 +6,55 @@ import { createStackNavigator } from "react-navigation-stack";
 import DetallesHotelsScreen from "./screens/DetallesHotelsScreen";
 import HotelsScreen from "./screens/HotelsScreen";
 import TopHotelsScreen from "./screens/TopHotelsScreen";
-import MapasScreen from "./screens/MapasScreen";
+import OfertasScreen from "./screens/OfertasScreen";
 import AccountScreen from "./screens/AccountScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SearchScreen from "./screens/SearchScreen";
-import PreferenciasScreen from "./screens/PreferenciasScreen";
+import HomeScreen from "./screens/HomeScreen";
+import MapasScreen from "./screens/MapasScreen";
+
+import HeaderLogo from './components/HeaderLogo/index'
+
+const headerLogoProps = {
+  headerTitle: <HeaderLogo/>,
+  headerTitleAlign: 'center'
+}
 
 const HotelsStack = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: headerLogoProps
+  },
   Hoteles: {
     screen: HotelsScreen,
-    navigationOptions: {
-      headerTitle: "Hoteles"
-    }
   },
   Detalleshotel: {
-    screen: DetallesHotelsScreen
+    screen: DetallesHotelsScreen,
+    navigationOptions: headerLogoProps
   },
   Searchhotel: {
-    screen: SearchScreen
+    screen: SearchScreen,
+    navigationOptions: headerLogoProps
+  },
+  Mapas: {
+    screen: MapasScreen,
+    navigationOptions: headerLogoProps
   }
 });
 
 const TopHotelsStack = createStackNavigator({
   TopHoteles: {
     screen: TopHotelsScreen,
-    navigationOptions: {
-      headerTitle: "Favoritos"
-    }
+    navigationOptions: headerLogoProps
   }
 });
 
-const MapasStack = createStackNavigator({
+const OfertasStack = createStackNavigator({
   Ofertas: {
-    screen: MapasScreen,
+    screen: OfertasScreen,
     navigationOptions: {
-      headerTitle: "Ubicacion De Hoteles"
+      headerTitle: "Ofertas"
     }
   }
 });
@@ -49,17 +62,29 @@ const MapasStack = createStackNavigator({
 const AccountStack = createStackNavigator({
   Cuenta: {
     screen: AccountScreen,
-    navigationOptions: {
-      headerTitle: "Mi Perfil"
-    }
+    navigationOptions: headerLogoProps
   }
 });
 
 const TabNavigator = createBottomTabNavigator({
-  Hoteles: {
+  /*Hoteles: {
     screen: HotelsStack,
     navigationOptions: () => ({
       tabBarLabel: "Hoteles",
+      tabBarIcon: ({ tintColor }) => (
+        <Icon
+          type="material-community"
+          name="compass-outline"
+          size={22}
+          color={tintColor}
+        />
+      )
+    })
+  },*/
+  Home: {
+    screen: HotelsStack,
+    navigationOptions: () => ({
+      tabBarLabel: "Home",
       tabBarIcon: ({ tintColor }) => (
         <Icon
           type="material-community"
@@ -84,20 +109,6 @@ const TabNavigator = createBottomTabNavigator({
       )
     })
   },
-  Mapa: {
-    screen: MapasStack,
-    navigationOptions: () => ({
-      tabBarLabel: "Mapa",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          type="material-community"
-          name="map-marker-circle"
-          size={22}
-          color={tintColor}
-        />
-      )
-    })
-  },
   Cuenta: {
     screen: AccountStack,
     navigationOptions: () => ({
@@ -115,10 +126,10 @@ const TabNavigator = createBottomTabNavigator({
 });
 
 const SwitchNavigator = createSwitchNavigator({
-  Preferencias: { screen: PreferenciasScreen },
-  Sign: { screen: SignUpScreen },
-  Login: { screen: LoginScreen },
+  //Sign: { screen: SignUpScreen },
+  //Login: { screen: LoginScreen },
+  Home: {screen: HomeScreen},
   Tab: { screen: TabNavigator }
 });
 
-export default createAppContainer(SwitchNavigator);
+export default createAppContainer(TabNavigator);

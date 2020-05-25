@@ -10,8 +10,10 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  TouchableHighlight
+  TouchableHighlight,
 } from "react-native";
+import Loading from "../components/Loading/index";
+import constants from "../config/constants";
 var { height, width } = Dimensions.get("window");
 // import AsyncStorage
 import { AsyncStorage } from "react-native";
@@ -19,11 +21,14 @@ import { AsyncStorage } from "react-native";
 
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Swiper from "react-native-swiper";
 import Icon from "react-native-vector-icons/Ionicons";
+import IconFontisto from "react-native-vector-icons/Fontisto";
 import * as Animatable from "react-native-animatable";
+import HeaderLogo from '../components/HeaderLogo/index'
+
 console.disableYellowBox = true;
 
 class HotelsScreen extends Component {
@@ -34,32 +39,61 @@ class HotelsScreen extends Component {
       dataCategories: [],
       dataHotel: [],
       selectCatg: 0,
-      buttonColor: "black"
+      buttonColor: "black",
+      favorites: [],
+      completed: false,
     };
   }
+  /*this.props.navigation.navigate("Detalleshotel", {
+              Detalleshotel: item,
+            })*/
+  static navigationOptions = ({ navigation }) => {
+    const {params = {}} = navigation.state;
+    return{
+      headerTitle: <HeaderLogo/>,
+    headerTitleAlign: 'center',
+    headerRight: (
+      <View style={styles.iconContainer}>
+        <IconFontisto name="map" size={25} backgroundColor="transparent" underlayColor="transparent" onPress={() => params.handleMaps()}/>
+      </View>
+    ),
+    }
+  };
 
-  onClickAddFav(data) {
-    const itemFav = {
-      hoteles: data
-    };
-    AsyncStorage.getItem("fav")
-      .then(datafav => {
-        if (datafav !== null) {
-          // We have data!!
-          const fav = JSON.parse(datafav);
-          fav.push(itemFav);
-          AsyncStorage.setItem("fav", JSON.stringify(fav));
-          this.setState({ buttonColor: "black" });
-        } else {
-          const fav = [];
-          fav.push(itemFav);
-          AsyncStorage.setItem("fav", JSON.stringify(fav));
-          this.setState({ buttonColor: "red" });
+  change
+
+  onClickAddFav(hotel) {
+    let hotelInFav = hotel.inFav;
+    let hotelId = hotel.id;
+    let dataToSave = hotel;
+    AsyncStorage.getItem("fav").then((dataInFav) => {
+      dataInFav = JSON.parse(dataInFav);
+      if (!hotelInFav) {
+        //agrego
+        dataInFav.push(dataToSave);
+      } else {
+        //elimino
+        for(let key in dataInFav){
+          if(dataInFav[key].id == hotelId){
+            dataInFav.splice(key,1)
+            break;
+          }
         }
-      })
-      .catch(err => {
-        alert(err);
-      });
+      }
+      AsyncStorage.setItem("fav", JSON.stringify(dataInFav));
+    });
+    this.changeHotelFavs(hotel.id);
+  }
+
+  changeHotelFavs(idHotel) {
+    let hoteles = this.state.dataHotel;
+    for (let key in hoteles) {
+      let hotel = hoteles[key];
+      if (hotel.id == idHotel) {
+        hoteles[key].inFav = !hoteles[key].inFav;
+      }
+    }
+    this.setState({ dataHotel: hoteles });
   }
 
   renderItemHotel(item) {
@@ -70,7 +104,7 @@ class HotelsScreen extends Component {
           style={styles.divFood}
           onPress={() =>
             this.props.navigation.navigate("Detalleshotel", {
-              Detalleshotel: item
+              Detalleshotel: item,
             })
           }
         >
@@ -81,7 +115,14 @@ class HotelsScreen extends Component {
           />
 
           <TouchableHighlight onPress={() => this.onClickAddFav(item)}>
-          <Icon name={"ios-heart"} style={{ fontSize: 50, color:this.state.buttonColor}} />
+            {item.inFav ? (
+              <Icon name={"ios-heart"} style={{ fontSize: 50, color: "red" }} />
+            ) : (
+              <Icon
+                name={"ios-heart"}
+                style={{ fontSize: 50, color: "black" }}
+              />
+            )}
           </TouchableHighlight>
           <Text
             style={{ fontWeight: "bold", fontSize: 22, textAlign: "center" }}
@@ -95,14 +136,33 @@ class HotelsScreen extends Component {
     }
   }
 
+  async _updateFavList() {
+    let hoteles = await this.state.dataHotel;
+    let hotelesFormat = [];
+    for (let key in hoteles) {
+      let hotel = hoteles[key];
+      if (hotel.inFav) {
+        hotelesFormat.push(hotel);
+      }
+    }
+    console.log(hotelesFormat)
+    AsyncStorage.setItem("fav", JSON.stringify(hotelesFormat));
+  }
+
+  callMapsAction() {
+    this.props.navigation.navigate("Mapas", {
+      Hoteles: this.state.dataHotel,
+    });
+}
+
   componentDidMount() {
-    const url = "https://ecohoteles-backend.herokuapp.com/hotel/";
-    //"http://www.json-generator.com/api/json/get/bVfuQMQule?indent=2";
+    const url = constants.API_URL;
+    
     return fetch(url)
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
-          isLoading: false,
+          completed: true,
           dataBanner: [
             "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg",
             "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg",
@@ -110,23 +170,16 @@ class HotelsScreen extends Component {
           ],
           dataHotel: responseJson,
         });
+        this.props.navigation.setParams({
+          handleMaps: this.callMapsAction.bind(this)
+        });
+        this._updateFavList();
       })
       .catch((error) => {
         console.error(error);
       });
   }
-  /*<Image
-          key={{ itembann }}
-          style={styles.imageBanner}
-          resizeMode="contain"
-          source={{ uri: itembann }}
-      />
-      
-      this.state.dataBanner.map((itembann) => {
-                    return (
-                      {this.swiperItemRender()}
-                    );
-                  })*/
+
   swiperItemRender = () => {
     console.log(this.state.dataBanner.length);
     let swiperItems = this.state.dataBanner.map((itembann) => (
@@ -147,117 +200,130 @@ class HotelsScreen extends Component {
   };
 
   render() {
-    return (
-      <View>
+    if (!this.state.completed) {
+      return <Loading />;
+    } else {
+      return (
         <View>
-          <ScrollView>
-            <View style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
-              <View
-                style={{
-                  height: 80,
-                  justifyContent: "center",
-                  paddingHorizontal: 5,
-                }}
-              >
-                <TouchableOpacity
-                  style={{}}
-                  onPress={() => {
-                    this.props.navigation.navigate("Searchhotel", {
-                      Searchhotel: this.state.dataHotel,
-                    });
+          <View>
+            <ScrollView>
+              <View style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
+                <View
+                  style={{
+                    height: 80,
+                    justifyContent: "center",
+                    paddingHorizontal: 5,
                   }}
                 >
-                  <Animatable.View
-                    animation="slideInRight"
-                    duration={500}
-                    style={{
-                      height: 50,
-                      backgroundColor: "white",
-                      flexDirection: "row",
-                      padding: 5,
-                      alignItems: "center",
+                  <TouchableOpacity
+                    style={{}}
+                    onPress={() => {
+                      this.props.navigation.navigate("Searchhotel", {
+                        Searchhotel: this.state.dataHotel,
+                      });
                     }}
                   >
                     <Animatable.View
-                      animation={
-                        this.state.searchBarFocused
-                          ? "fadeInLeft"
-                          : "fadeInRight"
-                      }
-                      duration={400}
-                    >
-                      <Icon name={"ios-search"} style={{ fontSize: 24 }} />
-                    </Animatable.View>
-                    <Text
+                      animation="slideInRight"
+                      duration={500}
                       style={{
-                        fontSize: 18,
-                        marginLeft: 15,
-                        flex: 1,
-                        color: "grey",
-                        fontStyle: "normal",
+                        height: 50,
+                        backgroundColor: "white",
+                        flexDirection: "row",
+                        padding: 5,
+                        alignItems: "center",
                       }}
                     >
-                      ¿Sabes el nombre del hotel?
-                    </Text>
-                  </Animatable.View>
-                </TouchableOpacity>
-              </View>
-              <View style={{ width: width, alignItems: "center" }}>
-                <Text style={{}}>OFERTAS!!</Text>
-                <Swiper
-                  style={{ height: width / 2 }}
-                  showsButtons={false}
-                  autoplay={true}
-                  autoplayTimeout={2}
-                >
-                  <View>
-                    <Image
-                      key="1"
-                      style={styles.imageBanner}
-                      resizeMode="contain"
-                      source={{ uri: "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg" }}
-                    />
-                  </View>
-                  <View>
-                    <Image
-                      key="2"
-                      style={styles.imageBanner}
-                      resizeMode="contain"
-                      source={{ uri: "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg" }}
-                    />
-                  </View>
-                  <View>
-                    <Image
-                      key="3"
-                      style={styles.imageBanner}
-                      resizeMode="contain"
-                      source={{ uri: "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg" }}
-                    />
-                  </View>
-                </Swiper>
-              </View>
+                      <Animatable.View
+                        animation={
+                          this.state.searchBarFocused
+                            ? "fadeInLeft"
+                            : "fadeInRight"
+                        }
+                        duration={400}
+                      >
+                        <Icon name={"ios-search"} style={{ fontSize: 24 }} />
+                      </Animatable.View>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          marginLeft: 15,
+                          flex: 1,
+                          color: "grey",
+                          fontStyle: "normal",
+                        }}
+                      >
+                        ¿Sabes el nombre del hotel?
+                      </Text>
+                    </Animatable.View>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: width, alignItems: "center" }}>
+                  <Text style={{}}>OFERTAS!!</Text>
+                  <Swiper
+                    style={{ height: width / 2 }}
+                    showsButtons={false}
+                    autoplay={true}
+                    autoplayTimeout={2}
+                  >
+                    <View>
+                      <Image
+                        key="1"
+                        style={styles.imageBanner}
+                        resizeMode="contain"
+                        source={{
+                          uri:
+                            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg",
+                        }}
+                      />
+                    </View>
+                    <View>
+                      <Image
+                        key="2"
+                        style={styles.imageBanner}
+                        resizeMode="contain"
+                        source={{
+                          uri:
+                            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg",
+                        }}
+                      />
+                    </View>
+                    <View>
+                      <Image
+                        key="3"
+                        style={styles.imageBanner}
+                        resizeMode="contain"
+                        source={{
+                          uri:
+                            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg",
+                        }}
+                      />
+                    </View>
+                  </Swiper>
+                </View>
 
-              <View
-                style={{
-                  width: width,
-                  borderRadius: 40,
-                  paddingVertical: 40,
-                  backgroundColor: "white",
-                }}
-              >
-                <FlatList
-                  //horizontal={true}
-                  data={this.state.dataHotel}
-                  numColumns={1}
-                  renderItem={({ item }) => this.renderItemHotel(item)}
-                  keyExtractor={(item, index) => index.toString()}
-                />
+                <View
+                  style={{
+                    width: width,
+                    borderRadius: 40,
+                    paddingVertical: 40,
+                    backgroundColor: "white",
+                  }}
+                >
+                  <FlatList
+                    //horizontal={true}
+                    data={this.state.dataHotel}
+                    numColumns={1}
+                    renderItem={({ item }) => this.renderItemHotel(item)}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                </View>
               </View>
-            </View>
-          </ScrollView>
+            </ScrollView>
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
   }
 }
 
@@ -266,7 +332,7 @@ const styles = StyleSheet.create({
     height: width / 2,
     width: width - 40,
     borderRadius: 10,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
 
   imageFood: {
@@ -276,7 +342,7 @@ const styles = StyleSheet.create({
     //height: width / 2 - 20 - 30,
     backgroundColor: "transparent",
     position: "absolute",
-    top: -45
+    top: -45,
   },
   divFood: {
     height: hp("65%"), // 70% of height device screen
@@ -291,7 +357,12 @@ const styles = StyleSheet.create({
     elevation: 8,
     shadowOpacity: 0.3,
     shadowRadius: 20,
-    backgroundColor: "white"
+    backgroundColor: "white",
+  },
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: 120
   }
 });
 

@@ -11,7 +11,7 @@ import {
   Image
 } from "react-native";
 import { Icon } from "react-native-elements";
-import { Card } from "@shoutem/ui";
+//import { Card } from "@shoutem/ui";
 const { width, height } = Dimensions.get("window");
 
 const ASPECT_RATIO = width / height;
