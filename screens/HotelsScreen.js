@@ -10,7 +10,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  TouchableHighlight
+  TouchableHighlight,
 } from "react-native";
 import Loading from "../components/Loading/index";
 import constants from "../config/constants";
@@ -21,7 +21,7 @@ import { AsyncStorage } from "react-native";
 
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import Swiper from "react-native-swiper";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -35,13 +35,17 @@ class HotelsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataBanner: [],
+      dataBanner: [
+        "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg",
+        "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg",
+        "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg",
+      ],
       dataCategories: [],
       dataHotel: [],
       selectCatg: 0,
       buttonColor: "black",
       favorites: [],
-      completed: false
+      completed: false,
     };
   }
   /*this.props.navigation.navigate("Detalleshotel", {
@@ -62,7 +66,7 @@ class HotelsScreen extends Component {
             onPress={() => params.handleMaps()}
           />
         </View>
-      )
+      ),
     };
   };
 
@@ -72,7 +76,7 @@ class HotelsScreen extends Component {
     let hotelInFav = hotel.inFav;
     let hotelId = hotel.id;
     let dataToSave = hotel;
-    AsyncStorage.getItem("fav").then(dataInFav => {
+    AsyncStorage.getItem("fav").then((dataInFav) => {
       dataInFav = JSON.parse(dataInFav);
       if (!hotelInFav) {
         //agrego
@@ -110,7 +114,7 @@ class HotelsScreen extends Component {
           style={styles.divFood}
           onPress={() =>
             this.props.navigation.navigate("Detalleshotel", {
-              Detalleshotel: item
+              Detalleshotel: item,
             })
           }
         >
@@ -151,56 +155,79 @@ class HotelsScreen extends Component {
         hotelesFormat.push(hotel);
       }
     }
-    console.log(hotelesFormat);
+    //console.log(hotelesFormat)
     AsyncStorage.setItem("fav", JSON.stringify(hotelesFormat));
   }
 
   callMapsAction() {
     this.props.navigation.navigate("Mapas", {
-      Hoteles: this.state.dataHotel
+      Hoteles: this.state.dataHotel,
     });
   }
 
   componentDidMount() {
-    const url = constants.API_URL;
-
-    return fetch(url)
-      .then(response => response.json())
-      .then(responseJson => {
+    const filtros = this.props.navigation.getParam("filtros");
+    const url = constants.API_URL /*+ `?filtros=${encodeURIComponent(JSON.stringify(filtros))}`*/;
+    return fetch(url,{method: "GET"})
+      .then((response) => response.json())
+      .then((responseJson) => {
+        let hotelesFiltrados = [];
+        //si hay preferencias, itero
+        if(filtros.preferencias.length > 0){
+        for(let indexPreferencia in filtros.preferencias){
+          let preferencia = filtros.preferencias[indexPreferencia];
+          for(let indexHotel in responseJson){
+            let hotel = responseJson[indexHotel];
+            if(hotel.amenities[preferencia.id] && !hotelesFiltrados.includes(hotel)){
+              hotelesFiltrados.push(hotel)
+            }
+          }
+        }
+        }
+        else{ //sino, muestro todos
+          hotelesFiltrados = responseJson;
+        }
+        if(filtros.destino != ""){
+          let hotelesFiltradosAux = [];
+          for(let indexHotel in hotelesFiltrados){
+            let hotel = hotelesFiltrados[indexHotel];
+            let ubicacionHotel = hotel.ubicacion.toLowerCase();
+            let ubicacion = filtros.destino.toLowerCase();
+            if(ubicacionHotel.indexOf(ubicacion) != -1){
+              hotelesFiltradosAux.push(hotel);
+            }
+          }
+          hotelesFiltrados = hotelesFiltradosAux;
+        }
         this.setState({
           completed: true,
-          dataBanner: [
-            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg",
-            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg",
-            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg"
-          ],
-          dataHotel: responseJson
+          dataHotel: hotelesFiltrados,
         });
         this.props.navigation.setParams({
-          handleMaps: this.callMapsAction.bind(this)
+          handleMaps: this.callMapsAction.bind(this),
         });
         this._updateFavList();
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }
 
   swiperItemRender = () => {
-    console.log(this.state.dataBanner.length);
-    let swiperItems = this.state.dataBanner.map(itembann => (
+    //console.log(this.state.dataBanner.length);
+    let swiperItems = this.state.dataBanner.map((itembann) => (
       <View
         style={{
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#92BBD9"
+          backgroundColor: "#92BBD9",
         }}
       >
         <Text style={styles.text}>And simple</Text>
       </View>
     ));
-    console.log(swiperItems.length);
+    //console.log(swiperItems.length);
 
     return swiperItems;
   };
@@ -218,14 +245,14 @@ class HotelsScreen extends Component {
                   style={{
                     height: 80,
                     justifyContent: "center",
-                    paddingHorizontal: 5
+                    paddingHorizontal: 5,
                   }}
                 >
                   <TouchableOpacity
                     style={{}}
                     onPress={() => {
                       this.props.navigation.navigate("Searchhotel", {
-                        Searchhotel: this.state.dataHotel
+                        Searchhotel: this.state.dataHotel,
                       });
                     }}
                   >
@@ -237,7 +264,7 @@ class HotelsScreen extends Component {
                         backgroundColor: "white",
                         flexDirection: "row",
                         padding: 5,
-                        alignItems: "center"
+                        alignItems: "center",
                       }}
                     >
                       <Animatable.View
@@ -256,7 +283,7 @@ class HotelsScreen extends Component {
                           marginLeft: 15,
                           flex: 1,
                           color: "grey",
-                          fontStyle: "normal"
+                          fontStyle: "normal",
                         }}
                       >
                         ¿Sabes el nombre del hotel?
@@ -279,7 +306,7 @@ class HotelsScreen extends Component {
                         resizeMode="contain"
                         source={{
                           uri:
-                            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg"
+                            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg",
                         }}
                       />
                     </View>
@@ -290,7 +317,7 @@ class HotelsScreen extends Component {
                         resizeMode="contain"
                         source={{
                           uri:
-                            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg"
+                            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg",
                         }}
                       />
                     </View>
@@ -301,7 +328,7 @@ class HotelsScreen extends Component {
                         resizeMode="contain"
                         source={{
                           uri:
-                            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg"
+                            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg",
                         }}
                       />
                     </View>
@@ -313,7 +340,7 @@ class HotelsScreen extends Component {
                     width: width,
                     borderRadius: 40,
                     paddingVertical: 40,
-                    backgroundColor: "white"
+                    backgroundColor: "white",
                   }}
                 >
                   <FlatList
@@ -338,7 +365,7 @@ const styles = StyleSheet.create({
     height: width / 2,
     width: width - 40,
     borderRadius: 10,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
 
   imageFood: {
@@ -348,7 +375,7 @@ const styles = StyleSheet.create({
     //height: width / 2 - 20 - 30,
     backgroundColor: "transparent",
     position: "absolute",
-    top: -45
+    top: -45,
   },
   divFood: {
     height: hp("65%"), // 70% of height device screen
@@ -363,13 +390,13 @@ const styles = StyleSheet.create({
     elevation: 8,
     shadowOpacity: 0.3,
     shadowRadius: 20,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    width: 120
-  }
+    width: 120,
+  },
 });
 
 export default HotelsScreen;
