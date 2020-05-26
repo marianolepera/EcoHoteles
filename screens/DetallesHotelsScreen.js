@@ -194,6 +194,7 @@ class DetallesHotelsScreen extends Component {
                 ratingColor="green"
                 ratingBackgroundColor="white"
                 ratingCount={5}
+                startingValue={hotel.nivel_eco}
                 imageSize={30}
                 style={{ paddingVertical: 10 }}
                 readonly
