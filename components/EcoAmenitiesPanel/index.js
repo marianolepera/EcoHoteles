@@ -5,21 +5,45 @@ import { View, Text,StyleSheet} from 'react-native';
 
 export default class EcoAmenities extends Component {
   render() {
-    const hotel = this.props.hotel;
+    //const hotel = this.props.hotel;
     const fontColor = '#676767';
     const marginTop = -4;
     return (
       <View style={styles.amenities}>
         {
-          /*hotel.amenities.pool*/true?
+          /*hotel.amenities.ahorro_de_agua*/true?
             <FontAwesome5.Button name="tint" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Ahorro de agua</Text>
             </FontAwesome5.Button>:null
         }
         {
-          /*hotel.amenities.pool*/true?
+          /*hotel.amenities.ahorro_de_energia*/true?
             <FontAwesome5.Button name="plug" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Ahorro de energia</Text>
+            </FontAwesome5.Button>:null
+        }
+        {
+          /*hotel.amenities.reciclaje*/true?
+            <FontAwesome5.Button name="recycle" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
+              <Text style={styles.value}>Reciclaje</Text>
+            </FontAwesome5.Button>:null
+        }
+                {
+          /*hotel.amenities.reciclaje*/true?
+            <FontAwesome5.Button name="recycle" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
+              <Text style={styles.value}>Compostaje</Text>
+            </FontAwesome5.Button>:null
+        }
+                {
+          /*hotel.amenities.reciclaje*/true?
+            <FontAwesome5.Button name="plug" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
+              <Text style={styles.value}>Excursiones eco ambientales</Text>
+            </FontAwesome5.Button>:null
+        }
+                {
+          /*hotel.amenities.reciclaje*/true?
+            <FontAwesome5.Button name="plug" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
+              <Text style={styles.value}>Productos naturales para el higiene</Text>
             </FontAwesome5.Button>:null
         }
       </View>
