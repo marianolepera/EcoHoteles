@@ -193,9 +193,10 @@ class DetallesHotelsScreen extends Component {
                 ratingImage={WATER_IMAGE}
                 ratingColor="green"
                 ratingBackgroundColor="white"
-                ratingCount={10}
+                ratingCount={5}
                 imageSize={30}
                 style={{ paddingVertical: 10 }}
+                readonly
               />
             </View>
             <TabView
