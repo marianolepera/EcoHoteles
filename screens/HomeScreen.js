@@ -152,7 +152,7 @@ class HomeScreen extends Component {
       ninos:this.state.ninos,
     };
 
-    this.props.navigation.navigate("Hoteles", {
+    this.props.navigation.navigate("Drawer", {
       filtros:result,
     })
     this.setState({ loading: false });
