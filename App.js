@@ -14,12 +14,15 @@ import {
   ScrollView,
   Dimensions,
   Image,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
-import { Icon } from "native-base";
+import { Icon } from "react-native-elements";
 import IconAntDesign from "react-native-vector-icons/AntDesign";
+import IconMaterialCommunity from "react-native-vector-icons/MaterialCommunityIcons";
+
 
 //Screens
 import DetallesHotelsScreen from "./screens/DetallesHotelsScreen";
@@ -47,62 +50,69 @@ const headerLogoProps = {
 const CustomDrawerNavigation = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View
-        style={{
-          height: 80,
-          backgroundColor: "#d2d2d2",
-          opacity: 0.9,
-          flexDirection: "row",
-          paddingTop: 18,
-          paddingBottom: 18,
-          paddingLeft: 24,
-          paddingRight: 24,
+      <TouchableWithoutFeedback
+        onPress={() => {
+          props.navigation.navigate("Account");
         }}
       >
-        <View style={{ width: 50, /*height: 200,*/ backgroundColor: "Green" }}>
-          <Image
-            source={{ uri: constants.PROFILE_AVATAR }}
-            style={styles.avatar}
-          />
-        </View>
         <View
           style={{
-            paddingLeft: 10,
-            height: 50,
-            backgroundColor: "Green",
-            alignItems: "center",
-            justifyContent: "center",
+            height: 80,
+            backgroundColor: "#d2d2d2",
+            opacity: 0.9,
+            flexDirection: "row",
+            paddingTop: 18,
+            paddingBottom: 18,
+            paddingLeft: 24,
+            paddingRight: 24,
           }}
         >
-          <Text>John Doe</Text>
+          <View
+            style={{ width: 50, /*height: 200,*/ backgroundColor: "Green" }}
+          >
+            <Image
+              source={{ uri: constants.PROFILE_AVATAR }}
+              style={styles.avatar}
+            />
+          </View>
+          <View
+            style={{
+              paddingLeft: 10,
+              height: 50,
+              backgroundColor: "Green",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text>John Doe</Text>
+          </View>
+          <View
+            style={{
+              paddingLeft: 10,
+              paddingTop: 10,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <IconAntDesign
+              name={"right"}
+              style={{ fontSize: 15, color: "black" }}
+            />
+          </View>
         </View>
-        <View
-          style={{
-            paddingLeft: 10,
-            paddingTop: 10,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <IconAntDesign
-            name={"right"}
-            style={{ fontSize: 15, color: "black" }}
-          />
-        </View>
-      </View>
+      </TouchableWithoutFeedback>
       <ScrollView>
         <DrawerItems {...props} />
       </ScrollView>
-      {/*<View style={{ alignItems: "center", bottom: 20 }}>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flexDirection: 'column', marginRight: 15 }}>
-            <Icon name="flask" style={{ fontSize: 24 }} onPress={() => console.log("Tıkladın")} />
-          </View>
-          <View style={{ flexDirection: 'column' }}>
-            <Icon name="call" style={{ fontSize: 24 }} onPress={() => console.log("Tıkladın")} />
-          </View>
+      <View style={{ alignItems: "center", bottom: 20 }}>
+        <View style={{ flexDirection: "row" }}>
+          <IconMaterialCommunity
+            name="logout"
+            style={{ fontSize: 24,paddingRight:5 }}
+          />
+          <Text>Cerrar sesion</Text>
         </View>
-  </View>*/}
+      </View>
     </SafeAreaView>
   );
 };
@@ -120,10 +130,16 @@ const Drawer = createDrawerNavigator(
         title: "Favoritos",
       },
     },
-    Account: {
+    MisComentarios: {
       screen: AccountScreen,
       navigationOptions: {
-        title: "Mi cuenta",
+        title: "Mis comentarios",
+      },
+    },
+    Notificaciones: {
+      screen: AccountScreen,
+      navigationOptions: {
+        title: "Notificaciones",
       },
     },
   },
@@ -138,14 +154,20 @@ const Drawer = createDrawerNavigator(
 );
 
 const DrawerNavigation = createStackNavigator({
-  Home:{screen:HomeScreen, navigationOptions:headerLogoProps},
-  Drawer: {screen:Drawer,navigationOptions: {headerShown: false}},
-  Detalleshotel:{
-    screen: DetallesHotelsScreen,navigationOptions: {title: null}
+  Home: { screen: HomeScreen, navigationOptions: headerLogoProps },
+  Drawer: { screen: Drawer, navigationOptions: { headerShown: false } },
+  Detalleshotel: {
+    screen: DetallesHotelsScreen,
+    navigationOptions: { title: null },
   },
-  Searchhotel:{
-    screen:SearchScreen,navigationOptions: {headerShown: false}
-  }
+  Searchhotel: {
+    screen: SearchScreen,
+    navigationOptions: { headerShown: false },
+  },
+  Mapas: {
+    screen: MapasScreen,
+    navigationOptions: { headerShown: true },
+  },
 });
 
 const styles = StyleSheet.create({
