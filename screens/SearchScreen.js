@@ -391,8 +391,8 @@ export default class SearchScreen extends Component {
         </View> */
   render() {
     return (
-      <View style={styles.parent}>
-        <View style={(styles.container, styles.child)}>
+      <View >
+        <View style={styles.container}>
           {/*Render SearchBar*/}
           <View
             style={{
@@ -425,19 +425,17 @@ export default class SearchScreen extends Component {
               value={this.state.query}
               placeholder="Search"
             />
-          </View>
-          {/*Render Amenities no eco*/}
-          {this.renderCheckboxOptions()}
+          </View>          
         </View>
         <View>
-          {/*<List>
+          <List>
             <FlatList
               data={this.state.data}
               renderItem={this._renderItem}
               keyExtractor={(item, index) => index.toString()}
               ListFooterComponent={this.renderFooter}
             />
-          </List>*/}
+          </List>
         </View>
       </View>
     );
@@ -446,7 +444,7 @@ export default class SearchScreen extends Component {
 
 const styles = StyleSheet.create({
   parent: {
-    height: "40%",
+    height: "30%",
     width: "100%",
     transform: [{ scaleX: 2 }],
     borderBottomStartRadius: 200,
@@ -466,6 +464,9 @@ const styles = StyleSheet.create({
     //flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor:constants.PRIMARY_BG_COLOR,
+    borderBottomStartRadius: 50,
+    borderBottomEndRadius: 50,
   },
   checkboxContainer: {
     flexDirection: "row",

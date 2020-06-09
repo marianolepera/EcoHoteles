@@ -37,6 +37,36 @@ class HomeScreen extends Component {
       selectedStartDate: null,
       selectedEndDate: null,
       loading: false,
+      ahorroDeEnergia:{
+        nombre: 'Ahorro de energia',
+        id: 'ahorro_de_energia',
+        isSelected: false
+      },
+      ahorroDeAgua:{
+        nombre: 'Ahorro de agua',
+        id: 'ahorro_de_agua',
+        isSelected: false
+      },
+      reciclaje:{
+        nombre: 'Reciclaje',
+        id: 'reciclaje',
+        isSelected: false
+      },
+      compostaje:{
+        nombre: 'Compostaje',
+        id: 'compostaje',
+        isSelected: false
+      },
+      excursionesEcoAmbientales:{
+        nombre: 'Excursiones eco ambientales',
+        id: 'excursiones_eco_ambientales',
+        isSelected: false
+      },
+      productosNaturalesParaElHigiene:{
+        nombre: 'Productos naturales para el higiene',
+        id: 'productos_naturales_para_el_higiene',
+        isSelected: false
+      }
     };
     this.onDateChange = this.onDateChange.bind(this);
     this.handleDestino = this.handleDestino.bind(this);
@@ -87,36 +117,29 @@ class HomeScreen extends Component {
 
     /*Proceso las preferencias seleccionadas*/
     let preferenciasArray = [
-      {
-        name: "Ahorro de energia",
-      },
-      {
-        name: "Ahorro de agua",
-      },
-      {
-        name: "Reciclaje",
-      },
-      {
-        name: "Compostaje",
-      },
-      {
-        name: "Excursiones eco ambientales",
-      },
-      {
-        name: "Productos naturales para el higiene",
-      },
+      this.state.ahorroDeEnergia,
+      this.state.ahorroDeAgua,
+      this.state.compostaje,
+      this.state.reciclaje,
+      this.state.excursionesEcoAmbientales,
+      this.state.productosNaturalesParaElHigiene
     ];
-    let preferenciasSelected = preferenciasArray.map((preferencia, key) => {
-      let id = preferencia.name.split(' ').join('_');
-      id = id.toLowerCase();
-      return {
-        nombre: preferencia.name,
-        isSelected: this.state[preferencia.name],
-        id: id
-      };
-    }).filter((value)=>{
-      return value.isSelected
-    });
+    //console.log(preferenciasArray)
+    /*console.log(this.state.ahorroDeEnergia)
+      console.log(this.state.ahorroDeAgua);
+      console.log(this.state.compostaje);
+      console.log(this.state.reciclaje);
+      console.log(this.state.excursionesEcoAmbientales);
+      console.log(this.state.productosNaturalesParaElHigiene)*/
+
+    let preferenciasSelected = []/*preferenciasArray
+      .map((preferencia, key) => {
+       return preferencia;
+      })
+      .filter((value) => {
+        return value.isSelected;
+      });
+      console.log(preferenciasSelected)*/
 
     /*Recupero el destino ingresado*/
     let destino = { ubicacion: this.state.destino };
@@ -138,27 +161,39 @@ class HomeScreen extends Component {
     /*Armo objeto final*/
     let result = {
       destino: this.state.destino,
-      fechas:{
+      fechas: {
         fechaDesde: this.state.selectedStartDate
-        ? this.state.selectedStartDate.toString()
-        : "",
-      fechaHasta: this.state.selectedEndDate
-        ? this.state.selectedEndDate.toString()
-        : "",
+          ? this.state.selectedStartDate.toString()
+          : "",
+        fechaHasta: this.state.selectedEndDate
+          ? this.state.selectedEndDate.toString()
+          : "",
       },
-      preferencias:preferenciasSelected,
-      habitaciones:this.state.habitaciones,
-      adultos: this.state.adultos ,
-      ninos:this.state.ninos,
+      preferencias: preferenciasSelected,
+      habitaciones: this.state.habitaciones,
+      adultos: this.state.adultos,
+      ninos: this.state.ninos,
     };
 
     this.props.navigation.navigate("Drawer", {
-      filtros:result,
-    })
+      filtros: result,
+    });
     this.setState({ loading: false });
-
   }
-
+  /*                {/*<Button
+                  title={nombre}
+                  titleStyle={styles.preferenciasBotonText}
+                  buttonStyle={
+                    this.state[nombre]
+                      ? styles.preferenciasBotonSeleccionado
+                      : styles.preferenciasBotonNoSeleccionado
+                  }
+                  onPress={() => {
+                    const update = {};
+                    update[nombre] = !this.state[nombre];
+                    this.setState(update);
+                  }}
+                />}*/
   render() {
     const preferenciasArray = [
       [
@@ -193,7 +228,7 @@ class HomeScreen extends Component {
     const endDate = selectedEndDate ? selectedEndDate.toString() : "";
     const { selected1 } = this.state;
     const { selected2 } = this.state;
-    let preferenciasArrayRender = preferenciasArray.map(
+    /*let preferenciasArrayRender = preferenciasArray.map(
       (preferenciasDupla, key) => {
         return (
           <View style={styles.rowContainer}>
@@ -205,31 +240,27 @@ class HomeScreen extends Component {
                 this.setState(update);
               }
               return (
-                <Button
+                <View style={{flexDirection:'row', backgroundColor:'red'}}>
+                <CheckBox
                   title={nombre}
-                  titleStyle={styles.preferenciasBotonText}
-                  buttonStyle={
-                    this.state[nombre]
-                      ? styles.preferenciasBotonSeleccionado
-                      : styles.preferenciasBotonNoSeleccionado
-                  }
-                  containerStyle={
-                    {
-                      /*marginRight: 10/*/
-                    }
-                  }
+                  checked={this.state[nombre]}
                   onPress={() => {
                     const update = {};
                     update[nombre] = !this.state[nombre];
                     this.setState(update);
                   }}
+                  checkedColor={constants.PRIMARY_BG_COLOR}
+                  containerStyle={styles.checkbox}
+                  textStyle={styles.label}
+                  checkedIcon="check-square"
                 />
+                </View>
               );
             })}
           </View>
         );
       }
-    );
+    );*/
     if (this.state.loading) {
       return <Loading />;
     } else {
@@ -243,9 +274,9 @@ class HomeScreen extends Component {
                 style={{
                   padding: 10,
                   //margin:0,
-                  backgroundColor: constants.SECONDARY_BG_COLOR,
+                  backgroundColor:'#FAFAFA',
                   //width:wp(90),
-                  borderRadius: 30,
+                  borderRadius: 20,
                 }}
               >
                 {/*Input de destino*/}
@@ -323,11 +354,89 @@ class HomeScreen extends Component {
               <View>
                 {/*Visualizacion de preferencias*/}
                 <View style={{}}>
-                  <Text style={styles.label}>Preferencias</Text>
+                  <Text style={styles.labelTitulo}>Preferencias</Text>
                   <View style={styles.preferenciasContainer}>
                     <ScrollView>
-                      <View style={styles.columnContainer}>
-                        {preferenciasArrayRender}
+                      <View style={{backgroundColor:'#FAFAFA',borderRadius:20,width:SCREEN_WIDTH-45}}>
+                        {/*preferenciasArrayRender*/}
+                        <View>
+                          <CheckBox
+                            title={'Ahorro de energia'}
+                            checked={this.state.ahorroDeEnergia.isSelected}
+                            onPress={() => {
+                              this.setState({ ahorroDeEnergia:{isSelected: !this.state.ahorroDeEnergia.isSelected} });
+                            }}
+                            checkedColor={constants.PRIMARY_BG_COLOR}
+                            containerStyle={styles.checkbox}
+                            textStyle={styles.label}
+                            checkedIcon="check-square"
+                          />
+                        </View>
+                        <View>
+                          <CheckBox
+                            title={'Ahorro de agua'}
+                            checked={this.state.ahorroDeAgua.isSelected}
+                            onPress={() => {
+                              this.setState({ ahorroDeAgua:{isSelected: !this.state.ahorroDeAgua.isSelected} });
+                            }}
+                            checkedColor={constants.PRIMARY_BG_COLOR}
+                            containerStyle={styles.checkbox}
+                            textStyle={styles.label}
+                            checkedIcon="check-square"
+                          />
+                        </View>
+                        <View>
+                          <CheckBox
+                            title={'Reciclaje'}
+                            checked={this.state.reciclaje.isSelected}
+                            onPress={() => {
+                              this.setState({ reciclaje:{isSelected: !this.state.reciclaje.isSelected} });
+                            }}
+                            checkedColor={constants.PRIMARY_BG_COLOR}
+                            containerStyle={styles.checkbox}
+                            textStyle={styles.label}
+                            checkedIcon="check-square"
+                          />
+                        </View>
+                        <View>
+                          <CheckBox
+                            title={'Compostaje'}
+                            checked={this.state.compostaje.isSelected}
+                            onPress={() => {
+                              this.setState({ compostaje:{isSelected: !this.state.compostaje.isSelected} });
+                            }}
+                            checkedColor={constants.PRIMARY_BG_COLOR}
+                            containerStyle={styles.checkbox}
+                            textStyle={styles.label}
+                            checkedIcon="check-square"
+                          />
+                        </View>
+                        <View>
+                          <CheckBox
+                            title={'Excursiones eco ambientales'}
+                            checked={this.state.excursionesEcoAmbientales.isSelected}
+                            onPress={() => {
+                              this.setState({ excursionesEcoAmbientales:{isSelected: !this.state.excursionesEcoAmbientales.isSelected} });
+                            }}
+                            checkedColor={constants.PRIMARY_BG_COLOR}
+                            containerStyle={styles.checkbox}
+                            textStyle={styles.label}
+                            checkedIcon="check-square"
+                          />
+                        </View>
+                        <View>
+                          <CheckBox
+                            title={'Productos naturales para el higiene'}
+                            checked={this.state.productosNaturalesParaElHigiene.isSelected}
+                            onPress={() => {
+                              this.setState({ productosNaturalesParaElHigiene:{isSelected: !this.state.productosNaturalesParaElHigiene.isSelected} });
+                            }}
+                            checkedColor={constants.PRIMARY_BG_COLOR}
+                            containerStyle={styles.checkbox}
+                            textStyle={styles.label}
+                            checkedIcon="check-square"
+                          />
+                        </View>
                       </View>
                     </ScrollView>
                   </View>
@@ -375,10 +484,16 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   label: {
+    /*fontSize: 18,
+    color: 'black',
+    fontWeight: "700",   */
+    fontSize: 18, color: "rgba(0,0,0,.7)" 
+    ////fontFamily: 'Avenir'
+  },
+  labelTitulo:{
     fontSize: 18,
     color: constants.PRIMARY_BG_COLOR,
-    fontWeight: "700",
-    ////fontFamily: 'Avenir'
+    fontWeight: "700",    
   },
   saltoLinea: {
     height: 20,
@@ -388,8 +503,15 @@ const styles = StyleSheet.create({
   },
   iconos: { paddingRight: 10 },
   rowContainer: {
-    flex: 1,
-    flexDirection: "row",
+    //flex: 1,
+    //flexDirection: "row",
+  },
+  checkbox: {
+    width:SCREEN_WIDTH-60,
+    borderRadius: 20,
+    borderWidth: 0,
+    //padding:0
+    //height:110
   },
   rowContainerInput: {
     alignItems: "center",

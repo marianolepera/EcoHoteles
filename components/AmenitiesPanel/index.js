@@ -9,51 +9,51 @@ export default class Amenities extends Component {
     const fontColor = '#676767';
     const marginTop = -4;
     return (
-      <View style={styles.amenities}>
+      <View style={styles.comodidades}>
         {
-          /*hotel.amenities.wifi*/true?
+          /*hotel.comodidades.wifi*/true?
             <FontAwesome.Button name="wifi" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Wi-Fi</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.amenities.pool*/true?
+          /*hotel.comodidades.pileta*/true?
             <FontAwesome5.Button name="swimmer" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Pileta</Text>
             </FontAwesome5.Button>:null
         }
         {
-          /*hotel.amenities.spa*/true?
+          /*hotel.comodidades.spa*/true?
             <FontAwesome5.Button name="spa" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Spa</Text>
             </FontAwesome5.Button>:null
         }
         {
-          /*hotel.amenities.parking*/true?
+          /*hotel.comodidades.estacionamiento*/true?
             <FontAwesome.Button name="car" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Estacionamiento</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.amenities.ac*/true?
+          /*hotel.comodidades.ac*/true?
             <FontAwesome.Button name="snowflake-o" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>A/C</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.amenities.restaurant*/true?
+          /*hotel.comodidades.media_pension*/true?
             <FontAwesome.Button name="cutlery" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Media pension</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.amenities.bar*/true?
+          /*hotel.comodidades.bar*/true?
             <FontAwesome.Button name="glass" size={19} backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Bar</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.amenities.gym*/true?
+          /*hotel.comodidades.gym*/true?
             <FontAwesome5.Button name="dumbbell" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Gym</Text>
             </FontAwesome5.Button>:null
@@ -64,7 +64,7 @@ export default class Amenities extends Component {
 };
 
 const styles = StyleSheet.create({
-  amenities: {
+  comodidades: {
     flex:1,
     alignItems: 'flex-start'
   },
