@@ -8,40 +8,26 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import { TabView,TabBar, SceneMap } from "react-native-tab-view";
+import { TabView, TabBar, SceneMap } from "react-native-tab-view";
 import Icon from "react-native-vector-icons/Feather";
 import constants from "../config/constants";
 import Carousel from "react-native-snap-carousel";
 import Amenities from "../components/AmenitiesPanel/index";
 import EcoAmenities from "../components/EcoAmenitiesPanel/index";
 import ModalMap from "../components/ModalMap/index";
-import { Rating} from "react-native-ratings";
- import MapView, { Marker } from "react-native-maps";
+import { Rating } from "react-native-ratings";
+import MapView, { Marker } from "react-native-maps";
+import { Header } from "react-native-elements";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import ShareButton from "../components/ShareButton/index"
+import CommentsList from "../components/Comments/commentsList";
+import UnderlineExample from "../components/UnderlineCode/UnderLineCode";
+import MostrarForm from "../components/MostrarForm/MostrarForm";
 
 const { width, height } = Dimensions.get("window");
 const WATER_IMAGE = require("../assets/hoja-icon.png");
 
-const AboutRoute = () => {
-  let hotel2 = {
-    _id: {
-      $oid: "5ea49ddfe7179a2a4ff7ea0d",
-    },
-    name: "Hix Island House",
-    descripcion:
-      "¿Alguna vez has soñado con vivir en una isla del Caribe y disfrutar de las maravillas de la naturaleza? Eso es lo que puedes hacer en Hix Island House, un alojamiento aislado de la ciudad, aunque a tan solo 22 minutos en avión de San Juan. Este hotel, diseñado por el arquitecto John Hix, alberga varias casas construidas de forma estratégica para capturar los fríos vientos alisios teniendo en cuenta la filosofía wabi-sabi japonesa: usar materiales naturales, adaptarse a la naturaleza e incluir cosas sencillas e imperfectas en la vida diaria. Alójate en la Casa Solaris si buscas un alojamiento que utilice solamente energía solar. Si no estás tomando el sol en Sun Bay, la playa más grande de Vieques, puedes asistir a clases de yoga al aire libre, aunque a la sombra y rodeado de árboles y pájaros.",
-    ubicacion: "Puerto Rico, Caribe",
-    id: 1,
-    image:
-      "https://media-cdn.tripadvisor.com/media/photo-w/0b/d3/f0/33/casa-solaris.jpg",
-    imagenes: [
-      "https://media-cdn.tripadvisor.com/media/photo-o/04/37/6d/14/hix-island-house.jpg",
-      "https://media-cdn.tripadvisor.com/media/photo-w/0b/d3/f0/26/loft-matisse.jpg",
-      "https://media-cdn.tripadvisor.com/media/photo-w/0b/d3/f0/20/loft-matisse.jpg",
-    ],
-    address: "San Juan 2737",
-    city: "Puerto Rico",
-    country: "Caribe",
-  };
+const AboutRoute = (hotel2) => {
   return (
     <View style={[styles.container]}>
       <View style={styles.field}>
@@ -72,34 +58,52 @@ const AboutRoute = () => {
 
 const ReviewRoute = () => (
   <View style={styles.label}>
-    <Text style={[styles.label, styles.description, { textAlign: "center" }]}>
+    {/* <Text style={[styles.label, styles.description, { textAlign: "center" }]}>
       Parece que nadie hizo un comentario. Se el primero!
-    </Text>
+    </Text> */}
+    <CommentsList></CommentsList>
   </View>
 );
 
-const MapRoute = () => (
+const MapRoute = (hotel) => (
   <View style={[styles.modal]}>
     <MapView
       style={{ flex: 1 }}
       initialRegion={{
-        latitude: 51.5078788,
-        longitude: -0.0877321,
-        latitudeDelta: 0.009,
-        longitudeDelta: 0.009,
+        latitude: hotel.latitud,
+        longitude: hotel.longitud,
       }}
     >
       <Marker
-        coordinate={{ latitude: 51.5078788, longitude: -0.0877321 }}
-        pinColor="green"
-      />
-      <Marker
-        coordinate={{ latitude: 50.5078788, longitude: -0.0777321 }}
+        coordinate={{
+          latitude: parseFloat(hotel.latitud),
+          longitude: parseFloat(hotel.longitud),
+        }}
         pinColor="red"
       />
     </MapView>
   </View>
 );
+
+const RatingRoute = () => (
+  <View style={styles.label}>
+    <Text style={[styles.label, styles.description, { textAlign: "center" }]}>
+      Ingrese el código de validación para calificar el hotel.
+    </Text>
+    <UnderlineExample></UnderlineExample>
+    {/* <View style={styles.botonBuscarContainer}>
+      <Button
+        title="Verificar"
+        buttonStyle={styles.botonBuscar}
+        containerStyle={{ height: 40 }}
+        titleStyle={styles.botonBuscarText}
+        onPress={() => NavigationActions.navigate("RatingHotel")}
+      />
+    </View> */}
+    <MostrarForm></MostrarForm>
+  </View>
+);
+
 
 const initialLayout = { width: Dimensions.get("window").width };
 class DetallesHotelsScreen extends Component {
@@ -111,7 +115,8 @@ class DetallesHotelsScreen extends Component {
         routes: [
           { key: "about", title: "Detalle" },
           { key: "review", title: "Comentarios" },
-          { key: "map", title: "Ubicacion" },
+          { key: "map", title: "Ubicación" },
+          { key: "rating", title: "Calificar" }
         ],
       },
     };
@@ -123,9 +128,10 @@ class DetallesHotelsScreen extends Component {
   };
 
   _renderScene = SceneMap({
-    about: AboutRoute,
+    about: () => AboutRoute(this.props.navigation.getParam("Detalleshotel")),
     review: ReviewRoute,
-    map: MapRoute,
+    map: () => MapRoute(this.props.navigation.getParam("Detalleshotel")),
+    rating: RatingRoute
   });
 
   _renderImage({ item }) {
@@ -141,29 +147,23 @@ class DetallesHotelsScreen extends Component {
     const fontColor = "#676767";
     const marginTop = -4;
     const hotel = this.props.navigation.getParam("Detalleshotel");
-    /*const hotel = {
-      _id: {
-        $oid: "5ea49ddfe7179a2a4ff7ea0d",
-      },
-      name: "Hix Island House",
-      descripcion:
-        "¿Alguna vez has soñado con vivir en una isla del Caribe y disfrutar de las maravillas de la naturaleza? Eso es lo que puedes hacer en Hix Island House, un alojamiento aislado de la ciudad, aunque a tan solo 22 minutos en avión de San Juan. Este hotel, diseñado por el arquitecto John Hix, alberga varias casas construidas de forma estratégica para capturar los fríos vientos alisios teniendo en cuenta la filosofía wabi-sabi japonesa: usar materiales naturales, adaptarse a la naturaleza e incluir cosas sencillas e imperfectas en la vida diaria. Alójate en la Casa Solaris si buscas un alojamiento que utilice solamente energía solar. Si no estás tomando el sol en Sun Bay, la playa más grande de Vieques, puedes asistir a clases de yoga al aire libre, aunque a la sombra y rodeado de árboles y pájaros.",
-      ubicacion: "Puerto Rico, Caribe",
-      id: 1,
-      image:
-        "https://media-cdn.tripadvisor.com/media/photo-w/0b/d3/f0/33/casa-solaris.jpg",
-      imagenes: [
-        "https://media-cdn.tripadvisor.com/media/photo-o/04/37/6d/14/hix-island-house.jpg",
-        "https://media-cdn.tripadvisor.com/media/photo-w/0b/d3/f0/26/loft-matisse.jpg",
-        "https://media-cdn.tripadvisor.com/media/photo-w/0b/d3/f0/20/loft-matisse.jpg",
-      ],
-      address: "San Juan 2737",
-      city: "Puerto Rico",
-      country: "Caribe",
-    };*/
     return (
       <View style={styles.container}>
         <View style={styles.container}>
+          <Header
+            backgroundColor={'white'}
+            containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
+            leftComponent={
+              <Ionicons
+                name="md-arrow-back"
+                size={30}
+                onPress={() => {
+                  this.props.navigation.goBack();
+                }}
+              />
+            }
+            rightComponent = {<ShareButton navigation={this.props.navigation}/>}
+          />
           <ScrollView>
             <View style={styles.carousel}>
               <Carousel
@@ -205,15 +205,20 @@ class DetallesHotelsScreen extends Component {
               renderScene={this._renderScene}
               initialLayout={initialLayout}
               onIndexChange={this._handleIndexChange}
-              renderTabBar={props => (
+              renderTabBar={(props) => (
                 <TabBar
                   {...props}
                   //renderLabel={this._renderLabel}
-                  getLabelText={({route: {title}}) => title}
+                  getLabelText={({ route: { title } }) => title}
                   indicatorStyle={styles.indicator}
                   style={styles.tabBar}
                   renderLabel={({ route, focused, color }) => (
-                    <Text style={{ color:constants.PRIMARY_TEXT_COLOR,fontWeight: "700"}}>
+                    <Text
+                      style={{
+                        color: constants.PRIMARY_TEXT_COLOR,
+                        fontWeight: "700",
+                      }}
+                    >
                       {route.title}
                     </Text>
                   )}
@@ -302,6 +307,6 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     backgroundColor: constants.PRIMARY_BG_COLOR,
-  }
+  },
 });
 export default DetallesHotelsScreen;

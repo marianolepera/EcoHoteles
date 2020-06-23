@@ -32,9 +32,12 @@ import OfertasScreen from "./screens/OfertasScreen";
 import AccountScreen from "./screens/AccountScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import LoginScreen from "./screens/LoginScreen";
+import LoginSignUpScreen from "./screens/LoginSignUpScreen";
 import SearchScreen from "./screens/SearchScreen";
 import HomeScreen from "./screens/HomeScreen";
 import MapasScreen from "./screens/MapasScreen";
+import AdminHotelsScreen from "./screens/AdminHotelsScreen";
+import AdminDetallesHotelsScreen from "./screens/AdminDetallesHotelsScreen";
 
 //Components
 import HeaderLogo from "./components/HeaderLogo/index";
@@ -105,13 +108,15 @@ const CustomDrawerNavigation = (props) => {
         <DrawerItems {...props} />
       </ScrollView>
       <View style={{ alignItems: "center", bottom: 20 }}>
+      <TouchableWithoutFeedback onPress={() => props.navigation.navigate("Login")}>
         <View style={{ flexDirection: "row" }}>
           <IconMaterialCommunity
             name="logout"
             style={{ fontSize: 24,paddingRight:5 }}
           />
-          <Text>Cerrar sesion</Text>
+          <Text>Cerrar sesión</Text>
         </View>
+        </TouchableWithoutFeedback>
       </View>
     </SafeAreaView>
   );
@@ -131,20 +136,27 @@ const Drawer = createDrawerNavigator(
       },
     },
     MisComentarios: {
-      screen: AccountScreen,
+      screen: SignUpScreen,
       navigationOptions: {
         title: "Mis comentarios",
       },
     },
     Notificaciones: {
-      screen: AccountScreen,
+      screen: LoginScreen,
       navigationOptions: {
         title: "Notificaciones",
       },
     },
+    /*HomeIndex: {
+      screen: HomeScreen,
+      navigationOptions:{
+        drawerLockMode: 'locked-closed'
+      }
+    }*/
   },
   {
     drawerPosition: "left",
+    //initialRouteName: 'HomeIndex',
     contentComponent: CustomDrawerNavigation,
     drawerOpenRoute: "DrawerOpen",
     drawerCloseRoute: "DrawerClose",
@@ -154,11 +166,11 @@ const Drawer = createDrawerNavigator(
 );
 
 const DrawerNavigation = createStackNavigator({
-  Home: { screen: HomeScreen, navigationOptions: headerLogoProps },
+  Home: { screen: HomeScreen, navigationOptions: { headerShown: false } },
   Drawer: { screen: Drawer, navigationOptions: { headerShown: false } },
   Detalleshotel: {
     screen: DetallesHotelsScreen,
-    navigationOptions: { title: null },
+    navigationOptions: { headerShown: false },
   },
   Searchhotel: {
     screen: SearchScreen,
@@ -168,6 +180,25 @@ const DrawerNavigation = createStackNavigator({
     screen: MapasScreen,
     navigationOptions: { headerShown: true },
   },
+  Account:{
+    screen: AccountScreen,
+    navigationOptions: { headerShown: false },
+  },
+  Admin: {
+    screen: AdminHotelsScreen,
+    navigationOptions: { headerShown: false },
+  },
+  AdminDetalle: {
+    screen: AdminDetallesHotelsScreen,
+    navigationOptions: { headerShown: false },
+  },
+  Login: {
+    screen: LoginSignUpScreen,
+    navigationOptions: { headerShown: false },
+  },
+  HomeFailSave:{
+    screen: HomeScreen, navigationOptions: { headerShown: false }
+  }
 });
 
 const styles = StyleSheet.create({

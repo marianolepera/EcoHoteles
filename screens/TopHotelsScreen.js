@@ -11,6 +11,8 @@ import {
   RefreshControl,
   FlatList,
 } from "react-native";
+import { Header } from "react-native-elements";
+
 import constants from "../config/constants";
 var { width } = Dimensions.get("window");
 
@@ -70,8 +72,8 @@ class TopHotelsScreen extends Component {
   }
 
   limpiarData() {
-    this.setState({dataFav:[]})
-    AsyncStorage.setItem("fav", JSON.stringify([]))
+    this.setState({ dataFav: [] });
+    AsyncStorage.setItem("fav", JSON.stringify([]));
   }
 
   renderItemHotel(item) {
@@ -157,6 +159,19 @@ class TopHotelsScreen extends Component {
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
+          <Header
+            backgroundColor={constants.PRIMARY_BG_COLOR}
+            containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
+            leftComponent={
+              <Icon
+                name="menu"
+                onPress={() => this.props.navigation.openDrawer()}
+              />
+            }
+            centerComponent={
+              {text: 'Mis favoritos', style: {fontSize: 20, fontWeight: "700", color:'white'}}
+            }
+          />
           <View style={{ flex: 1 }}>
             <ScrollView
               refreshControl={

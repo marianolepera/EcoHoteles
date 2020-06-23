@@ -8,9 +8,11 @@ import {
   StyleSheet,
   ScrollView
 } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import constants from "../config/constants";
 import Icon from "react-native-vector-icons/Feather";
 const { width } = Dimensions.get("window");
+import { Header, Icon as IconElements } from "react-native-elements";
 
 class AccountScreen extends Component {
   constructor(props) {
@@ -20,6 +22,22 @@ class AccountScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Header
+            backgroundColor={constants.PRIMARY_BG_COLOR}
+            containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
+            leftComponent={
+              <Ionicons
+                name="md-arrow-back"
+                size={30}
+                onPress={() => {
+                  this.props.navigation.goBack();
+                }}
+              />
+            }
+            centerComponent={
+              {text: 'Mi cuenta', style: {fontSize: 20, fontWeight: "700", color:'white'}}
+            }
+          />
         <ScrollView>
           <ImageBackground
             source={{ uri: constants.DEFAULT_HOTEL_IMG }}

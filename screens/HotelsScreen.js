@@ -9,7 +9,10 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   TouchableHighlight,
+  //Slider
 } from "react-native";
+//import Slider from "react-native-slider";
+import { Slider } from 'react-native-elements';
 import { Header, CheckBox, Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import IconFontisto from "react-native-vector-icons/Fontisto";
@@ -19,6 +22,7 @@ import { Icon } from "native-base";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import Modal from "react-native-modal";
 import _ from "lodash";
+import { AsyncStorage } from "react-native";
 
 import {
   widthPercentageToDP as wp,
@@ -86,6 +90,15 @@ class HotelsScreen extends Component {
       isMediaPension: false,
       isBar: false,
       isGym: false,
+      isAccionesEcoVisible: false,
+      isAhorroEnergia: false,
+      isAhorroAgua: false,
+      isCompostaje: false,
+      isReciclaje: false,
+      isExcursionesEco: false,
+      isProductosNaturales: false,
+      isNivelEco: false,
+      nivelEco: 3
     };
   }
 
@@ -202,7 +215,8 @@ class HotelsScreen extends Component {
               <HeartButton
                 color="rgba(255, 255, 255, 0.8)"
                 selectedColor="red"
-                onPress={() => {}}
+                onPress={(item) => this.onClickAddFav(item)}
+                item={item}
               />
             </View>
             <Image style={styles.hotelItemImage} source={{ uri: item.image }} />
@@ -237,6 +251,40 @@ class HotelsScreen extends Component {
     );
   }
 
+  onClickAddFav(hotel) {
+    let hotelInFav = hotel.inFav;
+    let hotelId = hotel.id;
+    let dataToSave = hotel;
+    AsyncStorage.getItem("fav").then((dataInFav) => {
+      dataInFav = JSON.parse(dataInFav);
+      if (!hotelInFav) {
+        //agrego
+        dataInFav.push(dataToSave);
+      } else {
+        //elimino
+        for (let key in dataInFav) {
+          if (dataInFav[key].id == hotelId) {
+            dataInFav.splice(key, 1);
+            break;
+          }
+        }
+      }
+      AsyncStorage.setItem("fav", JSON.stringify(dataInFav));
+    });
+    this.changeHotelFavs(hotel.id);
+  }
+
+  changeHotelFavs(idHotel) {
+    let hoteles = this.state.dataHotel;
+    for (let key in hoteles) {
+      let hotel = hoteles[key];
+      if (hotel.id == idHotel) {
+        hoteles[key].inFav = !hoteles[key].inFav;
+      }
+    }
+    this.setState({ dataHotel: hoteles });
+  }
+
   renderFiltros = () => {
     return (
       <View style={[styles.modal]}>
@@ -255,6 +303,7 @@ class HotelsScreen extends Component {
           </View>
         </View>
         <View>
+          {/*View de comodidades*/}
           <View
             style={{
               //width: width,
@@ -270,6 +319,8 @@ class HotelsScreen extends Component {
               onPress={() => {
                 this.setState({
                   isComodidadesVisible: !this.state.isComodidadesVisible,
+                  isAccionesEcoVisible: false,
+                  isNivelEco: false
                 });
               }}
             >
@@ -289,6 +340,7 @@ class HotelsScreen extends Component {
               </View>
             </TouchableWithoutFeedback>
           </View>
+          {/*Render de comodidades*/}
           {this.state.isComodidadesVisible ? (
             <View
               style={{
@@ -301,25 +353,28 @@ class HotelsScreen extends Component {
               {this.renderCheckboxOptions()}
             </View>
           ) : null}
+
+          {/*View de acciones eco*/}
           <View
             style={{
               //width: width,
               paddingBottom: 20,
               paddingTop: 20,
-              borderTopWidth: 1,
+              borderTopWidth: this.state.isComodidadesVisible ? 1 : 0,
               borderTopColor: "rgba(0,0,0,.1)",
               borderBottomWidth: 1,
               borderBottomColor: "rgba(0,0,0,.1)",
-              backgroundColor: "rgba(0,0,0,.3)",
+              //backgroundColor: "rgba(0,0,0,.3)",
             }}
           >
             <TouchableWithoutFeedback
               onPress={() => {
-                /*this.setState({
-                  isComodidadesVisible: !this.state.isComodidadesVisible,
-                });*/
+                this.setState({
+                  isAccionesEcoVisible: !this.state.isAccionesEcoVisible,
+                  isComodidadesVisible: false,
+                  isNivelEco: false
+                });
               }}
-              disabled={true}
             >
               <View
                 style={{
@@ -333,10 +388,9 @@ class HotelsScreen extends Component {
                 </Text>
                 <Ionicons
                   name={
-                    /*this.state.isComodidadesVisible
+                    this.state.isAccionesEcoVisible
                       ? "ios-arrow-up"
-                      : "ios-arrow-down"*/
-                    "ios-lock"
+                      : "ios-arrow-down"
                   }
                   size={30}
                   style={{ marginLeft: 40 }}
@@ -344,6 +398,76 @@ class HotelsScreen extends Component {
               </View>
             </TouchableWithoutFeedback>
           </View>
+          {/*Render de acciones eco*/}
+          {this.state.isAccionesEcoVisible ? (
+            <View
+              style={{
+                paddingHorizontal: 30,
+                paddingTop: 20,
+                paddingBottom: 20,
+                backgroundColor: "#fafafa",
+              }}
+            >
+              {this.renderEcoOptions()}
+            </View>
+          ) : null}
+          <View>
+            {/*View de niveles eco*/}
+            <View
+              style={{
+                //width: width,
+                paddingBottom: 20,
+                paddingTop: 20,
+                borderTopWidth: this.state.isAccionesEcoVisible ? 1 : 0,
+                borderTopColor: "rgba(0,0,0,.1)",
+                borderBottomWidth: 1,
+                borderBottomColor: "rgba(0,0,0,.1)",
+                //backgroundColor: "rgba(0,0,0,.3)",
+              }}
+            >
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.setState({
+                    isNivelEco: !this.state.isNivelEco,
+                    isAccionesEcoVisible: false,
+                    isComodidadesVisible: false
+                  });
+                }}
+              >
+                <View
+                  style={{
+                    paddingTop: 0,
+                    paddingHorizontal: 30,
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text style={{ fontSize: 18, color: "rgba(0,0,0,.8)" }}>
+                    Nivel eco ambiental
+                  </Text>
+                  <Ionicons
+                    name={
+                      this.state.isNivelEco ? "ios-arrow-up" : "ios-arrow-down"
+                    }
+                    size={30}
+                    style={{ marginLeft: 40 }}
+                  />
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </View>
+          {/*Render de niveles eco*/}
+          {this.state.isNivelEco ? (
+            <View
+              style={{
+                paddingHorizontal: 30,
+                paddingTop: 20,
+                paddingBottom: 20,
+                backgroundColor: "#fafafa",
+              }}
+            > 
+              {this.renderNivelEco()}
+            </View>
+          ) : null}
         </View>
         <View style={styles.aplicarFiltro}>
           <Button
@@ -435,7 +559,7 @@ class HotelsScreen extends Component {
           </View>
           <View>
             <CheckBox
-              title="Media pension"
+              title="Media pensión"
               checked={this.state.isMediaPension}
               onPress={() => {
                 this.setState({ isMediaPension: !this.state.isMediaPension });
@@ -478,6 +602,151 @@ class HotelsScreen extends Component {
       </View>
     );
   };
+
+  renderEcoOptions = () => {
+    return (
+      <View>
+        <View style={styles.checkboxContainer}>
+          <View style={{ marginBottom: 1 }}>
+            <View>
+              <CheckBox
+                title="Ahorro de energía"
+                checked={this.state.isAhorroEnergia}
+                onPress={() => {
+                  this.setState({
+                    isAhorroEnergia: !this.state.isAhorroEnergia,
+                  });
+                }}
+                checkedColor={constants.PRIMARY_BG_COLOR}
+                containerStyle={styles.checkbox}
+                textStyle={styles.label}
+                checkedIcon="check-square"
+              />
+            </View>
+            <View>
+              <CheckBox
+                title="Ahorro de agua"
+                checked={this.state.isAhorroAgua}
+                onPress={() => {
+                  this.setState({ isAhorroAgua: !this.state.isAhorroAgua });
+                }}
+                checkedColor={constants.PRIMARY_BG_COLOR}
+                containerStyle={styles.checkbox}
+                textStyle={styles.label}
+                checkedIcon="check-square"
+              />
+            </View>
+          </View>
+          <View style={{ marginBottom: 1 }}>
+            <View>
+              <CheckBox
+                title="Compostaje"
+                checked={this.state.isCompostaje}
+                onPress={() => {
+                  this.setState({ isCompostaje: !this.state.isCompostaje });
+                }}
+                checkedColor={constants.PRIMARY_BG_COLOR}
+                containerStyle={styles.checkbox}
+                textStyle={styles.label}
+                checkedIcon="check-square"
+              />
+            </View>
+            <View>
+              <CheckBox
+                title="Reciclaje"
+                checked={this.state.isReciclaje}
+                onPress={() => {
+                  this.setState({ isReciclaje: !this.state.isReciclaje });
+                }}
+                checkedColor={constants.PRIMARY_BG_COLOR}
+                containerStyle={styles.checkbox}
+                textStyle={styles.label}
+                checkedIcon="check-square"
+              />
+            </View>
+          </View>
+        </View>
+        <View>
+          <CheckBox
+            title="Excursiones eco ambientales"
+            checked={this.state.isExcursionesEco}
+            onPress={() => {
+              this.setState({ isExcursionesEco: !this.state.isExcursionesEco });
+            }}
+            checkedColor={constants.PRIMARY_BG_COLOR}
+            containerStyle={styles.checkbox}
+            textStyle={styles.label}
+            checkedIcon="check-square"
+          />
+        </View>
+        <View>
+          <CheckBox
+            title="Productos naturales para el higiene"
+            checked={this.state.isProductosNaturales}
+            onPress={() => {
+              this.setState({
+                isProductosNaturales: !this.state.isProductosNaturales,
+              });
+            }}
+            checkedColor={constants.PRIMARY_BG_COLOR}
+            containerStyle={styles.checkbox}
+            textStyle={styles.label}
+            checkedIcon="check-square"
+          />
+        </View>
+      </View>
+    );
+  };
+
+  renderNivelEco = () => {
+    let maxHojaValue = 5;
+    let minHojaValue = 3;
+    return(
+      <View style={slider.container}>
+                <Slider
+                    style={{ width: 300}}
+                    step={1}
+                    minimumValue={minHojaValue}
+                    maximumValue={maxHojaValue}
+                    value={this.state.nivelEco}
+                    onValueChange={val => this.setState({ nivelEco: val })}
+                    thumbTintColor={constants.PRIMARY_BG_COLOR}
+                    maximumTrackTintColor='#d3d3d3' 
+                    minimumTrackTintColor='#009B8A'
+                />
+                <View style={slider.textCon}>
+                    <Text style={slider.colorGrey}>{minHojaValue}</Text>
+                    <Text style={slider.colorYellow}>
+                        {'+ ' + this.state.nivelEco}
+                    </Text>
+                    <Text style={slider.colorGrey}>{maxHojaValue}   </Text>
+                </View>
+            </View>
+    )
+    /*return(
+      <View>
+        <Slider
+        minimumValue = {1}
+          maximumValue = {maxHojaValue}
+          //minimumValue = {minHojaValue}
+          onValueChange = {(item) => {console.log(item)}}
+          step = {1}
+          
+          minimumTrackTintColor={constants.PRIMARY_BG_COLOR}
+          minimumTrackImage={require("../assets/hoja-icon.png")}
+          trackImage={require("../assets/hoja-icon.png")}
+
+          thumbStyle={{width: 30,
+            height: 30,
+            //shadowColor: 'black',
+            shadowOffset: {width: 0, height: 1},
+            shadowOpacity: 0.5,
+            shadowRadius: 1,}}
+            //thumbTintColor='#0c6692'
+        ></Slider>
+      </View>
+    )*/
+  }
 
   sortHoteles = () => {
     let myData = [];
@@ -537,6 +806,38 @@ class HotelsScreen extends Component {
       if (state.isGym && !hotel.comodidades.gym) {
         return false;
       }
+
+      //Acciones eco
+      if (state.isAhorroEnergia && !hotel.amenities.ahorro_de_energia) {
+        return false;
+      }
+      if (state.isAhorroAgua && !hotel.amenities.ahorro_de_agua) {
+        return false;
+      }
+      if (state.isCompostaje && !hotel.amenities.compostaje) {
+        return false;
+      }
+      if (state.isReciclaje && !hotel.amenities.reciclaje) {
+        return false;
+      }
+      if (
+        state.isExcursionesEco &&
+        !hotel.amenities.excursiones_eco_ambientales
+      ) {
+        return false;
+      }
+      if (
+        state.isProductosNaturales &&
+        !hotel.amenities.productos_naturales_para_el_higiene
+      ) {
+        return false;
+      }
+
+      //Nivel eco
+      if(state.isNivelEco && hotel.nivel_eco < state.nivelEco){
+        return false;
+      }
+
       return true;
     });
 
@@ -561,6 +862,7 @@ class HotelsScreen extends Component {
   openModal = () => {
     this.setState({ isModalVisible: true });
   };
+
   closeModal = () => {
     this.setState({ isModalVisible: false });
   };
@@ -570,6 +872,7 @@ class HotelsScreen extends Component {
       <View style={styles.container}>
         <Header
           backgroundColor={constants.PRIMARY_BG_COLOR}
+          containerStyle = {{paddingTop:10,paddingBottom:10,height:60}}
           leftComponent={
             <Icon
               name="menu"
@@ -606,7 +909,7 @@ class HotelsScreen extends Component {
           <View style={styles.hotelItemContainer}>
             <View style={{ paddingBottom: 10 }}>
               <Text style={{ fontSize: 24, fontWeight: "700", width: 300 }}>
-                Hoteles en base a tu busqueda
+                Hoteles en base a tu búsqueda
               </Text>
             </View>
             <View
@@ -757,7 +1060,7 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     backgroundColor: "white",
-    maxHeight: "80%",
+    maxHeight: "90%",
   },
   modalContainer: {},
   modalTexto: {},
@@ -823,6 +1126,26 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     width: 120,
   },
+});
+
+const slider = StyleSheet.create({
+  container: {
+      /*flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#000',*/
+  },
+  textCon: {
+      width: 320,
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+  },
+  colorGrey: {
+      color: '#d3d3d3'
+  },
+  colorYellow: {
+      color: constants.PRIMARY_BG_COLOR
+  }
 });
 
 export default HotelsScreen;

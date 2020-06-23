@@ -11,49 +11,49 @@ export default class Amenities extends Component {
     return (
       <View style={styles.comodidades}>
         {
-          /*hotel.comodidades.wifi*/true?
+          hotel.comodidades.wifi?
             <FontAwesome.Button name="wifi" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Wi-Fi</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.comodidades.pileta*/true?
+          hotel.comodidades.pileta?
             <FontAwesome5.Button name="swimmer" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Pileta</Text>
             </FontAwesome5.Button>:null
         }
         {
-          /*hotel.comodidades.spa*/true?
+          hotel.comodidades.spa?
             <FontAwesome5.Button name="spa" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Spa</Text>
             </FontAwesome5.Button>:null
         }
         {
-          /*hotel.comodidades.estacionamiento*/true?
+          hotel.comodidades.estacionamiento?
             <FontAwesome.Button name="car" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Estacionamiento</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.comodidades.ac*/true?
+          hotel.comodidades.ac?
             <FontAwesome.Button name="snowflake-o" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>A/C</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.comodidades.media_pension*/true?
+          hotel.comodidades.media_pension?
             <FontAwesome.Button name="cutlery" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
-              <Text style={styles.value}>Media pension</Text>
+              <Text style={styles.value}>Media pensión</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.comodidades.bar*/true?
+          hotel.comodidades.bar?
             <FontAwesome.Button name="glass" size={19} backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Bar</Text>
             </FontAwesome.Button>:null
         }
         {
-          /*hotel.comodidades.gym*/true?
+          hotel.comodidades.gym?
             <FontAwesome5.Button name="dumbbell" backgroundColor="transparent" color={fontColor}  marginTop={marginTop}>
               <Text style={styles.value}>Gym</Text>
             </FontAwesome5.Button>:null
