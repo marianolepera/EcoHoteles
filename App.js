@@ -38,6 +38,7 @@ import HomeScreen from "./screens/HomeScreen";
 import MapasScreen from "./screens/MapasScreen";
 import AdminHotelsScreen from "./screens/AdminHotelsScreen";
 import AdminDetallesHotelsScreen from "./screens/AdminDetallesHotelsScreen";
+import BlankScreen from "./screens/BlankScreen";
 
 //Components
 import HeaderLogo from "./components/HeaderLogo/index";
@@ -136,13 +137,13 @@ const Drawer = createDrawerNavigator(
       },
     },
     MisComentarios: {
-      screen: SignUpScreen,
+      screen: BlankScreen,
       navigationOptions: {
         title: "Mis comentarios",
       },
     },
     Notificaciones: {
-      screen: LoginScreen,
+      screen: BlankScreen,
       navigationOptions: {
         title: "Notificaciones",
       },
