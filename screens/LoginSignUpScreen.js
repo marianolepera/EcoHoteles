@@ -63,8 +63,8 @@ export default class LogSignUpScreen extends Component {
       this.props.navigation.navigate("Admin");
     }
     else{
-      this.props.navigation.navigate("HomeFailSave", {
-        usuario: 'John',
+      this.props.navigation.navigate("Home", {
+        usuario: true,
       });
     }
   }

@@ -19,11 +19,11 @@ import { Rating } from "react-native-ratings";
 import MapView, { Marker } from "react-native-maps";
 import { Header } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import ShareButton from "../components/ShareButton/index"
+import ShareButton from "../components/ShareButton/index";
+import HeartButton from "../components/HeartButton/index";
 import CommentsList from "../components/Comments/commentsList";
 import UnderlineExample from "../components/UnderlineCode/UnderLineCode";
 import MostrarForm from "../components/MostrarForm/MostrarForm";
-
 const { width, height } = Dimensions.get("window");
 const WATER_IMAGE = require("../assets/hoja-icon.png");
 
@@ -104,7 +104,6 @@ const RatingRoute = () => (
   </View>
 );
 
-
 const initialLayout = { width: Dimensions.get("window").width };
 class DetallesHotelsScreen extends Component {
   constructor(props) {
@@ -116,7 +115,7 @@ class DetallesHotelsScreen extends Component {
           { key: "about", title: "Detalle" },
           { key: "review", title: "Comentarios" },
           { key: "map", title: "Ubicación" },
-          { key: "rating", title: "Calificar" }
+          { key: "rating", title: "Calificar" },
         ],
       },
     };
@@ -131,7 +130,7 @@ class DetallesHotelsScreen extends Component {
     about: () => AboutRoute(this.props.navigation.getParam("Detalleshotel")),
     review: ReviewRoute,
     map: () => MapRoute(this.props.navigation.getParam("Detalleshotel")),
-    rating: RatingRoute
+    rating: RatingRoute,
   });
 
   _renderImage({ item }) {
@@ -150,8 +149,8 @@ class DetallesHotelsScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.container}>
-          <Header
-            backgroundColor={'white'}
+          {/*<Header
+            backgroundColor={"white"}
             containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
             leftComponent={
               <Ionicons
@@ -162,8 +161,86 @@ class DetallesHotelsScreen extends Component {
                 }}
               />
             }
-            rightComponent = {<ShareButton navigation={this.props.navigation}/>}
-          />
+            rightComponent={<ShareButton navigation={this.props.navigation} />}
+          />*/}
+          {/*Iconos posicionados a la misma altura Y*/}
+          <View
+            style={
+              {
+                //flex: 1,
+                //position: "absolute",
+                //right: 12,
+                //top: 7,
+                //zIndex: 2,
+              }
+            }
+          >
+            {/*Iconos posicionados a X por izquierda*/}
+            <View
+              style={{
+                position: "absolute",
+                top: 10,
+                zIndex: 2,
+                left: 12,
+                height: 50,
+                width: 50,
+                backgroundColor: "rgba(240, 255, 255, 0.8)",
+                //padding: 10,
+                borderRadius: 10,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Ionicons
+                name="md-arrow-back"
+                color="black"
+                size={30}
+                onPress={() => {
+                  this.props.navigation.goBack();
+                }}
+              />
+            </View>
+            {/*Iconos posicionados a X por derecha*/}
+            <View
+              style={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                zIndex: 2,
+                height: 50,
+                width: 50,
+                backgroundColor: "rgba(240, 255, 255, 0.8)",
+                padding: 10,
+                borderRadius: 10,
+                //alignItems: "center",
+                //justifyContent: "center",
+              }}
+            >
+              <ShareButton navigation={this.props.navigation} />
+            </View>
+            <View
+              style={{
+                position: "absolute",
+                right: 80,
+                top: 10,
+                zIndex: 2,
+                height: 50,
+                width: 50,
+                backgroundColor: "rgba(240, 255, 255, 0.8)",
+                //padding: 10,
+                borderRadius: 10,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <HeartButton
+                color="black"
+                selectedColor="red"
+                onPress={(item) => null}
+                item={hotel}
+              />
+            </View>
+          </View>
           <ScrollView>
             <View style={styles.carousel}>
               <Carousel
@@ -176,16 +253,17 @@ class DetallesHotelsScreen extends Component {
                 activeAnimationType={"spring"}
               />
             </View>
-            <Icon.Button
-              name="image"
-              backgroundColor="transparent"
-              color={fontColor}
-              size={15}
-              justifyContent={"flex-end"}
-              alignItems={"center"}
-            >
-              <Text style={styles.small}>{hotel.imagenes.length} fotos</Text>
-            </Icon.Button>
+            <View
+              style={{
+                flex: 1,
+                height: 30,
+                marginTop: -25,
+                backgroundColor: "white",
+                borderTopLeftRadius: 30,
+                borderTopRightRadius: 30,
+              }}
+            />
+
             <Text style={styles.name}>{hotel.name}</Text>
             <View style={[styles.field, styles.rating]}>
               <Rating
@@ -208,15 +286,24 @@ class DetallesHotelsScreen extends Component {
               renderTabBar={(props) => (
                 <TabBar
                   {...props}
-                  //renderLabel={this._renderLabel}
-                  getLabelText={({ route: { title } }) => title}
-                  indicatorStyle={styles.indicator}
-                  style={styles.tabBar}
+                  scrollEnabled={true}
+                  activeColor={constants.PRIMARY_BG_COLOR}
+                  inactiveColor={"#848484"}
+                  indicatorStyle={{
+                    backgroundColor: constants.PRIMARY_BG_COLOR,
+                  }}
+                  labelStyle={[styles.txtBold, { textTransform: "capitalize" }]}
+                  style={{
+                    backgroundColor: "#fff",
+                    borderBottomColor: "#eee",
+                    borderBottomWidth: 1,
+                    elevation: 0,
+                  }}
                   renderLabel={({ route, focused, color }) => (
                     <Text
                       style={{
-                        color: constants.PRIMARY_TEXT_COLOR,
-                        fontWeight: "700",
+                        fontSize: 18,
+                        color: color,
                       }}
                     >
                       {route.title}
@@ -233,7 +320,7 @@ class DetallesHotelsScreen extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: constants.SECONDARY_BG_COLOR,
+    backgroundColor: "white",
     flex: 1,
   },
   name: {
@@ -306,7 +393,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   tabBar: {
-    backgroundColor: constants.PRIMARY_BG_COLOR,
+    backgroundColor: "white",
   },
 });
 export default DetallesHotelsScreen;
