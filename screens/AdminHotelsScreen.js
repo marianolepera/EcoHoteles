@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { Header, CheckBox, Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import IconFontisto from "react-native-vector-icons/Fontisto";
+//import IconFontisto from "react-native-vector-icons/Fontisto";
 import IconAntDesign from "react-native-vector-icons/AntDesign";
 import IconMaterialCommunity from "react-native-vector-icons/MaterialCommunityIcons";
 import { Icon } from "native-base";
@@ -40,7 +40,7 @@ class AdminHotelsScreen extends Component {
     super(props);
     this.state = {
       dataHotel: [],
-      refreshing:false
+      refreshing: false
     };
   }
 
@@ -424,30 +424,35 @@ class AdminHotelsScreen extends Component {
     return (
       <View style={styles.container}>
         <Header
-            backgroundColor={constants.PRIMARY_BG_COLOR}
-            containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
-            leftComponent={
-              <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
-
-              <View style={{ flexDirection: "row", alignItems:'center' }}>
-          <IconMaterialCommunity
-            name="logout"
-            style={{ fontSize: 30,paddingRight:5, color:'white' }}
-            onPress={() => {
-              this.props.navigation.goBack();
-            }}
-          />
-          <Text style={{width:100, color:'white'}}>Cerrar sesión</Text>
-        </View>
-        </TouchableWithoutFeedback>
-            }            
-          />
-        <ScrollView refreshControl={
+          backgroundColor={constants.PRIMARY_BG_COLOR}
+          containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
+          leftComponent={
+            <TouchableWithoutFeedback
+              onPress={() => this.props.navigation.goBack()}
+            >
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <IconMaterialCommunity
+                  name="logout"
+                  style={{ fontSize: 30, paddingRight: 5, color: "white" }}
+                  onPress={() => {
+                    this.props.navigation.goBack();
+                  }}
+                />
+                <Text style={{ width: 100, color: "white" }}>
+                  Cerrar sesión
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+          }
+        />
+        <ScrollView
+          refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this.onRefresh}
             />
-          }>
+          }
+        >
           {/*Render de hoteles recomendados*/}
 
           {/*Render de hoteles*/}

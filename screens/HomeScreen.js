@@ -5,7 +5,7 @@ import {
   View,
   Dimensions,
   Image,
-  TextInput,
+  TextInput
 } from "react-native";
 //import CalendarPicker from "react-native-calendar-picker";
 import Modal from "react-native-modal";
@@ -19,7 +19,7 @@ import constants from "../config/constants";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+  heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -40,33 +40,33 @@ class HomeScreen extends Component {
       ahorroDeEnergia: {
         nombre: "Ahorro de energia",
         id: "ahorro_de_energia",
-        isSelected: false,
+        isSelected: false
       },
       ahorroDeAgua: {
         nombre: "Ahorro de agua",
         id: "ahorro_de_agua",
-        isSelected: false,
+        isSelected: false
       },
       reciclaje: {
         nombre: "Reciclaje",
         id: "reciclaje",
-        isSelected: false,
+        isSelected: false
       },
       compostaje: {
         nombre: "Compostaje",
         id: "compostaje",
-        isSelected: false,
+        isSelected: false
       },
       excursionesEcoAmbientales: {
         nombre: "Excursiones eco ambientales",
         id: "excursiones_eco_ambientales",
-        isSelected: false,
+        isSelected: false
       },
       productosNaturalesParaElHigiene: {
         nombre: "Productos naturales para el higiene",
         id: "productos_naturales_para_el_higiene",
-        isSelected: false,
-      },
+        isSelected: false
+      }
     };
     this.onDateChange = this.onDateChange.bind(this);
     this.handleDestino = this.handleDestino.bind(this);
@@ -76,23 +76,23 @@ class HomeScreen extends Component {
     const { selected } = this.props;
 
     this.setState({
-      selected,
+      selected
     });
   }
 
-  handleDestino = (text) => {
+  handleDestino = text => {
     this.setState({ destino: text });
   };
 
   onDateChange(date, type) {
     if (type === "END_DATE") {
       this.setState({
-        selectedEndDate: date,
+        selectedEndDate: date
       });
     } else {
       this.setState({
         selectedStartDate: date,
-        selectedEndDate: null,
+        selectedEndDate: null
       });
     }
   }
@@ -122,7 +122,7 @@ class HomeScreen extends Component {
       this.state.compostaje,
       this.state.reciclaje,
       this.state.excursionesEcoAmbientales,
-      this.state.productosNaturalesParaElHigiene,
+      this.state.productosNaturalesParaElHigiene
     ];
     //console.log(preferenciasArray)
     /*console.log(this.state.ahorroDeEnergia)
@@ -151,7 +151,7 @@ class HomeScreen extends Component {
         : "",
       fechaHasta: this.state.selectedEndDate
         ? this.state.selectedEndDate.toString()
-        : "",
+        : ""
     };
 
     let cantHabitaciones = { habitaciones: this.state.habitaciones };
@@ -167,16 +167,16 @@ class HomeScreen extends Component {
           : "",
         fechaHasta: this.state.selectedEndDate
           ? this.state.selectedEndDate.toString()
-          : "",
+          : ""
       },
       preferencias: preferenciasSelected,
       habitaciones: this.state.habitaciones,
       adultos: this.state.adultos,
-      ninos: this.state.ninos,
+      ninos: this.state.ninos
     };
 
     this.props.navigation.navigate("Drawer", {
-      filtros: result,
+      filtros: result
     });
     this.setState({ loading: false });
   }
@@ -198,28 +198,28 @@ class HomeScreen extends Component {
     const preferenciasArray = [
       [
         {
-          name: "Ahorro de energia",
+          name: "Ahorro de energia"
         },
         {
-          name: "Ahorro de agua",
-        },
+          name: "Ahorro de agua"
+        }
       ],
       [
         {
-          name: "Reciclaje",
+          name: "Reciclaje"
         },
         {
-          name: "Compostaje",
-        },
+          name: "Compostaje"
+        }
       ],
       [
         {
-          name: "Excursiones eco ambientales",
+          name: "Excursiones eco ambientales"
         },
         {
-          name: "Productos naturales para el higiene",
-        },
-      ],
+          name: "Productos naturales para el higiene"
+        }
+      ]
     ];
     const { selectedStartDate, selectedEndDate } = this.state;
     const minDate = new Date(); // Today
@@ -234,19 +234,23 @@ class HomeScreen extends Component {
       return (
         <View>
           <View>
-          <Header
-            backgroundColor={constants.PRIMARY_BG_COLOR}
-            containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
-            leftComponent={
-              <Icon
-                name="menu"
-                onPress={() => alert("Funcionalidad en desarrollo. Avance a la próxima pantalla por favor")}
-              />
-            }
-            /*centerComponent={
+            {/* <Header
+              backgroundColor={constants.PRIMARY_BG_COLOR}
+              containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
+              leftComponent={
+                <Icon
+                  name="menu"
+                  onPress={() =>
+                    alert(
+                      "Funcionalidad en desarrollo. Avance a la próxima pantalla por favor"
+                    )
+                  }
+                />
+              }
+              centerComponent={
               {text: 'Mis favoritos', style: {fontSize: 20, fontWeight: "700", color:'white'}}
-            }*/
-          />
+            }
+            /> */}
           </View>
           <ScrollView>
             {this.state.isUserLogueado ? (
@@ -254,9 +258,7 @@ class HomeScreen extends Component {
                 <Text style={styles.titleLogueado}>
                   Hola {this.state.usuarioLogueado}!
                 </Text>
-                <Text style={styles.subtitle}>
-                  A dónde te gustaría viajar?
-                </Text>
+                <Text style={styles.subtitle}>A dónde te gustaría viajar?</Text>
               </View>
             ) : (
               <Text style={styles.title}>Bievenido a EcoHoteles!</Text>
@@ -269,7 +271,7 @@ class HomeScreen extends Component {
                   //margin:0,
                   backgroundColor: "#FAFAFA",
                   //width:wp(90),
-                  borderRadius: 20,
+                  borderRadius: 20
                 }}
               >
                 {/*Input de destino*/}
@@ -283,7 +285,9 @@ class HomeScreen extends Component {
                   <TextInput
                     placeholder=" ¿A dónde te gustaría viajar?"
                     onChangeText={this.handleDestino}
-                    leftIconFontAwesome={<IconFontAwesome name="search" size={15} color="black" />}
+                    leftIconFontAwesome={
+                      <IconFontAwesome name="search" size={15} color="black" />
+                    }
                   />
                 </View>
 
@@ -312,7 +316,7 @@ class HomeScreen extends Component {
                     <TextInput
                       style={styles.textInput}
                       keyboardType="numeric"
-                      onChangeText={(text) =>
+                      onChangeText={text =>
                         this.onChanged("habitaciones", text)
                       }
                       maxLength={2} //setting limit of input
@@ -324,7 +328,7 @@ class HomeScreen extends Component {
                     <TextInput
                       style={styles.textInput}
                       keyboardType="numeric"
-                      onChangeText={(text) => this.onChanged("adultos", text)}
+                      onChangeText={text => this.onChanged("adultos", text)}
                       maxLength={2} //setting limit of input
                       placeholder="Nro adultos"
                     />
@@ -334,7 +338,7 @@ class HomeScreen extends Component {
                     <TextInput
                       style={styles.textInput}
                       keyboardType="numeric"
-                      onChangeText={(text) => this.onChanged("ninos", text)}
+                      onChangeText={text => this.onChanged("ninos", text)}
                       maxLength={2} //setting limit of input
                       placeholder="Nro niños"
                     />
@@ -342,7 +346,7 @@ class HomeScreen extends Component {
                 </View>
               </View>
               {/*Salto de linea*/}
-              <View style={styles.saltoLinea} />
+              {/* <View style={styles.saltoLinea} /> */}
 
               <View>
                 {/*Visualizacion de preferencias*/}
@@ -354,7 +358,7 @@ class HomeScreen extends Component {
                         style={{
                           backgroundColor: "#FAFAFA",
                           borderRadius: 20,
-                          width: SCREEN_WIDTH - 45,
+                          width: SCREEN_WIDTH - 45
                         }}
                       >
                         {/*preferenciasArrayRender*/}
@@ -366,8 +370,8 @@ class HomeScreen extends Component {
                               this.setState({
                                 ahorroDeEnergia: {
                                   isSelected: !this.state.ahorroDeEnergia
-                                    .isSelected,
-                                },
+                                    .isSelected
+                                }
                               });
                             }}
                             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -384,8 +388,8 @@ class HomeScreen extends Component {
                               this.setState({
                                 ahorroDeAgua: {
                                   isSelected: !this.state.ahorroDeAgua
-                                    .isSelected,
-                                },
+                                    .isSelected
+                                }
                               });
                             }}
                             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -401,8 +405,8 @@ class HomeScreen extends Component {
                             onPress={() => {
                               this.setState({
                                 reciclaje: {
-                                  isSelected: !this.state.reciclaje.isSelected,
-                                },
+                                  isSelected: !this.state.reciclaje.isSelected
+                                }
                               });
                             }}
                             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -418,8 +422,8 @@ class HomeScreen extends Component {
                             onPress={() => {
                               this.setState({
                                 compostaje: {
-                                  isSelected: !this.state.compostaje.isSelected,
-                                },
+                                  isSelected: !this.state.compostaje.isSelected
+                                }
                               });
                             }}
                             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -438,8 +442,8 @@ class HomeScreen extends Component {
                               this.setState({
                                 excursionesEcoAmbientales: {
                                   isSelected: !this.state
-                                    .excursionesEcoAmbientales.isSelected,
-                                },
+                                    .excursionesEcoAmbientales.isSelected
+                                }
                               });
                             }}
                             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -459,8 +463,8 @@ class HomeScreen extends Component {
                               this.setState({
                                 productosNaturalesParaElHigiene: {
                                   isSelected: !this.state
-                                    .productosNaturalesParaElHigiene.isSelected,
-                                },
+                                    .productosNaturalesParaElHigiene.isSelected
+                                }
                               });
                             }}
                             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -489,7 +493,7 @@ class HomeScreen extends Component {
               </View>
 
               {/*Salto de linea*/}
-              <View style={styles.saltoLinea} />
+              {/* <View style={styles.saltoLinea} /> */}
             </View>
           </ScrollView>
         </View>
@@ -502,13 +506,13 @@ const styles = StyleSheet.create({
   container: {
     //backgroundColor: constants.SECONDARY_BG_COLOR,
     flex: 1,
-    width: "100%",
+    width: "100%"
   },
   title: {
     fontSize: 25,
     color: constants.PRIMARY_BG_COLOR,
     fontWeight: "700",
-    textAlign: "center",
+    textAlign: "center"
   },
   titleLogueado: {
     fontSize: 24,
@@ -517,7 +521,7 @@ const styles = StyleSheet.create({
     width: 300,
     //textAlign: "center",
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 20
   },
   subtitle: {
     fontSize: 20,
@@ -525,33 +529,33 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     //width: 300,
     //textAlign: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
     //paddingBottom:10,
     //marginTop: 40,
   },
   field: {
     paddingTop: 10,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
   label: {
     /*fontSize: 18,
     color: 'black',
     fontWeight: "700",   */
     fontSize: 18,
-    color: "rgba(0,0,0,.7)",
+    color: "rgba(0,0,0,.7)"
     ////fontFamily: 'Avenir'
   },
   labelTitulo: {
     fontSize: 18,
     color: constants.PRIMARY_BG_COLOR,
-    fontWeight: "700",
+    fontWeight: "700"
   },
   saltoLinea: {
-    height: 20,
+    height: 20
   },
   textInput: {
-    textAlign: "center",
+    textAlign: "center"
   },
   iconos: { paddingRight: 10 },
   rowContainer: {
@@ -561,33 +565,33 @@ const styles = StyleSheet.create({
   checkbox: {
     width: SCREEN_WIDTH - 60,
     borderRadius: 20,
-    borderWidth: 0,
+    borderWidth: 0
     //padding:0
     //height:110
   },
   rowContainerInput: {
     alignItems: "center",
     flexDirection: "row",
-    height: 40,
+    height: 40
   },
-  optionInput: { width: 120, height: 40, alignItems: "center" },
+  optionInput: { width: 100, height: 40, alignItems: "center" },
   columnContainer: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: "column"
   },
   botonBuscar: {
     backgroundColor: constants.PRIMARY_BG_COLOR,
     borderRadius: 80,
     marginTop: 10,
     marginLeft: 20,
-    marginRight: 20,
+    marginRight: 20
     //width: SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3,
     //alignSelf: "center",
   },
   botonBuscarContainer: {
     width: wp("100%"),
     alignSelf: "center",
-    borderColor: "#4D4DEB",
+    borderColor: "#4D4DEB"
   },
   preferenciasContainer: {
     flex: 1,
@@ -596,7 +600,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     //backgroundColor: "#F5FCFF",
     alignItems: "center",
-    alignSelf: "center",
+    alignSelf: "center"
   },
   preferenciasBotonText: { fontSize: 15, color: "white" },
   preferenciasBotonSeleccionado: {
@@ -605,7 +609,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 127,
     height: 100,
-    backgroundColor: "#4D4DEB",
+    backgroundColor: "#4D4DEB"
   },
   preferenciasBotonNoSeleccionado: {
     borderWidth: 1,
@@ -613,8 +617,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 127,
     height: 100,
-    backgroundColor: "black",
-  },
+    backgroundColor: "black"
+  }
 });
 
 export default HomeScreen;

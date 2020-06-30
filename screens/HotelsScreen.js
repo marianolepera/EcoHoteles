@@ -8,14 +8,14 @@ import {
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  TouchableHighlight,
+  TouchableHighlight
   //Slider
 } from "react-native";
 //import Slider from "react-native-slider";
-import { Slider } from 'react-native-elements';
+import { Slider } from "react-native-elements";
 import { Header, CheckBox, Button } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import IconFontisto from "react-native-vector-icons/Fontisto";
+import IconFontisto from "react-native-vector-icons/Feather";
 import IconAntDesign from "react-native-vector-icons/AntDesign";
 import IconMaterialCommunity from "react-native-vector-icons/MaterialCommunityIcons";
 import { Icon } from "native-base";
@@ -26,7 +26,7 @@ import { AsyncStorage } from "react-native";
 
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+  heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 
 //customs components
@@ -47,7 +47,7 @@ class HotelsScreen extends Component {
       dataBanner: [
         "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg",
         "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg",
-        "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg",
+        "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg"
       ],
       dataCategories: [],
       dataHotel: [],
@@ -61,20 +61,20 @@ class HotelsScreen extends Component {
           title: "Hix Island House",
           text: "Puerto Rico, Caribe",
           thumbnail:
-            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg",
+            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg"
         },
         {
           title: "Whitepod Eco-Luxury Hotel",
           text: "Suiza",
           thumbnail:
-            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg",
+            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg"
         },
         {
           title: "Treehotel",
           text: "Suecia",
           thumbnail:
-            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg",
-        },
+            "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg"
+        }
       ],
       isModalVisible: false,
       dataHotelBeforeSort: [],
@@ -110,8 +110,8 @@ class HotelsScreen extends Component {
     const url =
       constants.API_URL; /*+ `?filtros=${encodeURIComponent(JSON.stringify(filtros))}`*/
     return fetch(url, { method: "GET" })
-      .then((response) => response.json())
-      .then((responseJson) => {
+      .then(response => response.json())
+      .then(responseJson => {
         console.log(filtros);
         let hotelesFiltrados = [];
         //si hay preferencias, itero
@@ -148,14 +148,14 @@ class HotelsScreen extends Component {
           completed: true,
           dataHotel: hotelesFiltrados,
           dataHotelBeforeSort: hotelesFiltrados,
-          dataHotelBeforeFilter: hotelesFiltrados,
+          dataHotelBeforeFilter: hotelesFiltrados
         });
         /*this.props.navigation.setParams({
           handleMaps: this.callMapsAction.bind(this),
         });*/
         //this._updateFavList();
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   }
@@ -167,7 +167,7 @@ class HotelsScreen extends Component {
           backgroundColor: "white",
           width: 250,
           height: 30,
-          borderRadius: 50,
+          borderRadius: 50
         }}
       >
         <View>
@@ -175,7 +175,7 @@ class HotelsScreen extends Component {
             style={{}}
             onPress={() => {
               this.props.navigation.navigate("Searchhotel", {
-                Searchhotel: this.state.dataHotel,
+                Searchhotel: this.state.dataHotel
               });
             }}
           >
@@ -184,7 +184,7 @@ class HotelsScreen extends Component {
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "row",
-                height: 30,
+                height: 30
               }}
             >
               <Ionicons name={"ios-search"} style={{ fontSize: 20 }} />
@@ -205,7 +205,7 @@ class HotelsScreen extends Component {
       <TouchableOpacity
         onPress={() => {
           this.props.navigation.navigate("Detalleshotel", {
-            Detalleshotel: item,
+            Detalleshotel: item
           });
         }}
       >
@@ -215,7 +215,7 @@ class HotelsScreen extends Component {
               <HeartButton
                 color="rgba(255, 255, 255, 0.8)"
                 selectedColor="red"
-                onPress={(item) => this.onClickAddFav(item)}
+                onPress={item => this.onClickAddFav(item)}
                 item={item}
               />
             </View>
@@ -227,7 +227,7 @@ class HotelsScreen extends Component {
                 style={{
                   fontWeight: "bold",
                   fontSize: 19 /*color: "grey",*/,
-                  fontStyle: "normal",
+                  fontStyle: "normal"
                 }}
               >
                 {item.name}
@@ -255,7 +255,7 @@ class HotelsScreen extends Component {
     let hotelInFav = hotel.inFav;
     let hotelId = hotel.id;
     let dataToSave = hotel;
-    AsyncStorage.getItem("fav").then((dataInFav) => {
+    AsyncStorage.getItem("fav").then(dataInFav => {
       dataInFav = JSON.parse(dataInFav);
       if (!hotelInFav) {
         //agrego
@@ -312,7 +312,7 @@ class HotelsScreen extends Component {
               borderTopWidth: 1,
               borderTopColor: "rgba(0,0,0,.1)",
               borderBottomWidth: 1,
-              borderBottomColor: "rgba(0,0,0,.1)",
+              borderBottomColor: "rgba(0,0,0,.1)"
             }}
           >
             <TouchableWithoutFeedback
@@ -347,7 +347,7 @@ class HotelsScreen extends Component {
                 paddingHorizontal: 30,
                 paddingTop: 20,
                 paddingBottom: 20,
-                backgroundColor: "#fafafa",
+                backgroundColor: "#fafafa"
               }}
             >
               {this.renderCheckboxOptions()}
@@ -363,7 +363,7 @@ class HotelsScreen extends Component {
               borderTopWidth: this.state.isComodidadesVisible ? 1 : 0,
               borderTopColor: "rgba(0,0,0,.1)",
               borderBottomWidth: 1,
-              borderBottomColor: "rgba(0,0,0,.1)",
+              borderBottomColor: "rgba(0,0,0,.1)"
               //backgroundColor: "rgba(0,0,0,.3)",
             }}
           >
@@ -380,7 +380,7 @@ class HotelsScreen extends Component {
                 style={{
                   paddingTop: 0,
                   paddingHorizontal: 30,
-                  flexDirection: "row",
+                  flexDirection: "row"
                 }}
               >
                 <Text style={{ fontSize: 18, color: "rgba(0,0,0,.8)" }}>
@@ -405,7 +405,7 @@ class HotelsScreen extends Component {
                 paddingHorizontal: 30,
                 paddingTop: 20,
                 paddingBottom: 20,
-                backgroundColor: "#fafafa",
+                backgroundColor: "#fafafa"
               }}
             >
               {this.renderEcoOptions()}
@@ -421,7 +421,7 @@ class HotelsScreen extends Component {
                 borderTopWidth: this.state.isAccionesEcoVisible ? 1 : 0,
                 borderTopColor: "rgba(0,0,0,.1)",
                 borderBottomWidth: 1,
-                borderBottomColor: "rgba(0,0,0,.1)",
+                borderBottomColor: "rgba(0,0,0,.1)"
                 //backgroundColor: "rgba(0,0,0,.3)",
               }}
             >
@@ -438,7 +438,7 @@ class HotelsScreen extends Component {
                   style={{
                     paddingTop: 0,
                     paddingHorizontal: 30,
-                    flexDirection: "row",
+                    flexDirection: "row"
                   }}
                 >
                   <Text style={{ fontSize: 18, color: "rgba(0,0,0,.8)" }}>
@@ -462,9 +462,9 @@ class HotelsScreen extends Component {
                 paddingHorizontal: 30,
                 paddingTop: 20,
                 paddingBottom: 20,
-                backgroundColor: "#fafafa",
+                backgroundColor: "#fafafa"
               }}
-            > 
+            >
               {this.renderNivelEco()}
             </View>
           ) : null}
@@ -533,7 +533,7 @@ class HotelsScreen extends Component {
               checked={this.state.isEstacionamiento}
               onPress={() => {
                 this.setState({
-                  isEstacionamiento: !this.state.isEstacionamiento,
+                  isEstacionamiento: !this.state.isEstacionamiento
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -589,7 +589,7 @@ class HotelsScreen extends Component {
               checked={this.state.isGym}
               onPress={() => {
                 this.setState({
-                  isGym: !this.state.isGym,
+                  isGym: !this.state.isGym
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -614,7 +614,7 @@ class HotelsScreen extends Component {
                 checked={this.state.isAhorroEnergia}
                 onPress={() => {
                   this.setState({
-                    isAhorroEnergia: !this.state.isAhorroEnergia,
+                    isAhorroEnergia: !this.state.isAhorroEnergia
                   });
                 }}
                 checkedColor={constants.PRIMARY_BG_COLOR}
@@ -685,7 +685,7 @@ class HotelsScreen extends Component {
             checked={this.state.isProductosNaturales}
             onPress={() => {
               this.setState({
-                isProductosNaturales: !this.state.isProductosNaturales,
+                isProductosNaturales: !this.state.isProductosNaturales
               });
             }}
             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -701,28 +701,26 @@ class HotelsScreen extends Component {
   renderNivelEco = () => {
     let maxHojaValue = 5;
     let minHojaValue = 3;
-    return(
+    return (
       <View style={slider.container}>
-                <Slider
-                    style={{ width: 300}}
-                    step={1}
-                    minimumValue={minHojaValue}
-                    maximumValue={maxHojaValue}
-                    value={this.state.nivelEco}
-                    onValueChange={val => this.setState({ nivelEco: val })}
-                    thumbTintColor={constants.PRIMARY_BG_COLOR}
-                    maximumTrackTintColor='#d3d3d3' 
-                    minimumTrackTintColor='#009B8A'
-                />
-                <View style={slider.textCon}>
-                    <Text style={slider.colorGrey}>{minHojaValue}</Text>
-                    <Text style={slider.colorYellow}>
-                        {'+ ' + this.state.nivelEco}
-                    </Text>
-                    <Text style={slider.colorGrey}>{maxHojaValue}   </Text>
-                </View>
-            </View>
-    )
+        <Slider
+          style={{ width: 250 }}
+          step={1}
+          minimumValue={minHojaValue}
+          maximumValue={maxHojaValue}
+          value={this.state.nivelEco}
+          onValueChange={val => this.setState({ nivelEco: val })}
+          thumbTintColor={constants.PRIMARY_BG_COLOR}
+          maximumTrackTintColor="#d3d3d3"
+          minimumTrackTintColor="#009B8A"
+        />
+        <View style={slider.textCon}>
+          <Text style={slider.colorGrey}>{minHojaValue}</Text>
+          <Text style={slider.colorYellow}>{"+ " + this.state.nivelEco}</Text>
+          <Text style={slider.colorGrey}>{maxHojaValue} </Text>
+        </View>
+      </View>
+    );
     /*return(
       <View>
         <Slider
@@ -746,7 +744,7 @@ class HotelsScreen extends Component {
         ></Slider>
       </View>
     )*/
-  }
+  };
 
   sortHoteles = () => {
     let myData = [];
@@ -774,14 +772,14 @@ class HotelsScreen extends Component {
     this.setState({
       dataHotel: myData,
       sortIcon: iconSort,
-      sortType: sortType,
+      sortType: sortType
     });
   };
 
   async aplicarFiltro() {
     let hoteles = [].concat(this.state.dataHotelBeforeFilter);
     let state = this.state;
-    let hotelesFiltrados = await hoteles.filter(function (hotel) {
+    let hotelesFiltrados = await hoteles.filter(function(hotel) {
       if (state.isWifi && !hotel.comodidades.wifi) {
         return false;
       }
@@ -834,7 +832,7 @@ class HotelsScreen extends Component {
       }
 
       //Nivel eco
-      if(state.isNivelEco && hotel.nivel_eco < state.nivelEco){
+      if (state.isNivelEco && hotel.nivel_eco < state.nivelEco) {
         return false;
       }
 
@@ -843,7 +841,7 @@ class HotelsScreen extends Component {
 
     this.setState({
       dataHotel: hotelesFiltrados, //los hoteles que muestro
-      dataHotelBeforeSort: hotelesFiltrados, //los hoteles que muestro sin ordenar
+      dataHotelBeforeSort: hotelesFiltrados //los hoteles que muestro sin ordenar
     });
 
     if (this.state.sortType != 0) {
@@ -851,7 +849,7 @@ class HotelsScreen extends Component {
       //Tengo en cuenta que el sort siempre me ordena por el sortType siguiente, asi que
       //aca setteo el tipo anterior
       this.setState({
-        sortType: this.state.sortType - 1,
+        sortType: this.state.sortType - 1
       });
       this.sortHoteles(); //ordeno nuevamente
     }
@@ -872,7 +870,7 @@ class HotelsScreen extends Component {
       <View style={styles.container}>
         <Header
           backgroundColor={constants.PRIMARY_BG_COLOR}
-          containerStyle = {{paddingTop:10,paddingBottom:10,height:60}}
+          containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
           leftComponent={
             <Icon
               name="menu"
@@ -881,13 +879,13 @@ class HotelsScreen extends Component {
           }
           rightComponent={
             <IconFontisto
-              name="map"
+              name="map-pin"
               size={25}
               backgroundColor="transparent"
               underlayColor="transparent"
               onPress={() => {
                 this.props.navigation.navigate("Mapas", {
-                  Hoteles: this.state.dataHotel,
+                  Hoteles: this.state.dataHotel
                 });
               }}
               style={{ marginRight: 10 }}
@@ -920,7 +918,7 @@ class HotelsScreen extends Component {
                 flex: 1,
                 marginBottom: 20,
                 backgroundColor: "#ffff",
-                borderRadius: borderValue,
+                borderRadius: borderValue
                 //backgroundColor:"#DFDFDF"
               }}
             >
@@ -931,7 +929,7 @@ class HotelsScreen extends Component {
                   flexDirection: "row",
                   padding: 5,
                   width: (width - 60) / 2,
-                  alignItems: "center",
+                  alignItems: "center"
                 }}
               >
                 <TouchableOpacity
@@ -940,7 +938,7 @@ class HotelsScreen extends Component {
                     flexDirection: "row",
                     padding: 5,
                     width: (width - 60) / 2,
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   onPress={() => {
                     this.sortHoteles();
@@ -955,7 +953,7 @@ class HotelsScreen extends Component {
                 style={{
                   height: 40,
                   width: 3,
-                  backgroundColor: constants.PRIMARY_BG_COLOR,
+                  backgroundColor: constants.PRIMARY_BG_COLOR
                 }}
               />
               {/*Filtrar*/}
@@ -969,7 +967,7 @@ class HotelsScreen extends Component {
                   alignItems: "center",
                   //backgroundColor: "#DFDFDF",
                   borderTopRightRadius: borderValue,
-                  borderBottomRightRadius: borderValue,
+                  borderBottomRightRadius: borderValue
                 }}
               >
                 <TouchableOpacity
@@ -978,7 +976,7 @@ class HotelsScreen extends Component {
                     flexDirection: "row",
                     padding: 5,
                     width: (width - 60) / 2,
-                    alignItems: "center",
+                    alignItems: "center"
                   }}
                   onPress={() => {
                     this.openModal();
@@ -1011,24 +1009,24 @@ const borderValue = 20;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ebebeb",
+    backgroundColor: "#ebebeb"
   },
   titulos: {
     fontSize: 24,
     fontWeight: "700",
     width: 300,
-    color: constants.PRIMARY_BG_COLOR,
+    color: constants.PRIMARY_BG_COLOR
   },
   hotelItemImage: {
     //flex:1,
     height: width - 60,
     width: width - 60,
     borderTopLeftRadius: borderValue,
-    borderTopRightRadius: borderValue,
+    borderTopRightRadius: borderValue
   },
   hotelItemContainer: {
     paddingTop: 30,
-    paddingHorizontal: 30,
+    paddingHorizontal: 30
   },
   hotelItemContent: {
     height: 70,
@@ -1036,11 +1034,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: borderValue,
     borderBottomRightRadius: borderValue,
     marginBottom: 20,
-    flexDirection: "row",
+    flexDirection: "row"
   },
   hotelItemText: {
     padding: 10,
-    paddingLeft: 20,
+    paddingLeft: 20
   },
   hotelItemFav: {
     position: "absolute",
@@ -1049,23 +1047,24 @@ const styles = StyleSheet.create({
     zIndex: 2,
     backgroundColor: "rgba(240, 255, 255, 0.3)",
     padding: 5,
-    borderRadius: 10,
+    borderRadius: 10
   },
   hotelItemRanking: {
     flexDirection: "row",
     position: "absolute",
     right: 20,
-    alignSelf: "center",
+    alignSelf: "center"
   },
   modal: {
     flex: 1,
     backgroundColor: "white",
-    maxHeight: "90%",
+    maxHeight: "90%"
   },
   modalContainer: {},
   modalTexto: {},
   checkboxContainer: {
     flexDirection: "row",
+    width: "47%"
     //marginBottom: 1,
   },
   checkbox: {
@@ -1073,10 +1072,10 @@ const styles = StyleSheet.create({
     //borderColor: constants.PRIMARY_BG_COLOR,
     borderWidth: 0,
     padding: 0,
-    margin: 0,
+    margin: 0
   },
   label: {
-    margin: 8,
+    margin: 8
     //color: constants.PRIMARY_TEXT_COLOR,
   },
   botonBuscar: {
@@ -1084,18 +1083,18 @@ const styles = StyleSheet.create({
     borderRadius: 80,
     marginTop: 10,
     marginLeft: 20,
-    marginRight: 20,
+    marginRight: 20
     //width: SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3,
     //alignSelf: "center",
   },
   aplicarFiltro: {
-    padding: 10,
+    padding: 10
   },
   imageBanner: {
     height: width / 2,
     width: width - 40,
     borderRadius: 10,
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
   imageFood: {
     height: hp("100%"), // 70% of height device screen
@@ -1104,7 +1103,7 @@ const styles = StyleSheet.create({
     //height: width / 2 - 20 - 30,
     backgroundColor: "transparent",
     position: "absolute",
-    top: -45,
+    top: -45
   },
   divFood: {
     height: hp("65%"), // 70% of height device screen
@@ -1119,32 +1118,32 @@ const styles = StyleSheet.create({
     elevation: 8,
     shadowOpacity: 0.3,
     shadowRadius: 20,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   iconContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    width: 120,
-  },
+    width: 120
+  }
 });
 
 const slider = StyleSheet.create({
   container: {
-      /*flex: 1,
+    /*flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: '#000',*/
   },
   textCon: {
-      width: 320,
-      flexDirection: 'row',
-      justifyContent: 'space-between'
+    width: 250,
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   colorGrey: {
-      color: '#d3d3d3'
+    color: "#d3d3d3"
   },
   colorYellow: {
-      color: constants.PRIMARY_BG_COLOR
+    color: constants.PRIMARY_BG_COLOR
   }
 });
 

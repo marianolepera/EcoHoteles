@@ -10,7 +10,7 @@ import {
   ScrollView,
   TextInput,
   RefreshControl,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback
 } from "react-native";
 import Modal from "react-native-modal";
 import { TabView, TabBar, SceneMap } from "react-native-tab-view";
@@ -31,7 +31,7 @@ import AdminCommentsList from "../components/Comments/AdminCommentList";
 
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+  heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 
 const { width, height } = Dimensions.get("window");
@@ -73,7 +73,7 @@ const MapRoute = () => (
         latitude: 51.5078788,
         longitude: -0.0877321,
         latitudeDelta: 0.009,
-        longitudeDelta: 0.009,
+        longitudeDelta: 0.009
       }}
     >
       <Marker
@@ -107,8 +107,8 @@ class AdminDetallesHotelsScreen extends Component {
         index: 0,
         routes: [
           { key: "about", title: "Detalle" },
-          { key: "review", title: "Comentarios" },
-        ],
+          { key: "review", title: "Comentarios" }
+        ]
       },
       isWifi: hotel.comodidades.wifi,
       isPileta: hotel.comodidades.pileta,
@@ -123,11 +123,11 @@ class AdminDetallesHotelsScreen extends Component {
       isCompostaje: hotel.amenities.compostaje,
       isReciclaje: hotel.amenities.reciclaje,
       isExcursionesEco: hotel.amenities.excursiones_eco_ambientales,
-      isProductosNaturales: hotel.amenities.productos_naturales_para_el_higiene,
+      isProductosNaturales: hotel.amenities.productos_naturales_para_el_higiene
     };
   }
 
-  _handleIndexChange = (indexChange) => {
+  _handleIndexChange = indexChange => {
     let mininavAux = { ...this.state.mininav };
     mininavAux.index = indexChange;
     this.setState({ mininav: mininavAux });
@@ -137,14 +137,14 @@ class AdminDetallesHotelsScreen extends Component {
     about: () => this.customAboutRoute(this.state.hotel),
     review: ReviewRoute,
     map: MapRoute,
-    rating: RatingRoute,
+    rating: RatingRoute
   });
 
   forceUpdateHandler() {
     this.forceUpdate();
   }
 
-  customAboutRoute = (hotel2) => {
+  customAboutRoute = hotel2 => {
     return (
       <View style={[styles.container]}>
         <View style={styles.field}>
@@ -257,7 +257,7 @@ class AdminDetallesHotelsScreen extends Component {
 
   onRefresh = () => {
     this.setState({ refreshing: true });
-    this.forceUpdate(function () {
+    this.forceUpdate(function() {
       this.setState({ refreshing: false });
     });
   };
@@ -266,47 +266,49 @@ class AdminDetallesHotelsScreen extends Component {
     return <Image source={{ uri: item }} style={styles.carousel}></Image>;
   }
 
-  openModal = (propId) => {
+  openModal = propId => {
     this.setState({ [propId]: true });
   };
 
-  closeModal = (propId) => {
+  closeModal = propId => {
     this.setState({ [propId]: false });
   };
 
   guardarCambios = () => {
-    if(this.state.isModalAccionesEcoVisible || this.state.isModalComodidadesVisible){
+    if (
+      this.state.isModalAccionesEcoVisible ||
+      this.state.isModalComodidadesVisible
+    ) {
       let hotel = this.state.hotel;
-    return fetch(constants.API_URL + "/" + hotel.id, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(hotel),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({ hotel: responseJson }, () => {
-          this.forceUpdateHandler();
+      return fetch(constants.API_URL + "/" + hotel.id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(hotel)
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          this.setState({ hotel: responseJson }, () => {
+            this.forceUpdateHandler();
+          });
+          if (this.state.isModalAccionesEcoVisible) {
+            this.closeModal("isModalAccionesEcoVisible");
+          } else if (this.state.isModalComodidadesVisible) {
+            this.closeModal("isModalComodidadesVisible");
+          } else {
+            this.closeModal("isModalUbicacionVisible");
+          }
         });
-        if (this.state.isModalAccionesEcoVisible) {
-          this.closeModal("isModalAccionesEcoVisible");
-        } else if (this.state.isModalComodidadesVisible) {
-          this.closeModal("isModalComodidadesVisible");
-        } else {
-          this.closeModal("isModalUbicacionVisible");
-        }
-      });
-    }
-    else{
+    } else {
       let hotel = this.state.hotel;
       hotel.longitud = this.state.longitud;
       hotel.latitud = this.state.latitud;
       return fetch(constants.API_URL + "/" + hotel.id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(hotel),
+        body: JSON.stringify(hotel)
       })
-        .then((response) => response.json())
-        .then((responseJson) => {
+        .then(response => response.json())
+        .then(responseJson => {
           this.setState({ hotel: responseJson }, () => {
             this.forceUpdateHandler();
           });
@@ -347,7 +349,7 @@ class AdminDetallesHotelsScreen extends Component {
               style={{
                 //width: width,
                 paddingBottom: 20,
-                paddingTop: 0,
+                paddingTop: 0
                 //borderTopWidth: 1,
                 //borderTopColor: "rgba(0,0,0,.1)",
                 //borderBottomWidth: 1,
@@ -388,7 +390,7 @@ class AdminDetallesHotelsScreen extends Component {
                     .ahorro_de_energia;
                   this.setState({
                     isAhorroEnergia: !this.state.isAhorroEnergia,
-                    hotel: hotelAux,
+                    hotel: hotelAux
                   });
                 }}
                 checkedColor={constants.PRIMARY_BG_COLOR}
@@ -407,7 +409,7 @@ class AdminDetallesHotelsScreen extends Component {
                     .ahorro_de_agua;
                   this.setState({
                     isAhorroAgua: !this.state.isAhorroAgua,
-                    hotel: hotelAux,
+                    hotel: hotelAux
                   });
                 }}
                 checkedColor={constants.PRIMARY_BG_COLOR}
@@ -428,7 +430,7 @@ class AdminDetallesHotelsScreen extends Component {
                     .compostaje;
                   this.setState({
                     isCompostaje: !this.state.isCompostaje,
-                    hotel: hotelAux,
+                    hotel: hotelAux
                   });
                 }}
                 checkedColor={constants.PRIMARY_BG_COLOR}
@@ -446,7 +448,7 @@ class AdminDetallesHotelsScreen extends Component {
                   hotelAux.amenities.reciclaje = !hotelAux.amenities.reciclaje;
                   this.setState({
                     isReciclaje: !this.state.isReciclaje,
-                    hotel: hotelAux,
+                    hotel: hotelAux
                   });
                 }}
                 checkedColor={constants.PRIMARY_BG_COLOR}
@@ -467,7 +469,7 @@ class AdminDetallesHotelsScreen extends Component {
                 .amenities.excursiones_eco_ambientales;
               this.setState({
                 isExcursionesEco: !this.state.isExcursionesEco,
-                hotel: hotelAux,
+                hotel: hotelAux
               });
             }}
             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -486,7 +488,7 @@ class AdminDetallesHotelsScreen extends Component {
                 .amenities.productos_naturales_para_el_higiene;
               this.setState({
                 isProductosNaturales: !this.state.isProductosNaturales,
-                hotel: hotelAux,
+                hotel: hotelAux
               });
             }}
             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -514,9 +516,7 @@ class AdminDetallesHotelsScreen extends Component {
               />
             </View>
             <View>
-              <Text style={styles.titulos}>
-                Editando comodidades del hotel
-              </Text>
+              <Text style={styles.titulos}>Editando comodidades del hotel</Text>
             </View>
           </View>
           <View>
@@ -525,7 +525,7 @@ class AdminDetallesHotelsScreen extends Component {
               style={{
                 //width: width,
                 paddingBottom: 20,
-                paddingTop: 0,
+                paddingTop: 0
                 //borderTopWidth: 1,
                 //borderTopColor: "rgba(0,0,0,.1)",
                 //borderBottomWidth: 1,
@@ -566,7 +566,7 @@ class AdminDetallesHotelsScreen extends Component {
                     .ahorro_de_energia;
                   this.setState({
                     isAhorroEnergia: !this.state.isAhorroEnergia,
-                    hotel: hotelAux,
+                    hotel: hotelAux
                   });
                 }}
                 checkedColor={constants.PRIMARY_BG_COLOR}
@@ -585,7 +585,7 @@ class AdminDetallesHotelsScreen extends Component {
                     .ahorro_de_agua;
                   this.setState({
                     isAhorroAgua: !this.state.isAhorroAgua,
-                    hotel: hotelAux,
+                    hotel: hotelAux
                   });
                 }}
                 checkedColor={constants.PRIMARY_BG_COLOR}
@@ -606,7 +606,7 @@ class AdminDetallesHotelsScreen extends Component {
                     .compostaje;
                   this.setState({
                     isCompostaje: !this.state.isCompostaje,
-                    hotel: hotelAux,
+                    hotel: hotelAux
                   });
                 }}
                 checkedColor={constants.PRIMARY_BG_COLOR}
@@ -624,7 +624,7 @@ class AdminDetallesHotelsScreen extends Component {
                   hotelAux.amenities.reciclaje = !hotelAux.amenities.reciclaje;
                   this.setState({
                     isReciclaje: !this.state.isReciclaje,
-                    hotel: hotelAux,
+                    hotel: hotelAux
                   });
                 }}
                 checkedColor={constants.PRIMARY_BG_COLOR}
@@ -645,7 +645,7 @@ class AdminDetallesHotelsScreen extends Component {
                 .amenities.excursiones_eco_ambientales;
               this.setState({
                 isExcursionesEco: !this.state.isExcursionesEco,
-                hotel: hotelAux,
+                hotel: hotelAux
               });
             }}
             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -664,7 +664,7 @@ class AdminDetallesHotelsScreen extends Component {
                 .amenities.productos_naturales_para_el_higiene;
               this.setState({
                 isProductosNaturales: !this.state.isProductosNaturales,
-                hotel: hotelAux,
+                hotel: hotelAux
               });
             }}
             checkedColor={constants.PRIMARY_BG_COLOR}
@@ -690,11 +690,10 @@ class AdminDetallesHotelsScreen extends Component {
               }}
               onPress={() => {
                 let hotelAux = JSON.parse(JSON.stringify(this.state.hotel));
-                hotelAux.comodidades.wifi = !hotelAux
-                  .comodidades.wifi;
+                hotelAux.comodidades.wifi = !hotelAux.comodidades.wifi;
                 this.setState({
                   isWifi: !this.state.isWifi,
-                  hotel: hotelAux,
+                  hotel: hotelAux
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -709,11 +708,10 @@ class AdminDetallesHotelsScreen extends Component {
               checked={this.state.isPileta}
               onPress={() => {
                 let hotelAux = JSON.parse(JSON.stringify(this.state.hotel));
-                hotelAux.comodidades.pileta = !hotelAux
-                  .comodidades.pileta;
+                hotelAux.comodidades.pileta = !hotelAux.comodidades.pileta;
                 this.setState({
                   isPileta: !this.state.isPileta,
-                  hotel: hotelAux,
+                  hotel: hotelAux
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -728,11 +726,10 @@ class AdminDetallesHotelsScreen extends Component {
               checked={this.state.isSpa}
               onPress={() => {
                 let hotelAux = JSON.parse(JSON.stringify(this.state.hotel));
-                hotelAux.comodidades.spa = !hotelAux
-                  .comodidades.spa;
+                hotelAux.comodidades.spa = !hotelAux.comodidades.spa;
                 this.setState({
                   isSpa: !this.state.isSpa,
-                  hotel: hotelAux,
+                  hotel: hotelAux
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -747,11 +744,11 @@ class AdminDetallesHotelsScreen extends Component {
               checked={this.state.isEstacionamiento}
               onPress={() => {
                 let hotelAux = JSON.parse(JSON.stringify(this.state.hotel));
-                hotelAux.comodidades.estacionamiento = !hotelAux
-                  .comodidades.estacionamiento;
+                hotelAux.comodidades.estacionamiento = !hotelAux.comodidades
+                  .estacionamiento;
                 this.setState({
                   isEstacionamiento: !this.state.isEstacionamiento,
-                  hotel: hotelAux,
+                  hotel: hotelAux
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -768,11 +765,10 @@ class AdminDetallesHotelsScreen extends Component {
               checked={this.state.isAC}
               onPress={() => {
                 let hotelAux = JSON.parse(JSON.stringify(this.state.hotel));
-                hotelAux.comodidades.ac = !hotelAux
-                  .comodidades.ac;
+                hotelAux.comodidades.ac = !hotelAux.comodidades.ac;
                 this.setState({
                   isAC: !this.state.isAC,
-                  hotel: hotelAux,
+                  hotel: hotelAux
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -787,11 +783,11 @@ class AdminDetallesHotelsScreen extends Component {
               checked={this.state.isMediaPension}
               onPress={() => {
                 let hotelAux = JSON.parse(JSON.stringify(this.state.hotel));
-                hotelAux.comodidades.media_pension = !hotelAux
-                  .comodidades.media_pension;
+                hotelAux.comodidades.media_pension = !hotelAux.comodidades
+                  .media_pension;
                 this.setState({
                   isMediaPension: !this.state.isMediaPension,
-                  hotel: hotelAux,
+                  hotel: hotelAux
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -806,11 +802,10 @@ class AdminDetallesHotelsScreen extends Component {
               checked={this.state.isBar}
               onPress={() => {
                 let hotelAux = JSON.parse(JSON.stringify(this.state.hotel));
-                hotelAux.comodidades.bar = !hotelAux
-                  .comodidades.bar;
+                hotelAux.comodidades.bar = !hotelAux.comodidades.bar;
                 this.setState({
                   isBar: !this.state.isBar,
-                  hotel: hotelAux,
+                  hotel: hotelAux
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -825,11 +820,10 @@ class AdminDetallesHotelsScreen extends Component {
               checked={this.state.isGym}
               onPress={() => {
                 let hotelAux = JSON.parse(JSON.stringify(this.state.hotel));
-                hotelAux.comodidades.gym = !hotelAux
-                  .comodidades.gym;
+                hotelAux.comodidades.gym = !hotelAux.comodidades.gym;
                 this.setState({
                   isGym: !this.state.isGym,
-                  hotel: hotelAux,
+                  hotel: hotelAux
                 });
               }}
               checkedColor={constants.PRIMARY_BG_COLOR}
@@ -867,31 +861,35 @@ class AdminDetallesHotelsScreen extends Component {
               style={{
                 //width: width,
                 paddingBottom: 20,
-                paddingTop: 0,
+                paddingTop: 0
                 //borderTopWidth: 1,
                 //borderTopColor: "rgba(0,0,0,.1)",
                 //borderBottomWidth: 1,
                 //borderBottomColor: "rgba(0,0,0,.1)",
               }}
             >
-              <View style={{ flexDirection: "row"}}>
+              <View style={{ flexDirection: "row" }}>
                 <Text style={styles.value}>Longitud:</Text>
                 <TextInput
                   keyboardType={"decimal-pad"}
                   style={{ marginLeft: 5, fontSize: 20 }}
                   placeholder=" Ingrese longitud"
                   value={this.state.longitud}
-                  onChangeText={(text) => {this.setState({longitud:text})}}
+                  onChangeText={text => {
+                    this.setState({ longitud: text });
+                  }}
                 />
               </View>
-              <View style={{ flexDirection: "row" , paddingTop: 10 }}>
+              <View style={{ flexDirection: "row", paddingTop: 10 }}>
                 <Text style={styles.value}>Latitud:</Text>
                 <TextInput
                   keyboardType={"decimal-pad"}
                   style={{ marginLeft: 5, fontSize: 20 }}
                   placeholder=" Ingrese latitud"
                   value={this.state.latitud}
-                  onChangeText={(text) => {this.setState({latitud:text})}}
+                  onChangeText={text => {
+                    this.setState({ latitud: text });
+                  }}
                 />
               </View>
             </View>
@@ -982,7 +980,7 @@ class AdminDetallesHotelsScreen extends Component {
                 renderScene={this._renderScene}
                 initialLayout={initialLayout}
                 onIndexChange={this._handleIndexChange}
-                renderTabBar={(props) => (
+                renderTabBar={props => (
                   <TabBar
                     {...props}
                     //renderLabel={this._renderLabel}
@@ -994,7 +992,7 @@ class AdminDetallesHotelsScreen extends Component {
                         style={{
                           color: constants.PRIMARY_TEXT_COLOR,
                           fontWeight: "700",
-                          fontSize: 12,
+                          fontSize: 12
                         }}
                       >
                         {route.title}
@@ -1037,20 +1035,20 @@ const borderValue = 20;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: constants.SECONDARY_BG_COLOR,
-    flex: 1,
+    flex: 1
   },
   titulos: {
     fontSize: 24,
     fontWeight: "700",
     width: 300,
-    color: constants.PRIMARY_BG_COLOR,
+    color: constants.PRIMARY_BG_COLOR
   },
   hotelItemContainer: {
     paddingTop: 30,
-    paddingHorizontal: 30,
+    paddingHorizontal: 30
   },
   backIcon: {
-    paddingRight: 10,
+    paddingRight: 10
   },
   name: {
     fontSize: 35,
@@ -1059,59 +1057,59 @@ const styles = StyleSheet.create({
     //fontFamily: 'Avenir',
     paddingTop: 0,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
   botonBuscar: {
     backgroundColor: constants.PRIMARY_BG_COLOR,
     borderRadius: 80,
     marginTop: 10,
     marginLeft: 20,
-    marginRight: 20,
+    marginRight: 20
     //width: SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3,
     //alignSelf: "center",
   },
   botonBuscarContainer: {
     width: wp("100%"),
     alignSelf: "center",
-    borderColor: "#4D4DEB",
+    borderColor: "#4D4DEB"
   },
   field: {
     paddingTop: 10,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
   about: {
     paddingTop: 30,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
   label: {
     fontSize: 20,
     color: constants.PRIMARY_BG_COLOR,
-    fontWeight: "700",
+    fontWeight: "700"
     ////fontFamily: 'Avenir'
   },
   value: {
     fontSize: 23,
-    color: "#676767",
+    color: "#676767"
     //fontFamily: 'Avenir'
   },
   small: {
     fontSize: 17,
-    color: "#676767",
+    color: "#676767"
     //fontFamily: 'Avenir'
   },
   description: {
     textAlign: "justify",
-    paddingBottom: 0,
+    paddingBottom: 0
   },
   rating: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "row"
   },
   amenities: {
     flex: 1,
-    alignItems: "flex-start",
+    alignItems: "flex-start"
   },
   mapView: {
     marginTop: 15,
@@ -1119,25 +1117,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.65,
     shadowRadius: 5,
     shadowColor: "#989898",
-    shadowOffset: { height: 0, width: 0 },
+    shadowOffset: { height: 0, width: 0 }
   },
   location: {},
   carousel: {
     height: 320,
-    width,
+    width
   },
   bookingButton: {
     fontSize: 23,
-    color: constants.PRIMARY_TEXT_COLOR,
+    color: constants.PRIMARY_TEXT_COLOR
     //fontFamily: 'Avenir'
   },
   tabBar: {
-    backgroundColor: constants.PRIMARY_BG_COLOR,
+    backgroundColor: constants.PRIMARY_BG_COLOR
   },
   modal: {
     flex: 1,
     backgroundColor: "white",
-    maxHeight: "75%",
+    maxHeight: "88%"
   },
   //modalContainer: {},
   //modalTexto: {},
@@ -1145,7 +1143,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 10,
     alignContent: "center",
-    alignItems: "center",
+    alignItems: "center"
     //marginBottom: 1,
   },
   checkbox: {
@@ -1153,24 +1151,24 @@ const styles = StyleSheet.create({
     //borderColor: constants.PRIMARY_BG_COLOR,
     borderWidth: 0,
     padding: 5,
-    margin: 0,
+    margin: 0
   },
   labelCheckbox: {
     fontSize: 20,
     color: "black",
-    fontWeight: "700",
+    fontWeight: "700"
   },
   botonBuscar: {
     backgroundColor: constants.PRIMARY_BG_COLOR,
     borderRadius: 80,
     marginTop: 10,
     marginLeft: 20,
-    marginRight: 20,
+    marginRight: 20
     //width: SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3,
     //alignSelf: "center",
   },
   aplicarFiltro: {
-    padding: 10,
-  },
+    padding: 10
+  }
 });
 export default AdminDetallesHotelsScreen;

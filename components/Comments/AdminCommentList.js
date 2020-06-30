@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  FlatList
+  FlatList,
+  Alert
 } from "react-native";
 import constants from "../../config/constants";
 
@@ -126,9 +127,23 @@ export default class AdminCommentsList extends Component {
             title="Enviar comentarios a revisar"
             buttonStyle={styles.botonComentario}
             containerStyle={{ height: 40 }}
-            // onPress={() => {
-            //   this.newcomentario();
-            // }}
+            onPress={() => {
+              {
+                Alert.alert(
+                  //title
+                  "Se enviaron a revisar los comentarios!",
+                  //body
+                  " ",
+                  [
+                    {
+                      text: "Continuar"
+                      // onPress: () => this.componentHideAndShow()
+                    }
+                  ],
+                  { cancelable: true }
+                );
+              }
+            }}
           />
         </View>
       </View>
