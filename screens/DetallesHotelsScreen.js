@@ -6,7 +6,7 @@ import {
   Text,
   Dimensions,
   Image,
-  ScrollView,
+  ScrollView
 } from "react-native";
 import { TabView, TabBar, SceneMap } from "react-native-tab-view";
 import Icon from "react-native-vector-icons/Feather";
@@ -27,7 +27,7 @@ import MostrarForm from "../components/MostrarForm/MostrarForm";
 const { width, height } = Dimensions.get("window");
 const WATER_IMAGE = require("../assets/hoja-icon.png");
 
-const AboutRoute = (hotel2) => {
+const AboutRoute = hotel2 => {
   return (
     <View style={[styles.container]}>
       <View style={styles.field}>
@@ -65,19 +65,19 @@ const ReviewRoute = () => (
   </View>
 );
 
-const MapRoute = (hotel) => (
+const MapRoute = hotel => (
   <View style={[styles.modal]}>
     <MapView
       style={{ flex: 1 }}
       initialRegion={{
-        latitude: hotel.latitud,
-        longitude: hotel.longitud,
+        latitude: parseFloat(hotel.latitud),
+        longitude: parseFloat(hotel.longitud)
       }}
     >
       <Marker
         coordinate={{
           latitude: parseFloat(hotel.latitud),
-          longitude: parseFloat(hotel.longitud),
+          longitude: parseFloat(hotel.longitud)
         }}
         pinColor="red"
       />
@@ -115,12 +115,12 @@ class DetallesHotelsScreen extends Component {
           { key: "about", title: "Detalle" },
           { key: "review", title: "Comentarios" },
           { key: "map", title: "Ubicación" },
-          { key: "rating", title: "Calificar" },
-        ],
-      },
+          { key: "rating", title: "Calificar" }
+        ]
+      }
     };
   }
-  _handleIndexChange = (indexChange) => {
+  _handleIndexChange = indexChange => {
     let mininavAux = { ...this.state.mininav };
     mininavAux.index = indexChange;
     this.setState({ mininav: mininavAux });
@@ -130,7 +130,7 @@ class DetallesHotelsScreen extends Component {
     about: () => AboutRoute(this.props.navigation.getParam("Detalleshotel")),
     review: ReviewRoute,
     map: () => MapRoute(this.props.navigation.getParam("Detalleshotel")),
-    rating: RatingRoute,
+    rating: RatingRoute
   });
 
   _renderImage({ item }) {
@@ -188,7 +188,7 @@ class DetallesHotelsScreen extends Component {
                 //padding: 10,
                 borderRadius: 10,
                 alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "center"
               }}
             >
               <Ionicons
@@ -211,7 +211,7 @@ class DetallesHotelsScreen extends Component {
                 width: 50,
                 backgroundColor: "rgba(240, 255, 255, 0.8)",
                 padding: 10,
-                borderRadius: 10,
+                borderRadius: 10
                 //alignItems: "center",
                 //justifyContent: "center",
               }}
@@ -230,13 +230,13 @@ class DetallesHotelsScreen extends Component {
                 //padding: 10,
                 borderRadius: 10,
                 alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "center"
               }}
             >
               <HeartButton
                 color="black"
                 selectedColor="red"
-                onPress={(item) => null}
+                onPress={item => null}
                 item={hotel}
               />
             </View>
@@ -260,7 +260,7 @@ class DetallesHotelsScreen extends Component {
                 marginTop: -25,
                 backgroundColor: "white",
                 borderTopLeftRadius: 30,
-                borderTopRightRadius: 30,
+                borderTopRightRadius: 30
               }}
             />
 
@@ -283,27 +283,27 @@ class DetallesHotelsScreen extends Component {
               renderScene={this._renderScene}
               initialLayout={initialLayout}
               onIndexChange={this._handleIndexChange}
-              renderTabBar={(props) => (
+              renderTabBar={props => (
                 <TabBar
                   {...props}
                   scrollEnabled={true}
                   activeColor={constants.PRIMARY_BG_COLOR}
                   inactiveColor={"#848484"}
                   indicatorStyle={{
-                    backgroundColor: constants.PRIMARY_BG_COLOR,
+                    backgroundColor: constants.PRIMARY_BG_COLOR
                   }}
                   labelStyle={[styles.txtBold, { textTransform: "capitalize" }]}
                   style={{
                     backgroundColor: "#fff",
                     borderBottomColor: "#eee",
                     borderBottomWidth: 1,
-                    elevation: 0,
+                    elevation: 0
                   }}
                   renderLabel={({ route, focused, color }) => (
                     <Text
                       style={{
                         fontSize: 18,
-                        color: color,
+                        color: color
                       }}
                     >
                       {route.title}
@@ -321,7 +321,7 @@ class DetallesHotelsScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    flex: 1,
+    flex: 1
   },
   name: {
     fontSize: 35,
@@ -330,45 +330,45 @@ const styles = StyleSheet.create({
     //fontFamily: 'Avenir',
     paddingTop: 0,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
   field: {
     paddingTop: 10,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
   about: {
     paddingTop: 30,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
   label: {
     fontSize: 20,
     color: constants.PRIMARY_BG_COLOR,
-    fontWeight: "700",
+    fontWeight: "700"
     ////fontFamily: 'Avenir'
   },
   value: {
     fontSize: 23,
-    color: "#676767",
+    color: "#676767"
     //fontFamily: 'Avenir'
   },
   small: {
     fontSize: 17,
-    color: "#676767",
+    color: "#676767"
     //fontFamily: 'Avenir'
   },
   description: {
     textAlign: "justify",
-    paddingBottom: 0,
+    paddingBottom: 0
   },
   rating: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "row"
   },
   amenities: {
     flex: 1,
-    alignItems: "flex-start",
+    alignItems: "flex-start"
   },
   mapView: {
     marginTop: 15,
@@ -376,24 +376,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.65,
     shadowRadius: 5,
     shadowColor: "#989898",
-    shadowOffset: { height: 0, width: 0 },
+    shadowOffset: { height: 0, width: 0 }
   },
   location: {},
   carousel: {
     height: 320,
-    width,
+    width
   },
   bookingButton: {
     fontSize: 23,
-    color: constants.PRIMARY_TEXT_COLOR,
+    color: constants.PRIMARY_TEXT_COLOR
     //fontFamily: 'Avenir'
   },
   modal: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "white"
   },
   tabBar: {
-    backgroundColor: "white",
-  },
+    backgroundColor: "white"
+  }
 });
 export default DetallesHotelsScreen;

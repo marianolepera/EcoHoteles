@@ -7,15 +7,17 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
-  Image
+  Image,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Icon } from "react-native-elements";
+import constants from "../config/constants";
 //import { Card } from "@shoutem/ui";
 const { width, height } = Dimensions.get("window");
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = -34.610744;
-const LONGITUDE = -58.382209;
+const LATITUDE = 66.072807;
+const LONGITUDE = 20.981778;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const SPACE = 0.01;
@@ -34,11 +36,11 @@ class MapasScreen extends React.Component {
       isModalVisible: false,
       markersVerde: [
         {
-          key: `Supermercado`,
-          description: "Carrefour",
+          key: `Tree Hotel`,
+          description: "5 eco",
           coordinate: {
-            latitude: -34.6078602,
-            longitude: -58.383111
+            latitude: 66.072807,
+            longitude: 20.981778
           },
           image:
             "https://r-cf.bstatic.com/images/hotel/max1280x900/192/19211175.jpg",
@@ -159,30 +161,26 @@ class MapasScreen extends React.Component {
               </MapView.Callout> */}
             </MapView.Marker>
           ))}
-          {this.state.markersRojo.map(marker => (
+          {/* {this.state.markersRojo.map(marker => (
             <MapView.Marker
               title={marker.key}
               pinColor="red"
               coordinate={marker.coordinate}
               description={marker.description}
             >
-              {/* <MapView.Callout tooltip style={{ width: 140 }}>
-                <Callout image={marker.image} />
-              </MapView.Callout> */}
+            
             </MapView.Marker>
-          ))}
-          {this.state.markersAmarillo.map(marker => (
+          ))} */}
+          {/* {this.state.markersAmarillo.map(marker => (
             <MapView.Marker
               title={marker.key}
               pinColor="yellow"
               coordinate={marker.coordinate}
               description={marker.description}
             >
-              {/* <MapView.Callout tooltip style={{ width: 140 }}>
-                <Callout image={marker.image} />
-              </MapView.Callout> */}
+              
             </MapView.Marker>
-          ))}
+          ))} */}
         </MapView>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
@@ -196,6 +194,10 @@ class MapasScreen extends React.Component {
             onBackdropPress={() => this.closeModal()}
           >
             <View style={[styles.modal1]}>
+              <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                Te damos una ayuda para que sepas de que trata ;)
+              </Text>
+
               <View
                 style={{
                   flexDirection: "row",
@@ -247,6 +249,15 @@ class MapasScreen extends React.Component {
                   color="red"
                 />
               </View>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  this.closeModal();
+                }}
+              >
+                <View style={[styles.botonBuscar]}>
+                  <Text style={styles.botonTexto}>Entendi!</Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
           </Modal>
         </View>
@@ -279,10 +290,10 @@ const styles = StyleSheet.create({
     alignItems: "stretch"
   },
   button: {
-    width: 80,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    marginHorizontal: 10
+    //width: 120,
+    //paddingHorizontal: 12,
+    alignItems: "center"
+    //marginHorizontal: 10
   },
   buttonContainer: {
     flexDirection: "row",
@@ -292,13 +303,35 @@ const styles = StyleSheet.create({
   modal1: {
     textAlign: "center",
     backgroundColor: "white",
-    maxHeight: Dimensions.get("window").height / 3
+    height: "65%",
+    alignContent: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+    paddingHorizontal: 20
   },
   body2: {
     color: "#000",
     padding: 5,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "bold"
+  },
+  botonBuscar: {
+    height: 40,
+    paddingTop: 20,
+    backgroundColor: constants.PRIMARY_BG_COLOR,
+    borderRadius: 80,
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    alignItems: "center",
+    alignContent: "center"
+  },
+  botonTexto: {
+    color: "white",
+    //justifyContent:'center',
+    fontWeight: "700",
+    position: "absolute",
+    top: 10
   }
 });
 

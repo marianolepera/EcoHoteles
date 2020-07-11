@@ -7,7 +7,7 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
-  TouchableHighlight,
+  TouchableHighlight
 } from "react-native";
 import { Button, Input, CheckBox, Header } from "react-native-elements";
 import Loading from "../components/Loading/index";
@@ -24,7 +24,7 @@ import Modal from "react-native-modal";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+  heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 /*import {
   TouchableWithoutFeedback,
@@ -45,10 +45,10 @@ class HomeScreen extends Component {
       checkOutDate: "",
       checkInDateAux: "",
       checkOutDateAux: "",
-      habitaciones:0,
-      adultos:0,
-      niños:0,
-      destino:""
+      habitaciones: 0,
+      adultos: 0,
+      niños: 0,
+      destino: ""
     };
   }
 
@@ -77,7 +77,7 @@ class HomeScreen extends Component {
       this.state.compostaje,
       this.state.reciclaje,
       this.state.excursionesEcoAmbientales,
-      this.state.productosNaturalesParaElHigiene,
+      this.state.productosNaturalesParaElHigiene
     ];
 
     let preferenciasSelected = [];
@@ -86,26 +86,22 @@ class HomeScreen extends Component {
     let result = {
       destino: this.state.destino,
       fechas: {
-        fechaDesde: this.state.checkInDate
-          ? this.state.checkInDate
-          : "",
-        fechaHasta: this.state.checkOutDate
-          ? this.state.checkOutDate
-          : "",
+        fechaDesde: this.state.checkInDate ? this.state.checkInDate : "",
+        fechaHasta: this.state.checkOutDate ? this.state.checkOutDate : ""
       },
       preferencias: preferenciasSelected,
       habitaciones: this.state.habitaciones,
       adultos: this.state.adultos,
-      ninos: this.state.ninos,
+      ninos: this.state.ninos
     };
 
     this.props.navigation.navigate("Drawer", {
-      filtros: result,
+      filtros: result
     });
     this.setState({ loading: false });
   }
-  
-  handleDestino = (text) => {
+
+  handleDestino = text => {
     this.setState({ destino: text });
   };
 
@@ -119,7 +115,7 @@ class HomeScreen extends Component {
       "Reciclaje",
       "Compostaje",
       "Productos naturales para el higiene",
-      "Excursiones eco ambientales",
+      "Excursiones eco ambientales"
     ];
     return (
       <View style={{ backgroundColor: constants.SECONDARY_BG_COLOR }}>
@@ -139,7 +135,7 @@ class HomeScreen extends Component {
             }*/
             centerComponent={{
               text: "Bievenido a EcoHoteles!",
-              style: [styles.title, { width: "200%" }],
+              style: [styles.title, { width: "200%" }]
             }}
             rightComponent={
               <IconFontAwesome
@@ -169,7 +165,7 @@ class HomeScreen extends Component {
               <Text
                 style={[
                   styles.subtitle,
-                  { fontSize: 18, color: "rgba(0,0,0,.8)" },
+                  { fontSize: 17, color: "rgba(0,0,0,.8)" }
                 ]}
               >
                 1. Contanos a donde te gustaria viajar!
@@ -189,7 +185,7 @@ class HomeScreen extends Component {
             <View style={styles.field}>
               <View
                 style={{
-                  padding: 10,
+                  padding: 10
                 }}
               >
                 {/*Input de destino*/}
@@ -198,7 +194,7 @@ class HomeScreen extends Component {
                     name="search"
                     size={20}
                     color="black"
-                    style={styles.iconos}
+                    style={styles.iconosLupa}
                   />
                   <TextInput
                     placeholder="Ingresa la ciudad destino"
@@ -212,7 +208,7 @@ class HomeScreen extends Component {
                   style={[
                     styles.container,
                     styles.rowContainerInput,
-                    { marginVertical: 10 },
+                    { marginVertical: 10 }
                   ]}
                 >
                   <IconFontAwesome
@@ -230,10 +226,11 @@ class HomeScreen extends Component {
                       style={{
                         //borderWidth: 1,
                         borderColor: "grey",
-                        width: SCREEN_WIDTH-100,
+                        paddingLeft: 60,
+                        width: SCREEN_WIDTH - 90,
                         justifyContent: "center",
-                        flexDirection:'row',
-                        height:50
+                        flexDirection: "row",
+                        height: 50
                       }}
                     >
                       {/*<Text style={styles.label}>
@@ -245,14 +242,42 @@ class HomeScreen extends Component {
                             this.state.checkOutDate}
                     </Text>*/}
 
-                    <View style={{flex:1, position:'absolute',left:10,top:0,height:50,paddingHorizontal:40,borderTopWidth:1,borderLeftWidth:1,borderBottomWidth:1}}>
-                      <Text style={{fontSize: 16}}>Check-in</Text>
-                      <Text style={{fontSize: 16}}>{this.state.checkInDate}</Text>
-                    </View>
-                    <View style={{flex:1, position:'absolute',right:10,top:0,height:50,paddingHorizontal:40,borderTopWidth:1,borderRightWidth:1,borderBottomWidth:1}}>
-                      <Text style={{fontSize: 16}}>Check-out</Text>
-                      <Text style={{fontSize: 16}}>{this.state.checkOutDate}</Text>
-                    </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          position: "absolute",
+                          left: 10,
+                          top: 0,
+                          height: 50,
+                          paddingHorizontal: 40,
+                          borderTopWidth: 1,
+                          borderLeftWidth: 1,
+                          borderBottomWidth: 1
+                        }}
+                      >
+                        <Text style={{ fontSize: 16 }}>Check-in</Text>
+                        <Text style={{ fontSize: 14 }}>
+                          {this.state.checkInDate}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          position: "absolute",
+                          right: 10,
+                          top: 0,
+                          height: 50,
+                          paddingHorizontal: 40,
+                          borderTopWidth: 1,
+                          borderRightWidth: 1,
+                          borderBottomWidth: 1
+                        }}
+                      >
+                        <Text style={{ fontSize: 16 }}>Check-out</Text>
+                        <Text style={{ fontSize: 14 }}>
+                          {this.state.checkOutDate}
+                        </Text>
+                      </View>
                     </View>
                   </TouchableHighlight>
                   <Modal
@@ -263,17 +288,17 @@ class HomeScreen extends Component {
                     style={{
                       justifyContent: "flex-end",
                       margin: 0,
-                      maxHeight: "60%",
-                      backgroundColor: "white",
+                      maxHeight: "70%",
+                      backgroundColor: "white"
                     }}
                   >
                     <Calendar
-                      onCheckIn={(date) => {
+                      onCheckIn={date => {
                         this.setState({ checkInDate: date });
                       }}
-                      onCheckOut={(date) => {
+                      onCheckOut={date => {
                         this.setState({ checkOutDate: date });
-                        this.closeModal()
+                        this.closeModal();
                       }}
                     />
                   </Modal>
@@ -283,34 +308,34 @@ class HomeScreen extends Component {
                   style={[
                     //styles.container,
                     styles.rowContainerInput,
-                    { marginVertical: 10 },
+                    { marginVertical: 10 }
                   ]}
                 >
                   <View style={styles.optionInput}>
                     <Text>Habitaciones:</Text>
                     <NumericInput
-                    type='up-down'
-                    minValue={0}
+                      type="up-down"
+                      minValue={0}
                       value={this.state.habitaciones}
-                      onChange={(value) => this.setState({ habitaciones:value })}
+                      onChange={value => this.setState({ habitaciones: value })}
                     />
                   </View>
                   <View style={styles.optionInput}>
                     <Text>Adultos:</Text>
                     <NumericInput
-                    type='up-down'
-                    minValue={0}
+                      type="up-down"
+                      minValue={0}
                       value={this.state.adultos}
-                      onChange={(value) => this.setState({ adultos:value })}
+                      onChange={value => this.setState({ adultos: value })}
                     />
                   </View>
                   <View style={styles.optionInput}>
                     <Text>Niños:</Text>
                     <NumericInput
-                    type='up-down'
-                    minValue={0}
+                      type="up-down"
+                      minValue={0}
                       value={this.state.niños}
-                      onChange={(value) => this.setState({ niños:value })}
+                      onChange={value => this.setState({ niños: value })}
                     />
                   </View>
                 </View>
@@ -320,7 +345,7 @@ class HomeScreen extends Component {
           <TouchableWithoutFeedback
             onPress={() => {
               this.setState({
-                secondCollapsable: !this.state.secondCollapsable,
+                secondCollapsable: !this.state.secondCollapsable
               });
             }}
           >
@@ -328,7 +353,7 @@ class HomeScreen extends Component {
               <Text
                 style={[
                   styles.subtitle,
-                  { fontSize: 18, color: "rgba(0,0,0,.8)" },
+                  { fontSize: 16, color: "rgba(0,0,0,.8)" }
                 ]}
               >
                 2. Tenes preferencias eco ambientales?
@@ -373,13 +398,13 @@ const styles = StyleSheet.create({
   container: {
     //backgroundColor: constants.SECONDARY_BG_COLOR,
     flex: 1,
-    width: "100%",
+    width: "100%"
   },
   title: {
     fontSize: 25,
     color: constants.PRIMARY_BG_COLOR,
     fontWeight: "700",
-    textAlign: "center",
+    textAlign: "center"
   },
   titleLogueado: {
     fontSize: 24,
@@ -388,7 +413,7 @@ const styles = StyleSheet.create({
     width: 300,
     //textAlign: "center",
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 20
   },
   subtitle: {
     fontSize: 20,
@@ -396,39 +421,40 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     //width: 300,
     //textAlign: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
     //paddingBottom:10,
     //marginTop: 40,
   },
   collapsable: {
     backgroundColor: "#EEE",
     height: hp("6"),
-    justifyContent: "center",
+    justifyContent: "center"
   },
   field: {
     paddingVertical: 10,
-    paddingHorizontal:20
+    paddingHorizontal: 20
   },
   label: {
     /*fontSize: 18,
     color: 'black',
     fontWeight: "700",   */
     fontSize: 18,
-    color: "rgba(0,0,0,.7)",
+    color: "rgba(0,0,0,.7)"
     ////fontFamily: 'Avenir'
   },
   labelTitulo: {
     fontSize: 18,
     color: constants.PRIMARY_BG_COLOR,
-    fontWeight: "700",
+    fontWeight: "700"
   },
   saltoLinea: {
-    height: 20,
+    height: 20
   },
   textInput: {
-    textAlign: "center",
+    textAlign: "center"
   },
-  iconos: { paddingRight: 10 },
+  iconos: { paddingRight: 0 },
+  iconosLupa: { paddingRight: 10 },
   rowContainer: {
     //flex: 1,
     //flexDirection: "row",
@@ -436,33 +462,33 @@ const styles = StyleSheet.create({
   checkbox: {
     width: SCREEN_WIDTH - 60,
     borderRadius: 20,
-    borderWidth: 0,
+    borderWidth: 0
     //padding:0
     //height:110
   },
   rowContainerInput: {
     alignItems: "center",
-    flexDirection: "row",
+    flexDirection: "row"
     //height: 40,
   },
-  optionInput: { width: 120, height: 40, alignItems: "center" },
+  optionInput: { width: 100, height: 40, alignItems: "center", marginLeft: 5 },
   columnContainer: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: "column"
   },
   botonBuscar: {
     backgroundColor: constants.PRIMARY_BG_COLOR,
     borderRadius: 80,
     marginTop: 10,
     marginLeft: 20,
-    marginRight: 20,
+    marginRight: 20
     //width: SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3,
     //alignSelf: "center",
   },
   botonBuscarContainer: {
     width: wp("100%"),
     alignSelf: "center",
-    borderColor: "#4D4DEB",
+    borderColor: "#4D4DEB"
   },
   preferenciasContainer: {
     flex: 1,
@@ -471,7 +497,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     //backgroundColor: "#F5FCFF",
     alignItems: "center",
-    alignSelf: "center",
+    alignSelf: "center"
   },
   preferenciasBotonText: { fontSize: 15, color: "white" },
   preferenciasBotonSeleccionado: {
@@ -480,7 +506,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 127,
     height: 100,
-    backgroundColor: "#4D4DEB",
+    backgroundColor: "#4D4DEB"
   },
   preferenciasBotonNoSeleccionado: {
     borderWidth: 1,
@@ -488,8 +514,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 127,
     height: 100,
-    backgroundColor: "black",
-  },
+    backgroundColor: "black"
+  }
 });
 
 export default HomeScreen;

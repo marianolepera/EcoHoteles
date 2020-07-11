@@ -226,7 +226,7 @@ class HotelsScreen extends Component {
               <Text
                 style={{
                   fontWeight: "bold",
-                  fontSize: 19 /*color: "grey",*/,
+                  fontSize: 17 /*color: "grey",*/,
                   fontStyle: "normal"
                 }}
               >
@@ -1058,7 +1058,7 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     backgroundColor: "white",
-    maxHeight: "90%"
+    maxHeight: "97%"
   },
   modalContainer: {},
   modalTexto: {},
