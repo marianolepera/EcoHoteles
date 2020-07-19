@@ -23,7 +23,7 @@ export default class BackgroundButton extends Component {
     return StyleSheet.create({
       view: {
         flexDirection: "row",
-        borderRadius: 23,
+        borderRadius: 10,
         borderColor: this.props.borderColor,
         borderWidth: 2,
         backgroundColor: this.props.backgroundColor,

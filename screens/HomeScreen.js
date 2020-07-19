@@ -7,7 +7,7 @@ import {
   Image,
   ScrollView,
   TouchableWithoutFeedback,
-  TouchableHighlight
+  TouchableHighlight,
 } from "react-native";
 import { Button, Input, CheckBox, Header } from "react-native-elements";
 import Loading from "../components/Loading/index";
@@ -21,10 +21,13 @@ import Calendar from "../components/Calendar/index";
 import TagsView from "../components/TagsView/index";
 import Modal from "react-native-modal";
 
+import { create, PREDEF_RES } from "react-native-pixel-perfect";
+const calcSize = create(PREDEF_RES.iphone7.px);
+
 const SCREEN_WIDTH = Dimensions.get("window").width;
 import {
   widthPercentageToDP as wp,
-  heightPercentageToDP as hp
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 /*import {
   TouchableWithoutFeedback,
@@ -39,7 +42,7 @@ class HomeScreen extends Component {
     this.state = {
       isModalVisible: false,
       firstCollapsable: true,
-      secondCollapsable: false,
+      secondCollapsable: true,
       isUserLogueado: usuarioLogueado,
       checkInDate: "",
       checkOutDate: "",
@@ -48,7 +51,9 @@ class HomeScreen extends Component {
       habitaciones: 0,
       adultos: 0,
       niños: 0,
-      destino: ""
+      destino: "",
+      borderWidthColor: 0.5,
+      preferenciasSeleccionadas: []
     };
   }
 
@@ -77,7 +82,7 @@ class HomeScreen extends Component {
       this.state.compostaje,
       this.state.reciclaje,
       this.state.excursionesEcoAmbientales,
-      this.state.productosNaturalesParaElHigiene
+      this.state.productosNaturalesParaElHigiene,
     ];
 
     let preferenciasSelected = [];
@@ -87,35 +92,32 @@ class HomeScreen extends Component {
       destino: this.state.destino,
       fechas: {
         fechaDesde: this.state.checkInDate ? this.state.checkInDate : "",
-        fechaHasta: this.state.checkOutDate ? this.state.checkOutDate : ""
+        fechaHasta: this.state.checkOutDate ? this.state.checkOutDate : "",
       },
-      preferencias: preferenciasSelected,
+      preferencias: this.state.preferenciasSeleccionadas,
       habitaciones: this.state.habitaciones,
       adultos: this.state.adultos,
-      ninos: this.state.ninos
+      ninos: this.state.ninos,
     };
 
     this.props.navigation.navigate("Drawer", {
-      filtros: result
+      filtros: result,
     });
     this.setState({ loading: false });
   }
 
-  handleDestino = text => {
+  handleDestino = (text) => {
     this.setState({ destino: text });
   };
 
   render() {
-    let selected = [
-      /*"Swift", "Kotlin"*/
-    ];
     let tags = [
       "Ahorro de agua",
       "Ahorro de energía",
       "Reciclaje",
       "Compostaje",
       "Productos naturales para el higiene",
-      "Excursiones eco ambientales"
+      "Excursiones eco ambientales",
     ];
     return (
       <View style={{ backgroundColor: constants.SECONDARY_BG_COLOR }}>
@@ -135,7 +137,7 @@ class HomeScreen extends Component {
             }*/
             centerComponent={{
               text: "Bievenido a EcoHoteles!",
-              style: [styles.title, { width: "200%" }]
+              style: [styles.title, { width: "200%" }],
             }}
             rightComponent={
               <IconFontAwesome
@@ -156,50 +158,57 @@ class HomeScreen extends Component {
               <Text style={styles.titleLogueado}>Hola John!</Text>
             </View>
           ) : null}
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.setState({ firstCollapsable: !this.state.firstCollapsable });
-            }}
-          >
-            <View style={styles.collapsable}>
-              <Text
-                style={[
-                  styles.subtitle,
-                  { fontSize: 17, color: "rgba(0,0,0,.8)" }
-                ]}
-              >
-                1. Contanos a donde te gustaria viajar!
-              </Text>
-              <Ionicons
-                name={
-                  this.state.firstCollapsable
-                    ? "ios-arrow-up"
-                    : "ios-arrow-down"
-                }
-                size={30}
-                style={{ position: "absolute", zIndex: 2, right: 20 }}
-              />
-            </View>
-          </TouchableWithoutFeedback>
           {this.state.firstCollapsable ? (
             <View style={styles.field}>
               <View
                 style={{
-                  padding: 10
+                  padding: 10,
                 }}
               >
                 {/*Input de destino*/}
-                <View style={(styles.container, styles.rowContainerInput)}>
-                  <IconFontAwesome
-                    name="search"
-                    size={20}
-                    color="black"
-                    style={styles.iconosLupa}
-                  />
-                  <TextInput
+                <View style={{ paddingBottom: 10 }}>
+                  <Text style={{ fontSize: 24, fontWeight: "400", width: 300 }}>
+                    Destino
+                  </Text>
+                </View>
+                <View style={styles.rowContainerInput}>
+                  {/*<TextInput
                     placeholder="Ingresa la ciudad destino"
                     onChangeText={this.handleDestino}
                     style={{ width: 250, height: 40 }}
+                  />*/}
+                  <TextInput
+                    label="Ciudad de destino"
+                    returnKeyType="next"
+                    onChangeText={this.handleDestino}
+                    error={false}
+                    errorText={""}
+                    autoCapitalize="none"
+                    mode="flat"
+                    style={{
+                      width: SCREEN_WIDTH - 90,
+                      marginRight: 0,
+                      paddingRight: 0,
+                      backgroundColor: "white",
+                      borderBottomColor: "grey",
+                      borderBottomWidth: this.state.borderWidthColor,
+                    }}
+                    onFocus={() =>
+                      this.setState({
+                        borderWidthColor: 0,
+                      })
+                    }
+                    onBlur={() =>
+                      this.setState({
+                        borderWidthColor: 0.5,
+                      })
+                    }
+                  />
+                  <IconFontAwesome
+                    name="search"
+                    size={20}
+                    //color="black"
+                    style={styles.iconosLupa}
                   />
                 </View>
 
@@ -207,77 +216,54 @@ class HomeScreen extends Component {
                 <View
                   style={[
                     styles.container,
-                    styles.rowContainerInput,
-                    { marginVertical: 10 }
+                    //styles.rowContainerInput,
+                    { marginVertical: 10 },
                   ]}
                 >
-                  <IconFontAwesome
-                    name="calendar"
-                    size={20}
-                    color="black"
-                    style={styles.iconos}
-                  />
+                  <View style={{ paddingBottom: 10 }}>
+                    <Text
+                      style={{ fontSize: 24, fontWeight: "400", width: 300 }}
+                    >
+                      Fechas
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: "#C6D2D4" }}>
+                      Check in - Check out
+                    </Text>
+                  </View>
                   <TouchableHighlight
                     onPress={() => {
                       this.openModal();
                     }}
                   >
-                    <View
-                      style={{
-                        //borderWidth: 1,
-                        borderColor: "grey",
-                        paddingLeft: 60,
-                        width: SCREEN_WIDTH - 90,
-                        justifyContent: "center",
-                        flexDirection: "row",
-                        height: 50
-                      }}
-                    >
-                      {/*<Text style={styles.label}>
-                        {this.state.checkOutDate == "" &&
-                        this.state.checkInDate == ""
-                          ? "Selecioná las fechas de ingreso y egreso"
-                          : this.state.checkInDate +
-                            "/" +
-                            this.state.checkOutDate}
-                    </Text>*/}
-
+                    <View style={styles.rowContainerInput}>
                       <View
                         style={{
-                          flex: 1,
-                          position: "absolute",
-                          left: 10,
-                          top: 0,
+                          borderWidth: 0.5,
+                          borderColor: "white",
+                          paddingLeft: 60,
+                          width: SCREEN_WIDTH - 90,
+                          justifyContent: "center",
                           height: 50,
-                          paddingHorizontal: 40,
-                          borderTopWidth: 1,
-                          borderLeftWidth: 1,
-                          borderBottomWidth: 1
+                          //backgroundColor: "red",
+                          borderBottomColor: "grey",
                         }}
                       >
-                        <Text style={{ fontSize: 16 }}>Check-in</Text>
-                        <Text style={{ fontSize: 14 }}>
-                          {this.state.checkInDate}
+                        <Text>
+                          {this.state.checkInDate != ""
+                            ? this.state.checkInDate +
+                              " - " +
+                              this.state.checkOutDate
+                            : ""}
                         </Text>
                       </View>
-                      <View
-                        style={{
-                          flex: 1,
-                          position: "absolute",
-                          right: 10,
-                          top: 0,
-                          height: 50,
-                          paddingHorizontal: 40,
-                          borderTopWidth: 1,
-                          borderRightWidth: 1,
-                          borderBottomWidth: 1
-                        }}
-                      >
-                        <Text style={{ fontSize: 16 }}>Check-out</Text>
-                        <Text style={{ fontSize: 14 }}>
-                          {this.state.checkOutDate}
-                        </Text>
-                      </View>
+                      <IconFontAwesome
+                        name="calendar"
+                        size={20}
+                        color="black"
+                        style={styles.iconos}
+                      />
                     </View>
                   </TouchableHighlight>
                   <Modal
@@ -289,14 +275,14 @@ class HomeScreen extends Component {
                       justifyContent: "flex-end",
                       margin: 0,
                       maxHeight: "70%",
-                      backgroundColor: "white"
+                      backgroundColor: "white",
                     }}
                   >
                     <Calendar
-                      onCheckIn={date => {
+                      onCheckIn={(date) => {
                         this.setState({ checkInDate: date });
                       }}
-                      onCheckOut={date => {
+                      onCheckOut={(date) => {
                         this.setState({ checkOutDate: date });
                         this.closeModal();
                       }}
@@ -304,75 +290,78 @@ class HomeScreen extends Component {
                   </Modal>
                 </View>
                 {/*Inputs de hospedaje*/}
-                <View
-                  style={[
-                    //styles.container,
-                    styles.rowContainerInput,
-                    { marginVertical: 10 }
-                  ]}
-                >
-                  <View style={styles.optionInput}>
+                <View style={{ paddingBottom: 10 }}>
+                  <Text style={{ fontSize: 24, fontWeight: "400", width: 300 }}>
+                    Pasajeros
+                  </Text>
+                </View>
+                {/*<View style={[{ marginVertical: 10 }]}>
+                  <View style={styles.rowContainerInput}>
                     <Text>Habitaciones:</Text>
-                    <NumericInput
-                      type="up-down"
-                      minValue={0}
-                      value={this.state.habitaciones}
-                      onChange={value => this.setState({ habitaciones: value })}
-                    />
+                    <View style={styles.optionInput}>
+                      <NumericInput
+                        initValue={1}
+                        minValue={1}
+                        rounded
+                        borderColor={constants.PRIMARY_BG_COLOR}
+                        //inputStyle={{ borderColor: "white" }}
+                        totalWidth={calcSize(300)}
+                        totalHeight={calcSize(80)}
+                      />
+                    </View>
                   </View>
-                  <View style={styles.optionInput}>
+                </View>
+                    */}
+                <View style={[{ marginBottom: 20, marginTop: 10 }]}>
+                  <View style={styles.rowContainerInput}>
                     <Text>Adultos:</Text>
-                    <NumericInput
-                      type="up-down"
-                      minValue={0}
-                      value={this.state.adultos}
-                      onChange={value => this.setState({ adultos: value })}
-                    />
+                    <View style={styles.optionInput}>
+                      <NumericInput
+                        initValue={1}
+                        minValue={1}
+                        rounded
+                        borderColor={constants.PRIMARY_BG_COLOR}
+                        //inputStyle={{ borderColor: "white" }}
+                        totalWidth={calcSize(300)}
+                        totalHeight={calcSize(80)}
+                      />
+                    </View>
                   </View>
-                  <View style={styles.optionInput}>
+                </View>
+                <View style={[{ marginTop: 10 }]}>
+                  <View style={styles.rowContainerInput}>
                     <Text>Niños:</Text>
-                    <NumericInput
-                      type="up-down"
-                      minValue={0}
-                      value={this.state.niños}
-                      onChange={value => this.setState({ niños: value })}
-                    />
+                    <View style={styles.optionInput}>
+                      <NumericInput
+                        initValue={0}
+                        minValue={0}
+                        rounded
+                        borderColor={constants.PRIMARY_BG_COLOR}
+                        //inputStyle={{ borderColor: "white" }}
+                        totalWidth={calcSize(300)}
+                        totalHeight={calcSize(80)}
+                      />
+                    </View>
                   </View>
                 </View>
               </View>
             </View>
           ) : null}
-          <TouchableWithoutFeedback
-            onPress={() => {
-              this.setState({
-                secondCollapsable: !this.state.secondCollapsable
-              });
-            }}
-          >
-            <View style={[styles.collapsable, { marginTop: 20 }]}>
-              <Text
-                style={[
-                  styles.subtitle,
-                  { fontSize: 16, color: "rgba(0,0,0,.8)" }
-                ]}
-              >
-                2. Tenes preferencias eco ambientales?
-              </Text>
-              <Ionicons
-                name={
-                  this.state.secondCollapsable
-                    ? "ios-arrow-up"
-                    : "ios-arrow-down"
-                }
-                size={30}
-                style={{ position: "absolute", zIndex: 2, right: 20 }}
-              />
-            </View>
-          </TouchableWithoutFeedback>
           {this.state.secondCollapsable ? (
-            <View>
-              {/*Visualizacion de preferencias*/}
-              <TagsView all={tags} selected={selected} isExclusive={false} />
+            <View style={styles.field}>
+              <View
+                style={{
+                  padding: 10,
+                }}
+              >
+                {/*Visualizacion de preferencias*/}
+                <View style={{ paddingBottom: 10 }}>
+                  <Text style={{ fontSize: 24, fontWeight: "400", width: 300 }}>
+                    Preferencias Ambientales
+                  </Text>
+                </View>
+                <TagsView all={tags} selected={this.state.preferenciasSeleccionadas} isExclusive={false} />
+              </View>
             </View>
           ) : null}
           {/*Boton Buscar*/}
@@ -398,13 +387,13 @@ const styles = StyleSheet.create({
   container: {
     //backgroundColor: constants.SECONDARY_BG_COLOR,
     flex: 1,
-    width: "100%"
+    width: "100%",
   },
   title: {
     fontSize: 25,
     color: constants.PRIMARY_BG_COLOR,
     fontWeight: "700",
-    textAlign: "center"
+    textAlign: "center",
   },
   titleLogueado: {
     fontSize: 24,
@@ -413,7 +402,7 @@ const styles = StyleSheet.create({
     width: 300,
     //textAlign: "center",
     paddingHorizontal: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   subtitle: {
     fontSize: 20,
@@ -421,40 +410,40 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     //width: 300,
     //textAlign: "center",
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
     //paddingBottom:10,
     //marginTop: 40,
   },
   collapsable: {
     backgroundColor: "#EEE",
     height: hp("6"),
-    justifyContent: "center"
+    justifyContent: "center",
   },
   field: {
     paddingVertical: 10,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   label: {
     /*fontSize: 18,
     color: 'black',
     fontWeight: "700",   */
     fontSize: 18,
-    color: "rgba(0,0,0,.7)"
+    color: "rgba(0,0,0,.7)",
     ////fontFamily: 'Avenir'
   },
   labelTitulo: {
     fontSize: 18,
     color: constants.PRIMARY_BG_COLOR,
-    fontWeight: "700"
+    fontWeight: "700",
   },
   saltoLinea: {
-    height: 20
+    height: 20,
   },
   textInput: {
-    textAlign: "center"
+    textAlign: "center",
   },
   iconos: { paddingRight: 0 },
-  iconosLupa: { paddingRight: 10 },
+  iconosLupa: { marginLeft: -30, paddingLeft: 0 },
   rowContainer: {
     //flex: 1,
     //flexDirection: "row",
@@ -462,33 +451,36 @@ const styles = StyleSheet.create({
   checkbox: {
     width: SCREEN_WIDTH - 60,
     borderRadius: 20,
-    borderWidth: 0
+    borderWidth: 0,
     //padding:0
     //height:110
   },
   rowContainerInput: {
     alignItems: "center",
-    flexDirection: "row"
+    flexDirection: "row",
     //height: 40,
   },
-  optionInput: { width: 100, height: 40, alignItems: "center", marginLeft: 5 },
+  optionInput: {
+    position: "absolute",
+    right: 10,
+  },
   columnContainer: {
     flex: 1,
-    flexDirection: "column"
+    flexDirection: "column",
   },
   botonBuscar: {
     backgroundColor: constants.PRIMARY_BG_COLOR,
     borderRadius: 80,
     marginTop: 10,
     marginLeft: 20,
-    marginRight: 20
+    marginRight: 20,
     //width: SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3,
     //alignSelf: "center",
   },
   botonBuscarContainer: {
     width: wp("100%"),
     alignSelf: "center",
-    borderColor: "#4D4DEB"
+    borderColor: "#4D4DEB",
   },
   preferenciasContainer: {
     flex: 1,
@@ -497,7 +489,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     //backgroundColor: "#F5FCFF",
     alignItems: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   preferenciasBotonText: { fontSize: 15, color: "white" },
   preferenciasBotonSeleccionado: {
@@ -506,7 +498,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 127,
     height: 100,
-    backgroundColor: "#4D4DEB"
+    backgroundColor: "#4D4DEB",
   },
   preferenciasBotonNoSeleccionado: {
     borderWidth: 1,
@@ -514,8 +506,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: 127,
     height: 100,
-    backgroundColor: "black"
-  }
+    backgroundColor: "black",
+  },
 });
 
 export default HomeScreen;

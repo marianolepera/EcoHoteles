@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
-    padding: 20,
+    //padding: 20,
   },
 });
 const addOrRemove = (array, item) => {

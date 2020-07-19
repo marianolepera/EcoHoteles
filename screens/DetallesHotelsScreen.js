@@ -24,6 +24,9 @@ import HeartButton from "../components/HeartButton/index";
 import CommentsList from "../components/Comments/commentsList";
 import UnderlineExample from "../components/UnderlineCode/UnderLineCode";
 import MostrarForm from "../components/MostrarForm/MostrarForm";
+import Detalle from "../components/AboutTab/Detalle";
+import Comentarios from "../components/AboutTab/Comentarios";
+
 const { width, height } = Dimensions.get("window");
 const WATER_IMAGE = require("../assets/hoja-icon.png");
 
@@ -114,7 +117,7 @@ class DetallesHotelsScreen extends Component {
         routes: [
           { key: "about", title: "Detalle" },
           { key: "review", title: "Comentarios" },
-          { key: "map", title: "Ubicación" },
+          //{ key: "map", title: "Ubicación" },
           { key: "rating", title: "Calificar" }
         ]
       }
@@ -127,9 +130,9 @@ class DetallesHotelsScreen extends Component {
   };
 
   _renderScene = SceneMap({
-    about: () => AboutRoute(this.props.navigation.getParam("Detalleshotel")),
-    review: ReviewRoute,
-    map: () => MapRoute(this.props.navigation.getParam("Detalleshotel")),
+    about: () => <Detalle hotel={this.props.navigation.getParam("Detalleshotel")}/>,//() => AboutRoute(this.props.navigation.getParam("Detalleshotel")),
+    review: () => <Comentarios/>,
+    //map: () => MapRoute(this.props.navigation.getParam("Detalleshotel")),
     rating: RatingRoute
   });
 
@@ -149,20 +152,7 @@ class DetallesHotelsScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.container}>
-          {/*<Header
-            backgroundColor={"white"}
-            containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
-            leftComponent={
-              <Ionicons
-                name="md-arrow-back"
-                size={30}
-                onPress={() => {
-                  this.props.navigation.goBack();
-                }}
-              />
-            }
-            rightComponent={<ShareButton navigation={this.props.navigation} />}
-          />*/}
+
           {/*Iconos posicionados a la misma altura Y*/}
           <View
             style={
@@ -277,7 +267,7 @@ class DetallesHotelsScreen extends Component {
                 style={{ paddingVertical: 10 }}
                 readonly
               />
-            </View>
+            </View>         
             <TabView
               navigationState={navigationOptions}
               renderScene={this._renderScene}
@@ -311,8 +301,8 @@ class DetallesHotelsScreen extends Component {
                   )}
                 />
               )}
-            />
-          </ScrollView>
+            />    
+          </ScrollView>          
         </View>
       </View>
     );
