@@ -35,7 +35,7 @@ export default class CommentsList extends Component {
         {
           id: 2,
           image: "https://bootdey.com/img/Content/avatar/avatar6.png",
-          name: "John DoeLink",
+          name: "Marcos DoeLink",
           time: "12:50 pm",
           comment:
             "La habitación muy bonita, la ubicación espectacular, la bienvenida muy acogedora. Observaciones: Bio-arquitectura, Bombillas de bajo consumo."

@@ -53,7 +53,7 @@ class HomeScreen extends Component {
       niños: 0,
       destino: "",
       borderWidthColor: 0.5,
-      preferenciasSeleccionadas: []
+      preferenciasSeleccionadas: [],
     };
   }
 
@@ -94,7 +94,7 @@ class HomeScreen extends Component {
         fechaDesde: this.state.checkInDate ? this.state.checkInDate : "",
         fechaHasta: this.state.checkOutDate ? this.state.checkOutDate : "",
       },
-      preferencias: this.state.preferenciasSeleccionadas,
+      preferencias: preferenciasSelected, //this.state.preferenciasSeleccionadas,
       habitaciones: this.state.habitaciones,
       adultos: this.state.adultos,
       ninos: this.state.ninos,
@@ -125,18 +125,8 @@ class HomeScreen extends Component {
           <Header
             backgroundColor={constants.SECONDARY_BG_COLOR}
             containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
-            /*leftComponent={
-              <Icon
-                name="menu"
-                onPress={() =>
-                  alert(
-                    "Funcionalidad en desarrollo. Avance a la próxima pantalla por favor"
-                  )
-                }
-              />
-            }*/
             centerComponent={{
-              text: "Bievenido a EcoHoteles!",
+              text: "Bienvenidos a EcoHoteles!",
               style: [styles.title, { width: "200%" }],
             }}
             rightComponent={
@@ -155,7 +145,7 @@ class HomeScreen extends Component {
         <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
           {this.state.isUserLogueado ? (
             <View>
-              <Text style={styles.titleLogueado}>Hola John!</Text>
+              <Text style={styles.titleLogueado}>Hola Marcos!</Text>
             </View>
           ) : null}
           {this.state.firstCollapsable ? (
@@ -172,13 +162,8 @@ class HomeScreen extends Component {
                   </Text>
                 </View>
                 <View style={styles.rowContainerInput}>
-                  {/*<TextInput
-                    placeholder="Ingresa la ciudad destino"
-                    onChangeText={this.handleDestino}
-                    style={{ width: 250, height: 40 }}
-                  />*/}
                   <TextInput
-                    label="Ciudad de destino"
+                    label="Ciudad o país de destino"
                     returnKeyType="next"
                     onChangeText={this.handleDestino}
                     error={false}
@@ -274,7 +259,7 @@ class HomeScreen extends Component {
                     style={{
                       justifyContent: "flex-end",
                       margin: 0,
-                      maxHeight: "70%",
+                      maxHeight: "100%",
                       backgroundColor: "white",
                     }}
                   >
@@ -283,7 +268,9 @@ class HomeScreen extends Component {
                         this.setState({ checkInDate: date });
                       }}
                       onCheckOut={(date) => {
-                        this.setState({ checkOutDate: date });
+                        if (date != "") {
+                          this.setState({ checkOutDate: date });
+                        }
                         this.closeModal();
                       }}
                     />
@@ -324,6 +311,7 @@ class HomeScreen extends Component {
                         //inputStyle={{ borderColor: "white" }}
                         totalWidth={calcSize(300)}
                         totalHeight={calcSize(80)}
+                        onChange={() => null}
                       />
                     </View>
                   </View>
@@ -340,6 +328,7 @@ class HomeScreen extends Component {
                         //inputStyle={{ borderColor: "white" }}
                         totalWidth={calcSize(300)}
                         totalHeight={calcSize(80)}
+                        onChange={() => null}
                       />
                     </View>
                   </View>
@@ -360,7 +349,11 @@ class HomeScreen extends Component {
                     Preferencias Ambientales
                   </Text>
                 </View>
-                <TagsView all={tags} selected={this.state.preferenciasSeleccionadas} isExclusive={false} />
+                <TagsView
+                  all={tags}
+                  selected={this.state.preferenciasSeleccionadas}
+                  isExclusive={false}
+                />
               </View>
             </View>
           ) : null}
@@ -390,7 +383,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   title: {
-    fontSize: 25,
+    fontSize: 23,
     color: constants.PRIMARY_BG_COLOR,
     fontWeight: "700",
     textAlign: "center",

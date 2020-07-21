@@ -98,7 +98,7 @@ class TopHotelsScreen extends Component {
         >
           <Image
             resizeMode={"contain"}
-            style={{ width: width / 3, height: width / 3 }}
+            style={{ width: width / 2, height: width / 3 }}
             source={{ uri: item.image }}
           />
           <View
@@ -109,10 +109,28 @@ class TopHotelsScreen extends Component {
               justifyContent: "space-between",
             }}
           >
-            <View>
-              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+            <View style={styles.textContainer}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 17 /*color: "grey",*/,
+                  fontStyle: "normal",
+                }}
+              >
                 {item.name}
               </Text>
+              <Text style={{ fontWeight: "100", fontSize: 15, color: "grey" }}>
+                {item.ubicacion}
+              </Text>
+              <View style={styles.hotelItemRanking}>
+                <Text
+                  style={{ fontWeight: "100", fontSize: 15 /*color: "grey"*/ }}
+                >{`${item.nivel_eco}`}</Text>
+                <Image
+                  source={require("../assets/hoja-icon.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </View>
             </View>
             <View
               style={{
@@ -136,28 +154,15 @@ class TopHotelsScreen extends Component {
   }
 
   render() {
-    if (this.state.dataFav.length == 0) {
-      return (
-        <ScrollView
-          contentContainerStyle={styles.container}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.onRefresh}
-            />
-          }
-        >
-          <View style={styles.container}>
-            <Text style={[styles.label, styles.description]}>
-              Ups! Parece que no tenes favoritos. Empieza a agregarlos!
-            </Text>
-          </View>
-        </ScrollView>
-      );
-    } else {
+    if (this.state.dataFav != undefined && this.state.dataFav.length == 0) {
       return (
         <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "white",
+          }}
         >
           <Header
             backgroundColor={constants.PRIMARY_BG_COLOR}
@@ -168,9 +173,51 @@ class TopHotelsScreen extends Component {
                 onPress={() => this.props.navigation.openDrawer()}
               />
             }
-            centerComponent={
-              {text: 'Mis favoritos', style: {fontSize: 20, fontWeight: "700", color:'white'}}
+            centerComponent={{
+              text: "Mis favoritos",
+              style: { fontSize: 20, fontWeight: "700", color: "white" },
+            }}
+          />
+          <ScrollView
+            contentContainerStyle={styles.container}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh}
+              />
             }
+          >
+            <View style={styles.container}>
+              <Text style={[styles.label, styles.description]}>
+                Ups! Parece que no tenes favoritos. Empieza a agregarlos!
+              </Text>
+            </View>
+          </ScrollView>
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "white",
+          }}
+        >
+          <Header
+            backgroundColor={constants.PRIMARY_BG_COLOR}
+            containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
+            leftComponent={
+              <Icon
+                name="menu"
+                onPress={() => this.props.navigation.openDrawer()}
+              />
+            }
+            centerComponent={{
+              text: "Mis favoritos",
+              style: { fontSize: 20, fontWeight: "700", color: "white" },
+            }}
           />
           <View style={{ flex: 1 }}>
             <ScrollView
@@ -188,9 +235,7 @@ class TopHotelsScreen extends Component {
                 renderItem={({ item }) => this.renderItemHotel(item)}
                 keyExtractor={(item, index) => index.toString()}
               />
-              <View style={{ height: 20 }} />
-
-              <TouchableOpacity
+              {/*<TouchableOpacity
                 onPress={() => this.limpiarData()}
                 style={{
                   backgroundColor: constants.PRIMARY_BG_COLOR,
@@ -209,7 +254,7 @@ class TopHotelsScreen extends Component {
                 >
                   Vaciar Favoritos
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity>*/}
             </ScrollView>
           </View>
         </View>
@@ -225,7 +270,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 20,
   },
-
+  hotelItemRanking: {
+    flexDirection: "row",
+    position: "absolute",
+    right: 30,
+    top: 80,
+    alignSelf: "center",
+  },
+  hotelItemFav: {
+    position: "absolute",
+    right: 32,
+    top: 20,
+    zIndex: 2,
+    backgroundColor: "rgba(240, 255, 255, 0.3)",
+    padding: 5,
+    borderRadius: 10,
+  },
   imageFood: {
     height: hp("100%"), // 70% of height device screen
     width: wp("100%"), // 80% of width device screen

@@ -35,6 +35,7 @@ import HeartButton from "../components/HeartButton/index";
 import HotelesRecomendados from "../components/HotelesRecomendados/index";
 import constants from "../config/constants";
 import { ScrollView } from "react-native-gesture-handler";
+import CustomButton from "../components/Button/Button";
 
 var { height, width } = Dimensions.get("window");
 
@@ -60,18 +61,21 @@ class HotelsScreen extends Component {
         {
           title: "Hix Island House",
           text: "Puerto Rico, Caribe",
+          nivel_eco: 4,
           thumbnail:
             "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/marataba.jpg",
         },
         {
           title: "Whitepod Eco-Luxury Hotel",
           text: "Suiza",
+          nivel_eco: 4,
           thumbnail:
             "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/chile.jpg",
         },
         {
           title: "Treehotel",
           text: "Suecia",
+          nivel_eco: 4,
           thumbnail:
             "https://saposyprincesas.elmundo.es/wp-content/uploads/2019/10/japon.jpg",
         },
@@ -112,13 +116,16 @@ class HotelsScreen extends Component {
     return fetch(url, { method: "GET" })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(filtros);
+        //console.log(filtros);
         let hotelesFiltrados = [];
         //si hay preferencias, itero
-        console.log(responseJson[0])
+        //console.log(responseJson[0])
         if (filtros.preferencias.length > 0) {
-          /*for (let indexPreferencia in filtros.preferencias) {
-            let preferencia = filtros.preferencias[indexPreferencia].toLowerCase().split(' ').join('_');
+          for (let indexPreferencia in filtros.preferencias) {
+            let preferencia = filtros.preferencias[indexPreferencia]
+              .toLowerCase()
+              .split(" ")
+              .join("_");
             for (let indexHotel in responseJson) {
               let hotel = responseJson[indexHotel];
               if (
@@ -128,8 +135,8 @@ class HotelsScreen extends Component {
                 hotelesFiltrados.push(hotel);
               }
             }
-          }*/
-          for(let indexHotel in responseJson){
+          }
+          /*for(let indexHotel in responseJson){
             let hotel = responseJson[indexHotel];
             let agregar = true;
             for (let indexPreferencia in filtros.preferencias) {
@@ -142,7 +149,7 @@ class HotelsScreen extends Component {
             if(agregar){
               hotelesFiltrados.push(hotel)
             }
-          }
+          }*/
         } else {
           //sino, muestro todos
           hotelesFiltrados = responseJson;
@@ -216,6 +223,7 @@ class HotelsScreen extends Component {
   };
 
   renderItemHotel(item) {
+    console.log(item.name + " " + item.inFav);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -227,12 +235,14 @@ class HotelsScreen extends Component {
         <View>
           <View>
             <View style={styles.hotelItemFav}>
-              <HeartButton
-                color="rgba(255, 255, 255, 0.8)"
-                selectedColor="red"
-                onPress={(item) => this.onClickAddFav(item)}
-                item={item}
-              />
+              {item != undefined ? (
+                <HeartButton
+                  color="rgba(255, 255, 255, 0.8)"
+                  selectedColor="red"
+                  onPress={(item) => this.onClickAddFav(item)}
+                  item={item}
+                />
+              ) : null}
             </View>
             <Image style={styles.hotelItemImage} source={{ uri: item.image }} />
           </View>
@@ -884,111 +894,82 @@ class HotelsScreen extends Component {
     if (!this.state.completed) {
       return <Loading />;
     } else {
-      return (
-        <View style={styles.container}>
-          <Header
-            backgroundColor={constants.PRIMARY_BG_COLOR}
-            containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
-            leftComponent={
-              <Icon
-                name="menu"
-                onPress={() => this.props.navigation.openDrawer()}
-              />
-            }
-            rightComponent={
-              <IconFontisto
-                name="map-pin"
-                size={25}
-                backgroundColor="transparent"
-                underlayColor="transparent"
-                onPress={() => {
-                  this.props.navigation.navigate("Mapas", {
-                    Hoteles: this.state.dataHotel,
-                  });
-                }}
-                style={{ marginRight: 10 }}
-              />
-            }
-            centerComponent={
-              this
-                .renderSearchBar /*{ text: 'MY TITLE', style: { color: '#fff' } }*/
-            }
-          />
-          <ScrollView>
-            {/*Render de hoteles recomendados*/}
-            <View style={{ flex: 1 }}>
-              <HotelesRecomendados
-                hotelesRecomendados={this.state.carouselItems}
-              />
-            </View>
-            {/*Render de hoteles*/}
-            <View style={styles.hotelItemContainer}>
-              <View style={{ paddingBottom: 10 }}>
-                <Text style={{ fontSize: 24, fontWeight: "700", width: 300 }}>
-                  Hoteles en base a tu búsqueda
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  height: 40,
-                  flex: 1,
-                  marginBottom: 20,
-                  backgroundColor: "#ffff",
-                  borderRadius: borderValue,
-                  //backgroundColor:"#DFDFDF"
-                }}
-              >
-                {/*Ordenar*/}
-                <View
-                  style={{
-                    justifyContent: "center",
-                    flexDirection: "row",
-                    padding: 5,
-                    width: (width - 60) / 2,
-                    alignItems: "center",
-                  }}
-                >
-                  <TouchableOpacity
-                    style={{
-                      justifyContent: "center",
-                      flexDirection: "row",
-                      padding: 5,
-                      width: (width - 60) / 2,
-                      alignItems: "center",
-                    }}
-                    onPress={() => {
-                      this.sortHoteles();
-                    }}
-                  >
-                    <IconMaterialCommunity name={this.state.sortIcon} />
-                    <Text style={{ paddingHorizontal: 5 }}>Ordenar</Text>
-                  </TouchableOpacity>
-                </View>
-                {/*Separador de opciones*/}
-                <View
-                  style={{
-                    height: 40,
-                    width: 3,
-                    backgroundColor: constants.PRIMARY_BG_COLOR,
-                  }}
+      if (this.state.dataHotel.length == 0) {
+        return (
+          <View style={styles.containerError}>
+            <Text style={[styles.labelError, styles.description]}>
+              No encontramos hoteles que cumplan con tu búsqueda :(
+            </Text>
+            <CustomButton
+              loading={false}
+              mode="contained"
+              onPress={() => {
+                this.props.navigation.navigate("Home");
+              }}
+            >
+              Probar con otro destino
+            </CustomButton>
+          </View>
+        );
+      } else {
+        return (
+          <View style={styles.container}>
+            <Header
+              backgroundColor={constants.PRIMARY_BG_COLOR}
+              containerStyle={{ paddingTop: 10, paddingBottom: 10, height: 60 }}
+              leftComponent={
+                <Icon
+                  name="menu"
+                  onPress={() => this.props.navigation.openDrawer()}
                 />
-                {/*Filtrar*/}
+              }
+              rightComponent={
+                <IconFontisto
+                  name="map-pin"
+                  size={25}
+                  backgroundColor="transparent"
+                  underlayColor="transparent"
+                  onPress={() => {
+                    this.props.navigation.navigate("Mapas", {
+                      Hoteles: this.state.dataHotel,
+                    });
+                  }}
+                  style={{ marginRight: 10 }}
+                />
+              }
+              centerComponent={
+                this
+                  .renderSearchBar /*{ text: 'MY TITLE', style: { color: '#fff' } }*/
+              }
+            />
+            <ScrollView>
+              {/*Render de hoteles recomendados*/}
+              <View style={{ flex: 1 }}>
+                <HotelesRecomendados
+                  hotelesRecomendados={this.state.dataHotel}
+                />
+              </View>
+              {/*Render de hoteles*/}
+              <View style={styles.hotelItemContainer}>
+                <View style={{ paddingBottom: 10 }}>
+                  <Text style={{ fontSize: 24, fontWeight: "700", width: 300 }}>
+                    Hoteles en base a tu búsqueda
+                  </Text>
+                </View>
                 <View
                   style={{
-                    height: 40,
-                    justifyContent: "center",
                     flexDirection: "row",
-                    padding: 5,
-                    width: (width - 65) / 2,
                     alignItems: "center",
-                    //backgroundColor: "#DFDFDF",
-                    borderTopRightRadius: borderValue,
-                    borderBottomRightRadius: borderValue,
+                    height: 40,
+                    flex: 1,
+                    marginBottom: 20,
+                    backgroundColor: "#ffff",
+                    borderRadius: borderValue,
+                    //backgroundColor:"#DFDFDF"
                   }}
                 >
-                  <TouchableOpacity
+                  {/*Ordenar*/}
+                  <View
                     style={{
                       justifyContent: "center",
                       flexDirection: "row",
@@ -996,36 +977,96 @@ class HotelsScreen extends Component {
                       width: (width - 60) / 2,
                       alignItems: "center",
                     }}
-                    onPress={() => {
-                      this.openModal();
+                  >
+                    <TouchableOpacity
+                      style={{
+                        justifyContent: "center",
+                        flexDirection: "row",
+                        padding: 5,
+                        width: (width - 60) / 2,
+                        alignItems: "center",
+                      }}
+                      onPress={() => {
+                        this.sortHoteles();
+                      }}
+                    >
+                      <IconMaterialCommunity name={this.state.sortIcon} />
+                      <Text style={{ paddingHorizontal: 5 }}>Ordenar</Text>
+                    </TouchableOpacity>
+                  </View>
+                  {/*Separador de opciones*/}
+                  <View
+                    style={{
+                      height: 40,
+                      width: 3,
+                      backgroundColor: constants.PRIMARY_BG_COLOR,
+                    }}
+                  />
+                  {/*Filtrar*/}
+                  <View
+                    style={{
+                      height: 40,
+                      justifyContent: "center",
+                      flexDirection: "row",
+                      padding: 5,
+                      width: (width - 65) / 2,
+                      alignItems: "center",
+                      //backgroundColor: "#DFDFDF",
+                      borderTopRightRadius: borderValue,
+                      borderBottomRightRadius: borderValue,
                     }}
                   >
-                    <IconAntDesign name="filter" />
-                    <Text style={{ paddingHorizontal: 5 }}>Filtrar</Text>
-                  </TouchableOpacity>
-                  <Modal
-                    isVisible={this.state.isModalVisible}
-                    onBackdropPress={() => this.closeModal()}
-                  >
-                    {this.renderFiltros()}
-                  </Modal>
+                    <TouchableOpacity
+                      style={{
+                        justifyContent: "center",
+                        flexDirection: "row",
+                        padding: 5,
+                        width: (width - 60) / 2,
+                        alignItems: "center",
+                      }}
+                      onPress={() => {
+                        this.openModal();
+                      }}
+                    >
+                      <IconAntDesign name="filter" />
+                      <Text style={{ paddingHorizontal: 5 }}>Filtrar</Text>
+                    </TouchableOpacity>
+                    <Modal
+                      isVisible={this.state.isModalVisible}
+                      onBackdropPress={() => this.closeModal()}
+                    >
+                      {this.renderFiltros()}
+                    </Modal>
+                  </View>
                 </View>
+                <FlatList
+                  data={this.state.dataHotel}
+                  numColumns={1}
+                  renderItem={({ item }) => this.renderItemHotel(item)}
+                  keyExtractor={(item, index) => index.toString()}
+                />
               </View>
-              <FlatList
-                data={this.state.dataHotel}
-                numColumns={1}
-                renderItem={({ item }) => this.renderItemHotel(item)}
-                keyExtractor={(item, index) => index.toString()}
-              />
-            </View>
-          </ScrollView>
-        </View>
-      );
+            </ScrollView>
+          </View>
+        );
+      }
     }
   }
 }
 const borderValue = 20;
 const styles = StyleSheet.create({
+  containerError: {
+    flex: 1,
+    justifyContent: "center", // Used to set Text Component Vertically Center
+    alignItems: "center", // Used to set Text Component Horizontally Center
+  },
+  labelError: {
+    fontSize: 20,
+    color: constants.PRIMARY_BG_COLOR,
+    fontWeight: "700",
+    textAlign: "center",    
+    ////fontFamily: 'Avenir'
+  },
   container: {
     flex: 1,
     backgroundColor: "#ebebeb",

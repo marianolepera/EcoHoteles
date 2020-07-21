@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 import { CalendarItem, CalendarList, Agenda } from "react-native-calendars";
-import { View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableWithoutFeedback,
+} from "react-native";
 import constants from "../../config/constants";
 import { PropTypes } from "prop-types";
-import { Button} from "react-native-elements";
+import { Button } from "react-native-elements";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const { width, height } = Dimensions.get("window");
 
@@ -157,7 +164,22 @@ export default class Calendar extends Component {
     }
     return (
       <View style={[styles.container]}>
+        <View style={{ paddingTop: 15, paddingHorizontal: 20 }}>
+          <View style={styles.backIcon}>
+            <Ionicons
+              name="md-arrow-back"
+              size={30}
+              onPress={() => {
+                this.props.onCheckOut("");
+              }}
+            />
+          </View>
+          <Text style={{ fontSize: 24, fontWeight: "400", width: 300 }}>
+            Seleccione un rango de fechas
+          </Text>
+        </View>
         <CalendarList
+          minDate={new Date().toDateString()}
           horizontal={true}
           pagingEnabled={true}
           markingType={"period"}
@@ -169,10 +191,10 @@ export default class Calendar extends Component {
         <View
           style={[
             styles.botonBuscarContainer,
-            { backgroundColor: "white", height: 40,marginTop:-30 },
+            { backgroundColor: "white", height: 40, marginTop: -30 },
           ]}
         >
-          <TouchableWithoutFeedback           
+          <TouchableWithoutFeedback
             onPress={() => {
               this.props.onCheckIn(this.state.startDate.dateString);
               this.props.onCheckOut(this.state.endDate.dateString);
@@ -195,21 +217,22 @@ Calendar.propTypes = {
 
 const styles = StyleSheet.create({
   botonBuscar: {
-    height: 40, paddingTop: 20,
+    height: 40,
+    paddingTop: 20,
     backgroundColor: constants.PRIMARY_BG_COLOR,
     borderRadius: 80,
     marginTop: 10,
     marginLeft: 20,
     marginRight: 20,
-    alignItems:'center',
-    alignContent:'center',    
+    alignItems: "center",
+    alignContent: "center",
   },
-  botonTexto:{
-    color:'white',
+  botonTexto: {
+    color: "white",
     //justifyContent:'center',
-    fontWeight:'700',
-    position:'absolute',
-    top:10
+    fontWeight: "700",
+    position: "absolute",
+    top: 10,
   },
   container: {
     backgroundColor: constants.SECONDARY_BG_COLOR,

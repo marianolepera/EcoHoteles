@@ -55,6 +55,7 @@ const AboutRoute = hotel2 => {
       >
         <Text style={styles.bookingButton}>Contactarse con el hotel</Text>
       </Icon.Button>
+
     </View>
   );
 };
